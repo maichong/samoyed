@@ -14,12 +14,14 @@
   "scripts": {
     "build": "tsc"
   },
-  "main": "lib/index.js",
+  "main": "src/index.tsx",
   "types": "index.d.ts",
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
   "license": "MIT",
   "dependencies": {
-    "string-random": "^0.1.1"
+    "string-random": "^0.1.1",
+    "grackle": "^0.1.2",
+    "is-promise": "^2.1.0"
   },
   "devDependencies": {
     "typescript": "^3.1.3"

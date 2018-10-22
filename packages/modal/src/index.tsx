@@ -1,7 +1,9 @@
 import React, { Component, ReactNode } from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
 import random from 'string-random';
-import { PromptOptions } from '..';
+import { PromptOptions, ButtonOptions } from '..';
+import tr from 'grackle';
+import isPromise from 'is-promise';
 
 type Type = 'alert' | 'confirm' | 'prompt';
 
@@ -11,9 +13,9 @@ interface Item {
   title: ReactNode;
   body?: ReactNode | typeof Component;
   options?: PromptOptions;
+  buttons: ReactNode[];
   promptValue?: string;
-  onHide: Function;
-  callback: Function;
+  cancel: Function;
 }
 
 const updaters = new Set();
@@ -24,26 +26,67 @@ function isOptions(options: any): boolean {
 }
 
 function create(type: Type) {
-  return function (title: ReactNode, body?: ReactNode | typeof Component, options?: PromptOptions): Promise<void> {
+  return function (title: ReactNode, body?: ReactNode | typeof Component, options?: PromptOptions): Promise<any> {
     if (!options && isOptions(body)) {
       // @ts-ignore
       options = body;
       body = null;
     }
+    options = options || {};
+    let btns: ButtonOptions[] = options.buttons;
+    if (!btns) {
+      btns = [{ text: tr([type + '_button_OK', 'button_OK', 'OK']), style: 'primary' }];
+      if (type !== 'alert') {
+        btns.unshift({ text: tr([type + '_button_cancel', 'button_cancel', 'Cancel']) });
+      }
+    }
+
     return new Promise((resolve) => {
-      let item = {
+      let buttons: ReactNode[] = btns.map((btn, index) => (<button
+        key={index}
+        className={'btn btn-' + (btn.style || 'light')}
+        onClick={() => handle(index)}
+      >{btn.text}</button>));
+
+      let item: Item = {
         id: random(),
         type,
         title,
         body,
+        buttons,
         options,
-        onHide: function (res: any) { },
-        callback: (res?: any) => {
-          items.splice(items.indexOf(item), 1);
-          resolve(res);
+        cancel: function () {
+          handle(0);
         }
       };
       items.push(item);
+
+      function close(btn: number) {
+        items.splice(items.indexOf(item), 1);
+        updaters.forEach((update) => update());
+
+        if (type === 'prompt') {
+          resolve(btn === 0 ? '' : item.promptValue);
+        } else {
+          resolve(btn);
+        }
+      }
+
+      function handle(btn: number) {
+        if (options.handle) {
+          let res = options.handle(btn);
+          if (res === false) return;
+          if (isPromise(res)) {
+            res.then((r) => {
+              if (r === false) return;
+              close(btn);
+            });
+            return;
+          }
+        }
+        close(btn);
+      }
+
       updaters.forEach((update) => update());
     });
   }
@@ -54,7 +97,7 @@ export const confirm = create('confirm');
 export const prompt = create('prompt');
 
 function renderItem(item: Item): ReactNode {
-  let options = item.options || {};
+  let { title, options } = item;
   let itemBody = item.body;
   let body = null;
   if (itemBody && itemBody instanceof Component) {
@@ -83,15 +126,30 @@ function renderItem(item: Item): ReactNode {
   if (itemBody) {
     body = <Modal.Body>{itemBody}</Modal.Body>;
   }
+
+  if (typeof title === 'string') {
+    title = <h5 className='modal-title'>{title}</h5>;
+  }
+
   return (
-    <Modal key={item.id} show animation={false} onHide={null}>
-      <Modal.Header
-        closeButton={options.closeButton !== false}
-        onHide={item.onHide}
-      >
-        {item.title}
+    <Modal key={item.id} show animation={false} onHide={undefined}>
+      <Modal.Header>
+        {title}
+        {options.closeButton !== false && <button
+          type="button"
+          className="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          // @ts-ignore
+          onClick={item.cancel}
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>}
       </Modal.Header>
       {body}
+      {item.buttons.length && <div className="modal-footer">
+        {item.buttons}
+      </div>}
     </Modal>
   );
 }
