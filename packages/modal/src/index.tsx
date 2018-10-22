@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from 'react';
-import { Modal } from 'react-bootstrap';
+import Modal from 'react-bootstrap/lib/Modal';
 import random from 'string-random';
 import { PromptOptions } from '..';
 
@@ -84,7 +84,7 @@ function renderItem(item: Item): ReactNode {
     body = <Modal.Body>{itemBody}</Modal.Body>;
   }
   return (
-    <Modal show animation={false} onHide={null}>
+    <Modal key={item.id} show animation={false} onHide={null}>
       <Modal.Header
         closeButton={options.closeButton !== false}
         onHide={item.onHide}
@@ -98,12 +98,16 @@ function renderItem(item: Item): ReactNode {
 
 export default class ModalBus extends Component<{}> {
   componentDidMount() {
-    updaters.add(this.forceUpdate);
+    updaters.add(this.update);
   }
 
   componentWillUnmount() {
-    updaters.delete(this.forceUpdate);
+    updaters.delete(this.update);
   }
+
+  update = () => {
+    this.forceUpdate();
+  };
 
   render() {
     return items.map(renderItem);
