@@ -4,8 +4,8 @@
   "description": "Base style",
   "keywords": [
     "samoyed",
-    "React",
-    "Bootstrap"
+    "react",
+    "bootstrap"
   ],
   "sass": "style.scss",
   "scripts": {},

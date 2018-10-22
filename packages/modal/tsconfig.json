@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "outDir": "lib",
+    "moduleResolution": "node",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "baseUrl": "./src",
+    "target": "ES2015",
+    "lib": [
+      "ES2015",
+      "dom"
+    ],
+    "jsx": "react"
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

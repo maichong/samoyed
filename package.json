@@ -1,9 +1,13 @@
 {
   "name": "samoyed",
   "version": "0.1.0",
-  "description": "General front-end components based on React and Bootstrap v4",
+  "description": "General frontend components based on React and Bootstrap",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
+    "clean": "lerna clean"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/maichong/samoyed.git"
@@ -15,7 +19,6 @@
   },
   "homepage": "https://github.com/maichong/samoyed#readme",
   "devDependencies": {
-    "bootstrap": "^4.1.3",
     "lerna": "^3.4.3"
   }
 }
