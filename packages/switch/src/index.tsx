@@ -1,55 +1,112 @@
 import React, { Component } from 'react';
-import { SelectValue } from '@samoyed/types';
-import { SwitchProps } from '..';
+import { SelectValue, SelectOption } from '@samoyed/types';
+import { SwitchProps, SwatchState } from '..';
+import { getOptionValue } from './utils';
 
-export default class Swtich extends Component<SwitchProps> {
-  handleChange = (v: SelectValue) => {
-    const { onChange, value, multi } = this.props;
-    if (onChange) {
-      if (!multi) {
-        onChange(v);
-      } else {
-        let index = (value as SelectValue[]).indexOf(v);
-        if (index >= 0) {
-          (value as SelectValue[]).splice(index, 1);
-        } else {
-          (value as SelectValue[]).push(v);
-        }
-        onChange(value);
-      }
-    }
+export default class Swtich extends Component<SwitchProps, SwatchState> {
+  constructor(props: SwitchProps) {
+    super(props);
+    this.state = {
+      options: props.options
+    };
   }
 
-  checkSelect = (v: SelectValue) => {
-    const { value } = this.props;
-    return v === value || (value as SelectValue[]).indexOf(v) >= 0;
+  componentWillMount() {
+    this.init(this.props);
+  }
+
+  componentWillReceiveProps(props: SwitchProps) {
+    this.init(props);
+  }
+
+  init(props: SwitchProps) {
+    this.setState({ options: props.options });
+  }
+
+  handleClick(opt: string) {
+    const { value, multi, onChange } = this.props;
+    const { options } = this.state;
+
+    let optionsMap: { [path: string]: SelectOption } = {};
+    options.forEach((o) => {
+      optionsMap[getOptionValue(o)] = o;
+    });
+
+    if (!multi) {
+      if (optionsMap[opt]) {
+        onChange(optionsMap[opt].value);
+      } else {
+        onChange(opt);
+      }
+      return;
+    }
+
+    //multi
+    if (!value || !(value as SelectValue[]).length) {
+      if (optionsMap[opt] !== undefined && optionsMap[opt].value !== undefined) {
+        onChange([optionsMap[opt].value]);
+      } else {
+        onChange([opt]);
+      }
+      return;
+    }
+
+    let valueArray: SelectValue[] = [];
+
+    if (Array.isArray(value)) {
+      valueArray = value;
+    } else if (typeof value === 'number' || typeof value === 'string' || typeof value === 'boolean') {
+      valueArray = [value];
+    }
+
+    let res: SelectValue[] = [];
+    let found = false;
+    valueArray.forEach((v: string | number | boolean) => {
+      let vid = String(v);
+      if (vid === opt) {
+        found = true;
+      } else if (optionsMap[vid] !== undefined) {
+        if (optionsMap[vid].value !== undefined) {
+          res.push(optionsMap[vid].value);
+        } else {
+          res.push(vid);
+        }
+      }
+    });
+    if (!found) {
+      res.push(opt);
+    }
+    onChange(res);
   }
 
   render() {
-    const {
-      className,
-      options,
-      disabled
-    } = this.props;
-    let tclass = 'btn-group ' + className;
-    if (disabled) {
-      tclass += ' disabled';
+    const { value, multi, disabled } = this.props;
+    const { options } = this.state;
+    let valueMap: { [path: string]: boolean } = {};
+    if (multi) {
+      if (Array.isArray(value)) {
+        value.forEach((v) => {
+          valueMap[getOptionValue(v)] = true;
+        });
+      }
+    } else if (value !== undefined) {
+      valueMap[getOptionValue(value as SelectValue)] = true;
     }
     return (
-      <div className={tclass} role="group">
-        {
-          (options || []).forEach((item) => <button
-            type="button"
-            className={
-              'btn btn-' +
-              (this.checkSelect(item.value) ? (item.style || 'primary') : 'default')
-              + (disabled ? ' disabled' : '')
-            }
-          >
-            {item.label || ''}
-          </button>)
-        }
-        {}
+      <div className="btn-group">
+        {options.map((o) => {
+          let cls = 'btn';
+          let vid = getOptionValue(o);
+          if (valueMap[vid]) {
+            cls += (o.style ? ' active btn-' + o.style : ' active btn-success');
+          } else {
+            cls += ' btn-default';
+          }
+          if (disabled) {
+            cls += ' disabled';
+          }
+          return <div key={vid} className={cls} onClick={disabled ? null : () => this.handleClick(vid)}>{o.label}</div>;
+        })}
       </div>
     );
   }

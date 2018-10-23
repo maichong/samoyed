@@ -28,5 +28,9 @@ export interface CheckboxGroupProps {
   onChange: (value: any) => any;
 }
 
+declare interface CheckboxGroupState {
+  options?: SelectOption[]
+}
+
 export default class CheckboxGroup extends Component<CheckboxGroupProps>{
 }
