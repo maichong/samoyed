@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
+import Icon from '@samoyed/icon';
 import { CheckboxProps } from '..';
 
 export default class Checkbox extends Component<CheckboxProps> {
-  props: CheckboxProps;
-
   handleChange = () => {
-    const {onChange, value} = this.props;
+    const { onChange, value } = this.props;
     if (onChange) {
       onChange(!value);
     }
@@ -40,7 +39,7 @@ export default class Checkbox extends Component<CheckboxProps> {
     }
     return (
       <label className={className} onClick={disabled ? null : this.handleChange}>
-        <i className={`fa fa-${icon}`} />
+        <Icon name={icon} />
         {label}
       </label>
     );
