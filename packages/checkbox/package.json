@@ -1,0 +1,22 @@
+{
+  "name": "@samoyed/checkbox",
+  "version": "0.1.0",
+  "description": "React checkbox",
+  "keywords": [
+    "samoyed",
+    "react",
+    "bootstrap",
+    "checkbox"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "main": "src/index.tsx",
+  "types": "index.d.ts",
+  "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^3.1.3"
+  }
+}
