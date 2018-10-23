@@ -16,5 +16,7 @@
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/toast",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "react-toastr": "^3.0.0"
+  }
 }
