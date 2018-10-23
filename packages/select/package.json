@@ -1,0 +1,22 @@
+{
+  "name": "@samoyed/select",
+  "version": "0.1.0",
+  "description": "React select",
+  "keywords": [
+    "samoyed",
+    "react",
+    "bootstrap",
+    "select"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "main": "src/index.tsx",
+  "types": "index.d.ts",
+  "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "react-select": "^2.1.0"
+  }
+}
