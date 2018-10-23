@@ -19,6 +19,14 @@
   },
   "homepage": "https://github.com/maichong/samoyed#readme",
   "devDependencies": {
-    "lerna": "^3.4.3"
+    "@types/is-promise": "^2.1.0",
+    "@types/prop-types": "^15.5.6",
+    "@types/react": "^16.4.18",
+    "@types/react-bootstrap": "^0.32.14",
+    "@types/react-dom": "^16.0.9",
+    "@types/seamless-immutable": "^7.1.3",
+    "grackle": "^0.1.3",
+    "lerna": "^3.4.3",
+    "string-random": "^0.1.1"
   }
 }
