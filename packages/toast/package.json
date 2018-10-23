@@ -1,0 +1,22 @@
+{
+  "name": "@samoyed/toast",
+  "version": "0.1.0",
+  "description": "React toast",
+  "keywords": [
+    "samoyed",
+    "react",
+    "bootstrap",
+    "toast"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "main": "src/index.tsx",
+  "types": "index.d.ts",
+  "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/toast",
+  "license": "MIT",
+  "dependencies": {
+    "react-toastr": "^3.0.0"
+  }
+}
