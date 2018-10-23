@@ -1,0 +1,24 @@
+{
+  "name": "@samoyed/tooltip-wrapper",
+  "version": "0.1.0",
+  "description": "React tooltip-wrapper",
+  "keywords": [
+    "samoyed",
+    "react",
+    "bootstrap",
+    "tooltip"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "main": "src/index.tsx",
+  "types": "index.d.ts",
+  "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/tooltip-wrapper",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "react-bootstrap": "^0.32.4",
+    "string-random": "^0.1.1"
+  }
+}
