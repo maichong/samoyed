@@ -14,6 +14,7 @@
   "main": "src/index.tsx",
   "types": "index.d.ts",
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/checkbox",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {

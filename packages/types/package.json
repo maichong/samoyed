@@ -1,0 +1,17 @@
+{
+  "name": "@samoyed/types",
+  "version": "0.1.0",
+  "description": "Samoyed common types",
+  "keywords": [
+    "samoyed",
+    "react",
+    "bootstrap",
+    "typescript"
+  ],
+  "types": "index.d.ts",
+  "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/types",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}

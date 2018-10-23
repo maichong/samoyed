@@ -1,12 +1,12 @@
 {
-  "name": "@samoyed/select",
+  "name": "@samoyed/switch",
   "version": "0.1.0",
-  "description": "React select",
+  "description": "React switch",
   "keywords": [
     "samoyed",
     "react",
     "bootstrap",
-    "select"
+    "switch"
   ],
   "scripts": {
     "build": "tsc"
@@ -14,10 +14,8 @@
   "main": "src/index.tsx",
   "types": "index.d.ts",
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
-  "repository": "https://github.com/maichong/samoyed/tree/master/packages/select",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/switch",
   "license": "MIT",
   "dependencies": {},
-  "devDependencies": {
-    "react-select": "^2.1.0"
-  }
+  "devDependencies": {}
 }
