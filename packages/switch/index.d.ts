@@ -28,5 +28,9 @@ export interface SwitchProps {
   onChange: (value: any) => any;
 }
 
+export interface SwatchState {
+  options?: SelectOption[];
+}
+
 export default class Switch extends Component<SwitchProps>{
 }
