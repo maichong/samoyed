@@ -18,6 +18,8 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
+    "@types/lodash": "^4.14.117",
+    "@types/react-select": "^2.0.6",
     "react-select": "^2.1.0"
   }
 }
