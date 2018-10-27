@@ -1,5 +1,7 @@
 import React, { Component, ReactNode } from 'react';
-import Modal from 'react-bootstrap/lib/Modal';
+import Modal from 'reactstrap/lib/Modal';
+import ModalHeader from 'reactstrap/lib/ModalHeader';
+import ModalBody from 'reactstrap/lib/ModalBody';
 import random from 'string-random';
 import { PromptOptions, ButtonOptions } from '..';
 import tr from 'grackle';
@@ -15,7 +17,7 @@ interface Item {
   options?: PromptOptions;
   buttons: ReactNode[];
   promptValue?: string;
-  cancel: Function;
+  cancel: () => void;
 }
 
 const updaters = new Set();
@@ -124,28 +126,14 @@ function renderItem(item: Item): ReactNode {
     );
   }
   if (itemBody) {
-    body = <Modal.Body>{itemBody}</Modal.Body>;
-  }
-
-  if (typeof title === 'string') {
-    title = <h5 className='modal-title'>{title}</h5>;
+    body = <ModalBody>{itemBody}</ModalBody>;
   }
 
   return (
-    <Modal key={item.id} show animation={false} onHide={undefined}>
-      <Modal.Header>
+    <Modal key={item.id} isOpen toggle={item.cancel}>
+      <ModalHeader toggle={options.closeButton===false?null:item.cancel}>
         {title}
-        {options.closeButton !== false && <button
-          type="button"
-          className="close"
-          data-dismiss="modal"
-          aria-label="Close"
-          // @ts-ignore
-          onClick={item.cancel}
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>}
-      </Modal.Header>
+      </ModalHeader>
       {body}
       {item.buttons.length && <div className="modal-footer">
         {item.buttons}
