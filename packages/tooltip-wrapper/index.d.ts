@@ -1,5 +1,5 @@
 import { Component, ReactNode } from 'react';
-import { OverlayTriggerProps } from 'react-bootstrap';
+import { OverlayTriggerProps } from '@samoyed/overlay-tigger';
 
 export interface TooltipWrapperProps extends OverlayTriggerProps {
   children: ReactNode;

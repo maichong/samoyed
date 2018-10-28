@@ -1,5 +1,5 @@
 import { Component, ReactNode } from 'react';
-import { Style, SelectValue, SelectOption } from '@samoyed/types';
+import { SelectValue, SelectOption } from '@samoyed/types';
 
 export interface SwitchProps {
   /**

@@ -1,7 +1,7 @@
 {
-  "name": "@samoyed/tooltip-wrapper",
+  "name": "@samoyed/overlay",
   "version": "0.1.0",
-  "description": "React tooltip-wrapper",
+  "description": "React overlay",
   "keywords": [
     "samoyed",
     "react",
@@ -14,11 +14,10 @@
   "main": "src/index.tsx",
   "types": "index.d.ts",
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
-  "repository": "https://github.com/maichong/samoyed/tree/master/packages/tooltip-wrapper",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/overlay",
   "license": "MIT",
-  "dependencies": {},
-  "devDependencies": {
-    "@samoyed/overlay-tigger": "^0.1.0",
-    "string-random": "^0.1.1"
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "react-overlays": "^0.8.3"
   }
 }
