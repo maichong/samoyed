@@ -25,7 +25,7 @@ function processOptions(
     if (typeof opt.color === 'string') {
       opt = _.omit(opt, 'color');
     }
-    opt.value = String(opt.value);
+    // opt.value = String(opt.value);
     let vKey = String(opt.value);
     optionsMap[vKey] = opt;
     if (valueMap[vKey]) {
