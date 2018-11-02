@@ -1,8 +1,10 @@
 import React, { Component, ReactNode } from 'react';
 import _ from 'lodash';
-import { SelectBase, Creatable } from 'react-select';
-import { Style, SelectValue, SelectOption } from '@samoyed/types';
-import { SelectProps, SelectState } from '..';
+import Select from 'react-select';
+import CreatableSelect from 'react-select/lib/Creatable';
+// import { colors } from 'react-select/lib/theme';
+import { SelectValue, SelectOption } from '@samoyed/types';
+import { SelectProps } from '..';
 
 function processOptions(
   optionsMap: {
@@ -19,10 +21,11 @@ function processOptions(
   } else {
     valueMap[String(value)] = true;
   }
-  let res = _.map(options || [], (opt) => {
-    if (typeof opt.style === 'string') {
-      opt = _.omit(opt, 'style');
+  let res = _.map(options || [], (opt: SelectOption) => {
+    if (typeof opt.color === 'string') {
+      opt = _.omit(opt, 'color');
     }
+    opt.value = String(opt.value);
     let vKey = String(opt.value);
     optionsMap[vKey] = opt;
     if (valueMap[vKey]) {
@@ -40,7 +43,15 @@ function processOptions(
   return res;
 }
 
-export default class Select extends Component<SelectProps, SelectState> {
+interface SelectState {
+  options: SelectOption[],
+  optionsMap: {
+    [value: string]: SelectOption,
+  },
+  value?: SelectOption | SelectOption[]
+}
+
+export default class SelectFileld extends Component<SelectProps, SelectState> {
   _cache: { [key: string]: SelectOption[] };
 
   constructor(props: SelectProps) {
@@ -50,7 +61,7 @@ export default class Select extends Component<SelectProps, SelectState> {
     this.state = {
       options,
       optionsMap,
-      value: this.processValue(props.value)
+      value: this.processValue(props.value, { options, optionsMap })
     };
     this._cache = {};
   }
@@ -80,8 +91,10 @@ export default class Select extends Component<SelectProps, SelectState> {
     this._cache = {};
   }
 
-  processValue = (value: any): SelectOption|SelectOption[] => {
-    let optionsMap = this.state.optionsMap;
+  processValue = (value: any, selectState?: SelectState): SelectOption | SelectOption[] => {
+    let state: SelectState = this.state || selectState || {} as SelectState
+    let optionsMap = state.optionsMap || {};
+
 
     function processOne(v: any): SelectOption {
       if (v && typeof v === 'object') {
@@ -168,35 +181,39 @@ export default class Select extends Component<SelectProps, SelectState> {
       placeholder,
       clearable,
       searchable,
+      className,
       ...others
     } = this.props;
     if (allowCreate) {
       return (
-        <Creatable
-          isMulti={multi}
-          isClearable={clearable}
-          isSearchable={searchable}
+        <CreatableSelect
+          autoFocus
+          isMulti={!!multi}
+          isSearchable={!!searchable}
+          isDisabled={!!disabled}
+          className={className || ''}
           onChange={this.handleChange}
           value={this.state.value}
           onInputChange={loadOptions ? this.handleSearchChange : undefined}
           options={this.state.options}
-          isDisabled={disabled}
-          placeholder={placeholder || 'Select...'}
+          placeholder="Search..."
           {...others}
         />
-      );
+      );     
     }
     return (
-      <SelectBase
-        isMulti={multi}
-        isClearable={clearable}
-        isSearchable={searchable}
+      <Select
+        autoFocus
+        isMulti={!!multi}
+        isClearable={!!clearable}
+        isSearchable={!!searchable}
+        isDisabled={!!disabled}
+        className={className || ''}
         onChange={this.handleChange}
+        options={this.state.options}
+        placeholder={placeholder ? placeholder : 'Select...'}
         value={this.state.value}
         onInputChange={loadOptions ? this.handleSearchChange : undefined}
-        options={this.state.options}
-        isDisabled={disabled}
-        placeholder={placeholder || 'Select...'}
         {...others}
       />
     );

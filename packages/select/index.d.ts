@@ -60,13 +60,5 @@ export interface SelectProps {
   loadOptions?: LoadOptionsFunction;
 }
 
-export interface SelectState {
-  options: SelectOption[],
-  optionsMap: {
-    [value: string]: SelectOption,
-  },
-  value?: SelectOption | SelectOption[]
-}
-
 export default class Select extends Component<SelectProps>{
 }
