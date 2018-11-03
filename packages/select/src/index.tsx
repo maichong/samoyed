@@ -184,29 +184,39 @@ export default class SelectFileld extends Component<SelectProps, SelectState> {
       className,
       ...others
     } = this.props;
+    let isOptions = _.pick(this.props, ['clearable', 'searchable']);
+    isOptions = _.mapKeys(isOptions, (v, k) => {
+      if (k === 'clearable') return 'isClearable';
+      if (k === 'searchable') return 'isSearchable';
+      return k;
+    });
     if (allowCreate) {
       return (
         <CreatableSelect
-          autoFocus
           isMulti={!!multi}
-          isSearchable={!!searchable}
+          isClearable
           isDisabled={!!disabled}
           className={className || ''}
           onChange={this.handleChange}
           value={this.state.value}
           onInputChange={loadOptions ? this.handleSearchChange : undefined}
           options={this.state.options}
-          placeholder="Search..."
+          placeholder={placeholder ? placeholder : 'Select...'}
+          isValidNewOption={(inputValue, selectValue, selectOptions) => {
+            const isNotDuplicated = !selectOptions
+              .map(option => option.label)
+              .includes(inputValue);
+            const isNotEmpty = inputValue !== '';
+            return isNotEmpty && isNotDuplicated;
+          }}
           {...others}
+          {...isOptions}
         />
       );     
     }
     return (
       <Select
-        autoFocus
         isMulti={!!multi}
-        isClearable={!!clearable}
-        isSearchable={!!searchable}
         isDisabled={!!disabled}
         className={className || ''}
         onChange={this.handleChange}
@@ -215,6 +225,7 @@ export default class SelectFileld extends Component<SelectProps, SelectState> {
         value={this.state.value}
         onInputChange={loadOptions ? this.handleSearchChange : undefined}
         {...others}
+        {...isOptions}
       />
     );
   }
