@@ -98,7 +98,7 @@ export default class Swtich extends Component<SwitchProps, SwatchState> {
           let cls = 'btn';
           let vid = getOptionValue(o);
           if (valueMap[vid]) {
-            cls += (o.style ? ' active btn-' + o.style : ' active btn-success');
+            cls += (o.color ? ' active btn-' + o.color : ' active btn-success');
           } else {
             cls += ' btn-default';
           }

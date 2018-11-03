@@ -193,10 +193,11 @@ export default class SelectFileld extends Component<SelectProps, SelectState> {
     if (allowCreate) {
       return (
         <CreatableSelect
+          className={className || ''}
+          classNamePrefix="Select"
           isMulti={!!multi}
           isClearable
           isDisabled={!!disabled}
-          className={className || ''}
           onChange={this.handleChange}
           value={this.state.value}
           onInputChange={loadOptions ? this.handleSearchChange : undefined}
@@ -219,6 +220,7 @@ export default class SelectFileld extends Component<SelectProps, SelectState> {
         isMulti={!!multi}
         isDisabled={!!disabled}
         className={className || ''}
+        classNamePrefix="Select"
         onChange={this.handleChange}
         options={this.state.options}
         placeholder={placeholder ? placeholder : 'Select...'}
