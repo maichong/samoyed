@@ -58,7 +58,7 @@ export interface ToastContainerProps {
   className?: string;
 }
 
-export class ToastContainer extends Component<{}>{ }
+export class ToastContainer extends Component<ToastContainerProps>{ }
 
 export var defaultOptions: ToastOptions;
 export function clear(): void;
