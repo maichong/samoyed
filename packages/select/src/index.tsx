@@ -6,13 +6,11 @@ import CreatableSelect from 'react-select/lib/Creatable';
 import { SelectValue, SelectOption } from '@samoyed/types';
 import { SelectProps } from '..';
 
-function processOptions(
-  optionsMap: {
-    [value: string]: SelectOption,
-  },
+function init(
   value: SelectValue | SelectValue[],
   options?: SelectOption[]
-): SelectOption[] {
+): SelectState {
+  let optionsMap: { [value: string]: SelectOption } = {};
   let valueMap: { [key: string]: boolean } = {};
   if (Array.isArray(value)) {
     _.forEach(value, (v) => {
@@ -25,7 +23,6 @@ function processOptions(
     if (typeof opt.color === 'string') {
       opt = _.omit(opt, 'color');
     }
-    // opt.value = String(opt.value);
     let vKey = String(opt.value);
     optionsMap[vKey] = opt;
     if (valueMap[vKey]) {
@@ -40,7 +37,7 @@ function processOptions(
       }
     });
   }
-  return res;
+  return {options: res, optionsMap};
 }
 
 interface SelectState {
@@ -57,11 +54,11 @@ export default class SelectFileld extends Component<SelectProps, SelectState> {
   constructor(props: SelectProps) {
     super(props);
     let optionsMap = {};
-    let options = processOptions(optionsMap, props.value, props.options);
+    let data: SelectState = init(props.value, props.options);
     this.state = {
-      options,
-      optionsMap,
-      value: this.processValue(props.value, { options, optionsMap })
+      options: data.options,
+      optionsMap: data.optionsMap,
+      value: this.processValue(props.value, data)
     };
     this._cache = {};
   }
@@ -73,16 +70,18 @@ export default class SelectFileld extends Component<SelectProps, SelectState> {
     }
   }
 
-  componentWillReceiveProps(props: SelectProps) {
+  componentWillReceiveProps(nextProps: SelectProps) {
     let state = {} as SelectState;
-    if (props.options !== this.props.options || props.value !== this.props.value) {
-      state.optionsMap = this.state.optionsMap;
-      let options = props.options;
-      if (props.multi && props.loadOptions) {
+    if (nextProps.options !== this.props.options || nextProps.value !== this.props.value) {
+      let options = nextProps.options;
+      //如果有loadOptions,使用组件内部options
+      if (nextProps.loadOptions) {
         options = this.state.options;
       }
-      state.options = processOptions(state.optionsMap, props.value, options);
-      state.value = this.processValue(props.value);
+      let data = init(nextProps.value, options);
+      state.options = data.options;
+      state.optionsMap = data.optionsMap
+      state.value = this.processValue(nextProps.value, data);
     }
     this.setState(state);
   }
@@ -91,59 +90,64 @@ export default class SelectFileld extends Component<SelectProps, SelectState> {
     this._cache = {};
   }
 
-  processValue = (value: any, selectState?: SelectState): SelectOption | SelectOption[] => {
-    let state: SelectState = this.state || selectState || {} as SelectState
-    let optionsMap = state.optionsMap || {};
+  processValue = (value: SelectValue[]|SelectValue, selectState: SelectState): SelectOption | SelectOption[] => {
 
+    let optionsMap = selectState.optionsMap || {};
+    let options = selectState.options || {};
 
-    function processOne(v: any): SelectOption {
-      if (v && typeof v === 'object') {
-        if (v.value !== undefined) {
-          return v;
-        }
-        return v;
-      }
+    function processOne(v: SelectValue|any): SelectOption {
       if (optionsMap[String(v)]) {
         return optionsMap[String(v)];
       }
-      return { value: v };
+      let item = _.find(options, (opt: SelectOption) => opt.value === v);
+      if (item) {
+        return item;
+      }
+      return { value: v, label: v };
     }
 
     if (this.props.multi) {
+      // @ts-ignore multi为true，一定为数组
       if (!value || !value.length) {
         return [];
       }
+      // @ts-ignore multi为true，一定为数组
       return _.map(value, processOne);
     }
     return processOne(value);
   };
 
-  handleChange = (value: SelectOption | SelectOption[]) => {
+  handleChange = (vOpt: SelectOption | SelectOption[]) => {
     let { optionsMap } = this.state;
     let newValue: SelectValue | SelectValue[] = '';
-    if (value) {
-      if (Array.isArray(value)) {
+    let newVopt: SelectOption | SelectOption[] = null;
+    if (vOpt) {
+      if (Array.isArray(vOpt)) {
         let arr: SelectValue[] = [];
-        value.forEach((vv: SelectOption) => {
-          if (vv.label != String(vv.value)) {
-            optionsMap[String(vv.value)] = vv;
+        let arrVopt: SelectOption[] = [];
+        vOpt.forEach((opt: SelectOption) => {
+          if (opt.label != String(opt.value)) {
+            optionsMap[String(opt.value)] = opt;
           }
-          arr.push(vv.value);
+          arr.push(opt.value);
+          arrVopt.push(opt);
         });
         newValue = arr;
+        newVopt = arrVopt;
       } else {
-        optionsMap[String(value.value)] = value;
-        newValue = value.value;
+        optionsMap[String(vOpt.value)] = vOpt;
+        newValue = vOpt.value;
+        newVopt = vOpt;
       }
     }
-    // @ts-ignore
-    this.setState({
-      optionsMap,
-      value: newValue
-    });
     if (this.props.onChange) {
       this.props.onChange(newValue);
+      return;
     }
+    this.setState({
+      optionsMap,
+      value: newVopt
+    });
   };
 
   handleSearchChange = (search: string) => {
@@ -151,18 +155,21 @@ export default class SelectFileld extends Component<SelectProps, SelectState> {
     let { optionsMap } = this.state;
     let cacheKey: string = 'c_' + (search || JSON.stringify(value));
     if (this._cache[cacheKey]) {
+      let data: SelectState = init(value, this._cache[cacheKey]);
       this.setState({
-        options: processOptions(optionsMap, value, this._cache[cacheKey]),
-        optionsMap
+        options: data.options,
+        optionsMap: data.optionsMap
       });
       return;
     }
     this.props.loadOptions(search, (error, res) => {
       if (!error && res.options) {
         this._cache[cacheKey] = res.options;
+        let data: SelectState = init(value, this._cache[cacheKey]);
         this.setState({
-          options: processOptions(optionsMap, value, this._cache[cacheKey]),
-          optionsMap
+          options: data.options,
+          optionsMap: data.optionsMap,
+          value: this.processValue(value, data)
         });
       }
     });
