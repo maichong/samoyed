@@ -100,7 +100,7 @@ export default class Swtich extends Component<SwitchProps, SwatchState> {
           if (valueMap[vid]) {
             cls += (o.color ? ' active btn-' + o.color : ' active btn-success');
           } else {
-            cls += ' btn-default';
+            cls += ' btn-light';
           }
           if (disabled) {
             cls += ' disabled';
