@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { SelectValue, SelectOption } from '@samoyed/types';
 import { SwitchProps, SwatchState } from '..';
 import { getOptionValue } from './utils';
 
-export default class Swtich extends Component<SwitchProps, SwatchState> {
+export default class Swtich extends React.Component<SwitchProps, SwatchState> {
   constructor(props: SwitchProps) {
     super(props);
     this.state = {

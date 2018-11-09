@@ -1,5 +1,5 @@
-import React, { Component, ReactNode } from 'react';
-import _ from 'lodash';
+import * as React from 'react';
+import * as _ from 'lodash';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/lib/Creatable';
 // import { colors } from 'react-select/lib/theme';
@@ -37,7 +37,7 @@ function init(
       }
     });
   }
-  return {options: res, optionsMap};
+  return { options: res, optionsMap };
 }
 
 interface SelectState {
@@ -48,7 +48,7 @@ interface SelectState {
   value?: SelectOption | SelectOption[]
 }
 
-export default class SelectFileld extends Component<SelectProps, SelectState> {
+export default class SelectFileld extends React.Component<SelectProps, SelectState> {
   _cache: { [key: string]: SelectOption[] };
 
   constructor(props: SelectProps) {
@@ -90,12 +90,12 @@ export default class SelectFileld extends Component<SelectProps, SelectState> {
     this._cache = {};
   }
 
-  processValue = (value: SelectValue[]|SelectValue, selectState: SelectState): SelectOption | SelectOption[] => {
+  processValue = (value: SelectValue[] | SelectValue, selectState: SelectState): SelectOption | SelectOption[] => {
 
     let optionsMap = selectState.optionsMap || {};
     let options = selectState.options || {};
 
-    function processOne(v: SelectValue|any): SelectOption {
+    function processOne(v: SelectValue | any): SelectOption {
       if (optionsMap[String(v)]) {
         return optionsMap[String(v)];
       }
@@ -176,7 +176,6 @@ export default class SelectFileld extends Component<SelectProps, SelectState> {
   };
 
   render() {
-    const { t } = this.context;
     let {
       onChange,
       value,
@@ -220,7 +219,7 @@ export default class SelectFileld extends Component<SelectProps, SelectState> {
           {...others}
           {...isOptions}
         />
-      );     
+      );
     }
     return (
       <Select

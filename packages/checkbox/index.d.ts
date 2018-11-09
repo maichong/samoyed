@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import * as React from 'react';
 
 export interface CheckboxProps {
   /**
@@ -27,5 +27,5 @@ export interface CheckboxProps {
   onChange?: Function,
 }
 
-export default class Checkbox extends Component<CheckboxProps>{
+export default class Checkbox extends React.Component<CheckboxProps>{
 }

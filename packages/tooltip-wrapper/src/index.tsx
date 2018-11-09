@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import OverlayTrigger from '@samoyed/overlay-tigger';
 import Tooltip from '@samoyed/tooltip';
-import random from 'string-random';
+import * as random from 'string-random';
 import { TooltipWrapperProps } from '..';
 
-export default class TooltipWrapper extends Component<TooltipWrapperProps> {
+export default class TooltipWrapper extends React.Component<TooltipWrapperProps> {
   static defaultProps = {
     placement: 'top'
   };

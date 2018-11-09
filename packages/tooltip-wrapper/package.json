@@ -19,6 +19,6 @@
   "dependencies": {},
   "devDependencies": {
     "@samoyed/overlay-tigger": "^0.1.0",
-    "string-random": "^0.1.1"
+    "string-random": "^0.1.2"
   }
 }

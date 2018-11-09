@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react';
+import * as React from 'react';
 import { ToastContainer as Container } from 'react-toastr';
 import { ToastContainerProps, ToastType, ToastOptions } from '..';
 
@@ -12,7 +12,7 @@ export const defaultOptions: ToastOptions = {
   timeOut: 5000
 };
 
-export class ToastContainer extends Component<ToastContainerProps> {
+export class ToastContainer extends React.Component<ToastContainerProps> {
   ref: any;
 
   componentWillUnmount() {
@@ -41,7 +41,7 @@ export function clear() {
 }
 
 function create(type?: ToastType) {
-  return function (title: ReactNode, body?: ReactNode, options?: ToastOptions) {
+  return function (title: React.ReactNode, body?: React.ReactNode, options?: ToastOptions) {
     if (!container) throw new Error('Toast container is not initialized');
     if (!options && body && typeof body === 'object' && !React.isValidElement(body)) {
       // @ts-ignore

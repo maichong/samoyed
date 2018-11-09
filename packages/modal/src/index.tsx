@@ -1,21 +1,20 @@
-import React, { Component, ReactNode } from 'react';
+import * as React from 'react';
 import Modal from 'reactstrap/lib/Modal';
 import ModalHeader from 'reactstrap/lib/ModalHeader';
 import ModalBody from 'reactstrap/lib/ModalBody';
-import random from 'string-random';
+import * as random from 'string-random';
 import { PromptOptions, ButtonOptions } from '..';
-import tr from 'grackle';
-import isPromise from 'is-promise';
+import * as tr from 'grackle';
 
 type Type = 'alert' | 'confirm' | 'prompt';
 
 interface Item {
   id: string;
   type: Type;
-  title: ReactNode;
-  body?: ReactNode | typeof Component;
+  title: React.ReactNode;
+  body?: React.ReactNode | typeof React.Component;
   options?: PromptOptions;
-  buttons: ReactNode[];
+  buttons: React.ReactNode[];
   promptValue?: string;
   cancel: () => void;
 }
@@ -28,7 +27,7 @@ function isOptions(options: any): boolean {
 }
 
 function create(type: Type) {
-  return function (title: ReactNode, body?: ReactNode | typeof Component, options?: PromptOptions): Promise<any> {
+  return function (title: React.ReactNode, body?: React.ReactNode | typeof React.Component, options?: PromptOptions): Promise<any> {
     if (!options && isOptions(body)) {
       // @ts-ignore
       options = body;
@@ -44,7 +43,7 @@ function create(type: Type) {
     }
 
     return new Promise((resolve) => {
-      let buttons: ReactNode[] = btns.map((btn, index) => (<button
+      let buttons: React.ReactNode[] = btns.map((btn, index) => (<button
         key={index}
         className={'btn btn-' + (btn.style || 'light')}
         onClick={() => handle(index)}
@@ -78,8 +77,8 @@ function create(type: Type) {
         if (options.handle) {
           let res = options.handle(btn);
           if (res === false) return;
-          if (isPromise(res)) {
-            res.then((r) => {
+          if (res && typeof res.then === 'function') {
+            res.then((r: boolean | void) => {
               if (r === false) return;
               close(btn);
             });
@@ -98,11 +97,11 @@ export const alert = create('alert');
 export const confirm = create('confirm');
 export const prompt = create('prompt');
 
-function renderItem(item: Item): ReactNode {
+function renderItem(item: Item): React.ReactNode {
   let { title, options } = item;
   let itemBody = item.body;
   let body = null;
-  if (itemBody && itemBody instanceof Component) {
+  if (itemBody && itemBody instanceof React.Component) {
     // @ts-ignore
     itemBody = React.createElement(itemBody, {});
   }
@@ -131,7 +130,7 @@ function renderItem(item: Item): ReactNode {
 
   return (
     <Modal key={item.id} isOpen toggle={item.cancel}>
-      <ModalHeader toggle={options.closeButton===false?null:item.cancel}>
+      <ModalHeader toggle={options.closeButton === false ? null : item.cancel}>
         {title}
       </ModalHeader>
       {body}
@@ -142,7 +141,7 @@ function renderItem(item: Item): ReactNode {
   );
 }
 
-export default class ModalBus extends Component<{}> {
+export default class ModalBus extends React.Component<{}> {
   componentDidMount() {
     updaters.add(this.update);
   }

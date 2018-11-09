@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import * as React from 'react';
 
 // export type Placement = 'auto-start' | 'auto' | 'auto-end'
 //   | 'top-start' | 'top' | 'top-end'
@@ -19,5 +19,5 @@ export interface OverlayProps {
   shouldUpdatePosition?: boolean;
 }
 
-export default class Overlay extends Component<OverlayProps>{
+export default class Overlay extends React.Component<OverlayProps>{
 }

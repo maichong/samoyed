@@ -6,6 +6,7 @@
   "scripts": {
     "precommit": "npm run build",
     "link": "node scripts/link.js",
+    "update": "node scripts/update.js",
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "clean": "lerna clean"
@@ -21,20 +22,19 @@
   },
   "homepage": "https://github.com/maichong/samoyed#readme",
   "devDependencies": {
-    "@types/is-promise": "^2.1.0",
+    "@types/lodash": "^4.14.118",
     "@types/prop-types": "^15.5.6",
-    "@types/react": "^16.4.18",
-    "@types/reactstrap": "^6.4.2",
+    "@types/react": "^16.7.1",
     "@types/react-dom": "^16.0.9",
-    "@types/react-toastr": "^3.0.3",
-    "@types/seamless-immutable": "^7.1.3",
-    "@types/lodash": "^4.14.117",
     "@types/react-select": "^2.0.6",
+    "@types/react-toastr": "^3.0.3",
+    "@types/reactstrap": "^6.4.2",
+    "@types/seamless-immutable": "^7.1.4",
     "execa": "^1.0.0",
-    "grackle": "^0.1.3",
-    "husky": "^1.1.2",
+    "grackle": "^0.2.0",
+    "husky": "^1.1.3",
     "lerna": "^3.4.3",
-    "string-random": "^0.1.1",
-    "typescript": "^3.1.3"
+    "string-random": "^0.1.2",
+    "typescript": "^3.1.6"
   }
 }

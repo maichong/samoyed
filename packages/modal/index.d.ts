@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import * as React from 'react';
 
 export type Style = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark' | 'link' | string;
 
@@ -35,7 +35,7 @@ export interface PromptOptions extends AlertOptions {
  * @param {AlertOptions} [options] 通知选项
  * @returns {Promise<void>}
  */
-export function alert(title: ReactNode, body?: ReactNode | typeof Component, options?: AlertOptions): Promise<void>;
+export function alert(title: React.ReactNode, body?: React.ReactNode | typeof React.Component, options?: AlertOptions): Promise<void>;
 
 /**
  * 弹出确认对话框
@@ -44,7 +44,7 @@ export function alert(title: ReactNode, body?: ReactNode | typeof Component, opt
  * @param {ConfirmOptions} [options] 通知选项
  * @returns {Promise<number>} 返回按钮index数值
  */
-export function confirm(title: ReactNode, body?: ReactNode | typeof Component, options?: ConfirmOptions): Promise<number>;
+export function confirm(title: React.ReactNode, body?: React.ReactNode | typeof React.Component, options?: ConfirmOptions): Promise<number>;
 
 /**
  * 弹出输入对话框
@@ -53,7 +53,7 @@ export function confirm(title: ReactNode, body?: ReactNode | typeof Component, o
  * @param {ConfirmOptions} [options] 通知选项
  * @returns {Promise<string>} 返回用户输入的字符串
  */
-export function prompt(title: ReactNode, body?: ReactNode, options?: PromptOptions): Promise<string>;
+export function prompt(title: React.ReactNode, body?: React.ReactNode, options?: PromptOptions): Promise<string>;
 
-export default class ModalBus extends Component<{}>{
+export default class ModalBus extends React.Component<{}>{
 }

@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import * as React from 'react';
 
 export interface OverlayTriggerProps {
   // Required
@@ -23,5 +23,5 @@ export interface OverlayTriggerProps {
   trigger?: string | string[];
 }
 
-export default class OverlayTrgger extends Component<OverlayTriggerProps>{
+export default class OverlayTrgger extends React.Component<OverlayTriggerProps>{
 }

@@ -1,6 +1,6 @@
-import React, { Component, ReactElement } from 'react';
+import * as React from 'react';
 import { findDOMNode } from 'react-dom';
-import BaseOverlay from 'react-overlays/lib/Overlay';
+import * as BaseOverlay from 'react-overlays/lib/Overlay';
 import { OverlayProps } from '..';
 
 function wrapRefs(props, arrowProps) {
@@ -11,7 +11,7 @@ function wrapRefs(props, arrowProps) {
   arrowProps.ref = aRef.__wrapped || (aRef.__wrapped = r => aRef(findDOMNode(r)));
 }
 
-export default class Overlay extends Component<OverlayProps> {
+export default class Overlay extends React.Component<OverlayProps> {
   static defaultProps = {
     rootClose: false,
     show: false,

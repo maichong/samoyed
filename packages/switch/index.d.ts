@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import * as React from 'react';
 import { SelectValue, SelectOption } from '@samoyed/types';
 
 export interface SwitchProps {
@@ -32,5 +32,5 @@ export interface SwatchState {
   options?: SelectOption[];
 }
 
-export default class Switch extends Component<SwitchProps>{
+export default class Switch extends React.Component<SwitchProps>{
 }

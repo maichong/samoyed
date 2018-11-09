@@ -1,4 +1,4 @@
-import React, { Component, cloneElement, RefObject, HTMLAttributes } from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import contains from 'dom-helpers/query/contains';
 import Overlay from '@samoyed/overlay';
@@ -17,7 +17,7 @@ class RefHolder extends React.Component {
 const normalizeDelay = delay =>
   delay && typeof delay === 'object' ? delay : { show: delay, hide: delay };
 
-export default class OverlayTrigger extends Component<OverlayTriggerProps, OverlayTriggerState> {
+export default class OverlayTrigger extends React.Component<OverlayTriggerProps, OverlayTriggerState> {
   static defaultProps = {
     defaultOverlayShown: false,
     trigger: ['hover', 'focus'],
@@ -25,7 +25,7 @@ export default class OverlayTrigger extends Component<OverlayTriggerProps, Overl
 
   _hoverState: 'show' | 'hide';
   _timeout: number;
-  trigger: RefObject<any>;
+  trigger: React.RefObject<any>;
   ariaModifier: {
     enabled: boolean,
     order: number,
@@ -165,7 +165,7 @@ export default class OverlayTrigger extends Component<OverlayTriggerProps, Overl
 
     const child = React.Children.only(children);
 
-    const triggerProps: HTMLAttributes<any> = {};
+    const triggerProps: React.HTMLAttributes<any> = {};
 
     let triggers = trigger == null ? [] : [].concat(trigger);
 

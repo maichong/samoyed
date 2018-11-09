@@ -18,6 +18,6 @@
   "license": "MIT",
   "dependencies": {
     "@samoyed/overlay": "^0.1.0",
-    "dom-helpers": "^3.3.1"
+    "dom-helpers": "^3.4.0"
   }
 }

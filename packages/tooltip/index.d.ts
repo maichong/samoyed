@@ -1,7 +1,7 @@
-import { Component, ReactNode, HTMLProps, Ref } from 'react';
+import * as React from 'react';
 import { SizeProps, Colors } from '@samoyed/types';
 
-export interface TooltipProps extends HTMLProps<Tooltip>, SizeProps {
+export interface TooltipProps extends React.HTMLProps<Tooltip>, SizeProps {
   // Optional
   arrowOffsetLeft?: number | string;
   arrowOffsetTop?: number | string;
@@ -10,9 +10,9 @@ export interface TooltipProps extends HTMLProps<Tooltip>, SizeProps {
   positionLeft?: number;
   positionTop?: number;
 
-  innerRef?: Ref<HTMLDivElement>;
-  arrowProps?: HTMLProps<HTMLDivElement>;
+  innerRef?: React.Ref<HTMLDivElement>;
+  arrowProps?: React.HTMLProps<HTMLDivElement>;
 }
 
-export default class Tooltip extends Component<TooltipProps>{
+export default class Tooltip extends React.Component<TooltipProps>{
 }

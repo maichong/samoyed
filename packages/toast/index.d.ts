@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import * as React from 'react';
 
 export type ToastType = 'error' | 'success' | 'info' | 'warning';
 
@@ -58,13 +58,13 @@ export interface ToastContainerProps {
   className?: string;
 }
 
-export class ToastContainer extends Component<ToastContainerProps>{ }
+export class ToastContainer extends React.Component<ToastContainerProps>{ }
 
 export var defaultOptions: ToastOptions;
 export function clear(): void;
-export function error(title: ReactNode, body?: ReactNode, options?: ToastOptions): void;
-export function success(title: ReactNode, body?: ReactNode, options?: ToastOptions): void;
-export function info(title: ReactNode, body?: ReactNode, options?: ToastOptions): void;
-export function warning(title: ReactNode, body?: ReactNode, options?: ToastOptions): void;
+export function error(title: React.ReactNode, body?: React.ReactNode, options?: ToastOptions): void;
+export function success(title: React.ReactNode, body?: React.ReactNode, options?: ToastOptions): void;
+export function info(title: React.ReactNode, body?: React.ReactNode, options?: ToastOptions): void;
+export function warning(title: React.ReactNode, body?: React.ReactNode, options?: ToastOptions): void;
 
-export default function toast(title: ReactNode, body?: ReactNode, options?: ToastOptions): void;
+export default function toast(title: React.ReactNode, body?: React.ReactNode, options?: ToastOptions): void;

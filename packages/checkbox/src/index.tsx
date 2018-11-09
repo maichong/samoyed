@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import Icon from '@samoyed/icon';
 import { CheckboxProps } from '..';
 
-export default class Checkbox extends Component<CheckboxProps> {
+export default class Checkbox extends React.Component<CheckboxProps> {
   handleChange = () => {
     const { onChange, value } = this.props;
     if (onChange) {

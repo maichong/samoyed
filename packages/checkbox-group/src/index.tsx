@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { SelectValue, SelectOption } from '@samoyed/types';
 import Checkbox from '@samoyed/checkbox';
 import { getOptionValue } from './utils';
 import { CheckboxGroupProps, CheckboxGroupState } from '..';
 
-export default class CheckboxGroup extends Component<CheckboxGroupProps, CheckboxGroupState> {
+export default class CheckboxGroup extends React.Component<CheckboxGroupProps, CheckboxGroupState> {
   constructor(props: CheckboxGroupProps) {
     super(props);
     this.state = {
@@ -100,8 +100,8 @@ export default class CheckboxGroup extends Component<CheckboxGroupProps, Checkbo
         options.map((opt: SelectOption) => {
           let vid: string = getOptionValue(opt);
           let className = '';
-          if (opt.style) {
-            className = 'text-' + opt.style;
+          if (opt.color) {
+            className = 'text-' + opt.color;
           }
           return (<Checkbox
             key={vid}

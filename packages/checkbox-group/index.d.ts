@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import * as React from 'react';
 import { SelectValue, SelectOption } from '@samoyed/types';
 
 export interface CheckboxGroupProps {
@@ -32,5 +32,5 @@ declare interface CheckboxGroupState {
   options?: SelectOption[]
 }
 
-export default class CheckboxGroup extends Component<CheckboxGroupProps>{
+export default class CheckboxGroup extends React.Component<CheckboxGroupProps>{
 }

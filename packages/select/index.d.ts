@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import * as React from 'react';
 import { SelectValue, SelectOption } from '@samoyed/types';
 
 export interface LoadOptionsResult {
@@ -60,5 +60,5 @@ export interface SelectProps {
   loadOptions?: LoadOptionsFunction;
 }
 
-export default class Select extends Component<SelectProps>{
+export default class Select extends React.Component<SelectProps>{
 }
