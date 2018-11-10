@@ -4,7 +4,7 @@ import { TooltipProps } from '..';
 
 export default class Tooltip extends React.Component<TooltipProps> {
   static defaultProps = {
-    placement: 'right'
+    placement: 'left'
   };
 
   constructor(props: TooltipProps) {
@@ -28,7 +28,7 @@ export default class Tooltip extends React.Component<TooltipProps> {
         style={style}
         role="tooltip"
         x-placement={placement}
-        className={classNames(className, 'tooltip', `tooltip-${placement}`)}
+        className={classNames(className, 'tooltip', `bs-tooltip-${placement}`)}
         {...props}
       >
         <div className="arrow" {...arrowProps} />

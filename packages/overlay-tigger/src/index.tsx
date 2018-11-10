@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-// import contains from 'dom-helpers/query/contains';
+// @ts-ignore
+import * as contains from 'dom-helpers/query/contains';
 import Overlay from '@samoyed/overlay';
 import { OverlayTriggerProps } from '..';
 
@@ -14,7 +15,7 @@ class RefHolder extends React.Component {
   }
 }
 
-const normalizeDelay = delay =>
+const normalizeDelay = (delay: any) =>
   delay && typeof delay === 'object' ? delay : { show: delay, hide: delay };
 
 export default class OverlayTrigger extends React.Component<OverlayTriggerProps, OverlayTriggerState> {
@@ -32,7 +33,7 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
     fn: (data: any) => any;
   };
 
-  constructor(props, context) {
+  constructor(props: OverlayTriggerProps, context: any) {
     super(props, context);
 
     this.trigger = React.createRef();
@@ -102,19 +103,19 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
     }, delay.hide);
   };
 
-  handleFocus = e => {
+  handleFocus = (e: any) => {
     const { onFocus } = this.getChildProps();
     this.handleShow();
     if (onFocus) onFocus(e);
   };
 
-  handleBlur = e => {
+  handleBlur = (e: any) => {
     const { onBlur } = this.getChildProps();
     this.handleHide();
     if (onBlur) onBlur(e);
   };
 
-  handleClick = e => {
+  handleClick = (e: any) => {
     const { onClick } = this.getChildProps();
 
     if (this.state.show) this.hide();
@@ -123,24 +124,23 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
     if (onClick) onClick(e);
   };
 
-  handleMouseOver = e => {
+  handleMouseOver = (e: any) => {
     this.handleMouseOverOut(this.handleShow, e, 'fromElement');
   };
 
-  handleMouseOut = e =>
+  handleMouseOut = (e: any) =>
     this.handleMouseOverOut(this.handleHide, e, 'toElement');
 
   // Simple implementation of mouseEnter and mouseLeave.
   // React's built version is broken: https://github.com/facebook/react/issues/4251
   // for cases when the trigger is disabled and mouseOut/Over can cause flicker
   // moving from one child element to another.
-  handleMouseOverOut(handler, e, relatedNative) {
+  handleMouseOverOut(handler: any, e: any, relatedNative: any) {
     const target = e.currentTarget;
     const related = e.relatedTarget || e.nativeEvent[relatedNative];
-
-    // if ((!related || related !== target) && !contains(target, related)) {
-    //   handler(e);
-    // }
+    if ((!related || related !== target) && !contains(target, related)) {
+      handler(e);
+    }
   }
 
   hide() {
@@ -159,8 +159,8 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
       // popperConfig = {},
       ...props
     } = this.props;
-
-    // delete props.delay;
+    // @ts-ignore
+    if(props.delay) delete props.delay;
     // delete props.defaultShow;
 
     const child = React.Children.only(children);
@@ -186,7 +186,7 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
     return (
       <>
         <RefHolder ref={this.trigger}>
-          {/* {cloneElement(child, triggerProps)} */}
+          {React.cloneElement(child, triggerProps)}
         </RefHolder>
         <Overlay
           {...props}

@@ -5,6 +5,7 @@ export interface OverlayTriggerProps {
   overlay: any; // TODO: Add more specific type
 
   // Optional
+  defaultShow?: boolean;
   animation?: any; // TODO: Add more specific type
   container?: any; // TODO: Add more specific type
   containerPadding?: number;
