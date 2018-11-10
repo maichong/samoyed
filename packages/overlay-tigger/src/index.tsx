@@ -1,6 +1,6 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
-import contains from 'dom-helpers/query/contains';
+import * as ReactDOM from 'react-dom';
+// import contains from 'dom-helpers/query/contains';
 import Overlay from '@samoyed/overlay';
 import { OverlayTriggerProps } from '..';
 
@@ -138,9 +138,9 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
     const target = e.currentTarget;
     const related = e.relatedTarget || e.nativeEvent[relatedNative];
 
-    if ((!related || related !== target) && !contains(target, related)) {
-      handler(e);
-    }
+    // if ((!related || related !== target) && !contains(target, related)) {
+    //   handler(e);
+    // }
   }
 
   hide() {
@@ -160,7 +160,7 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
       ...props
     } = this.props;
 
-    delete props.delay;
+    // delete props.delay;
     // delete props.defaultShow;
 
     const child = React.Children.only(children);
@@ -186,7 +186,7 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
     return (
       <>
         <RefHolder ref={this.trigger}>
-          {cloneElement(child, triggerProps)}
+          {/* {cloneElement(child, triggerProps)} */}
         </RefHolder>
         <Overlay
           {...props}
