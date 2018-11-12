@@ -18,6 +18,7 @@ export interface OverlayProps {
   target?: Function | React.ReactInstance;
   shouldUpdatePosition?: boolean;
   arrowProps?: any // TODO: 还没找到怎么定义
+  style?: any // TODO: 还没找到怎么定义
 }
 
 export default class Overlay extends React.Component<OverlayProps>{

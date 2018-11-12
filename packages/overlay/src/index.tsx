@@ -25,27 +25,32 @@ export default class Overlay extends React.Component<OverlayProps> {
   };
 
   render() {
-    const {
-      children, arrowProps, ...others
-    } = this.props;
+    const { children, ...overlayProps } = this.props;
+    const { arrowProps, show, ...props } = overlayProps;
 
-    wrapRefs(this.props, arrowProps);
+    wrapRefs(overlayProps, arrowProps);
 
     var child;
     // @ts-ignore children 不能为string/array等，必须为合法的Element
     let overlay: Function | ReactElement<any> = children;
     if (typeof overlay === 'function') {
       child = overlay({
-        ...this.props,
+        ...props,
         arrowProps,
       });
     } else {
       child = React.cloneElement(overlay, {
-        className: classNames(overlay.props.className, 'in')
+        ...props,
+        arrowProps,
+        className: classNames(
+          overlay.props.className,
+          show && 'show',
+        ),
+        style: { ...overlay.props.style, ...overlayProps.style },
       });
     }
     return (
-      <BaseOverlay {...this.props}>
+      <BaseOverlay {...overlayProps}>
         {child}
       </BaseOverlay>
     )
