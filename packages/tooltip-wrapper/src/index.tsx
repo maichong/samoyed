@@ -1,7 +1,8 @@
 import * as React from 'react';
 import OverlayTrigger from '@samoyed/overlay-tigger';
 import Tooltip from '@samoyed/tooltip';
-// import * as random from 'string-random';
+// import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import * as random from 'string-random';
 import { TooltipWrapperProps } from '..';
 
 export default class TooltipWrapper extends React.Component<TooltipWrapperProps> {
@@ -13,7 +14,7 @@ export default class TooltipWrapper extends React.Component<TooltipWrapperProps>
 
   constructor(props: TooltipWrapperProps) {
     super(props);
-    // this.id = random();
+    this.id = random();
   }
 
   render() {

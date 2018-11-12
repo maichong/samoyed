@@ -1,10 +1,7 @@
 import * as React from 'react';
 
-export interface OverlayTriggerProps {
-  // Required
-  overlay: any; // TODO: Add more specific type
-
-  // Optional
+// Optional
+export interface OverlayTriggerOptions {
   defaultShow?: boolean;
   animation?: any; // TODO: Add more specific type
   container?: any; // TODO: Add more specific type
@@ -22,6 +19,11 @@ export interface OverlayTriggerProps {
   placement?: 'top' | 'right' | 'bottom' | 'left';
   rootClose?: boolean;
   trigger?: string | string[];
+}
+
+export interface OverlayTriggerProps extends OverlayTriggerOptions {
+  // Required
+  overlay: any; // TODO: Add more specific type
 }
 
 export default class OverlayTrgger extends React.Component<OverlayTriggerProps>{
