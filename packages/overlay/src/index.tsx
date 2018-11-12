@@ -7,13 +7,13 @@ import { OverlayProps } from '..';
 
 //TODO 还没找到怎么定义
 function wrapRefs(props: any, arrowProps: any) {
-  if(props && props.ref){
+  if (props && props.ref) {
     const { ref } = props;
-    props.ref = ref.__wrapped || (ref.__wrapped = (r:any) => ref(findDOMNode(r)));
+    props.ref = ref.__wrapped || (ref.__wrapped = (r: any) => ref(findDOMNode(r)));
   }
-  if(arrowProps && arrowProps.ref){
+  if (arrowProps && arrowProps.ref) {
     const { ref } = arrowProps;
-    arrowProps.ref = ref.__wrapped || (ref.__wrapped = (r:any) => ref(findDOMNode(r)));
+    arrowProps.ref = ref.__wrapped || (ref.__wrapped = (r: any) => ref(findDOMNode(r)));
   }
 }
 
@@ -35,7 +35,7 @@ export default class Overlay extends React.Component<OverlayProps> {
     // @ts-ignore children 不能为string/array等，必须为合法的Element
     let overlay: Function | ReactElement<any> = children;
     if (typeof overlay === 'function') {
-      return overlay({
+      child = overlay({
         ...this.props,
         arrowProps,
       });
@@ -44,7 +44,10 @@ export default class Overlay extends React.Component<OverlayProps> {
         className: classNames(overlay.props.className, 'in')
       });
     }
-
-    return React.createElement(BaseOverlay, Object.assign({}, this.props), child);
+    return (
+      <BaseOverlay {...this.props}>
+        {child}
+      </BaseOverlay>
+    )
   }
 }
