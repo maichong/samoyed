@@ -25,7 +25,7 @@ export default class Overlay extends React.Component<OverlayProps> {
   };
 
   render() {
-    const { children, ...overlayProps } = this.props;
+    const { children, onHide, ...overlayProps } = this.props;
     const { arrowProps, show, ...props } = overlayProps;
 
     wrapRefs(overlayProps, arrowProps);

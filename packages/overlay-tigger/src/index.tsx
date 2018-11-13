@@ -38,7 +38,7 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
 
     this.trigger = React.createRef();
     this.state = {
-      show: !!props.defaultShow,
+      show: !!props.defaultOverlayShown,
     };
 
     // We add aria-describedby in the case where the overlay is a role="tooltip"
@@ -157,11 +157,10 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
       overlay,
       children,
       // popperConfig = {},
-      ...props
+      defaultOverlayShown,
+      delay,
+      ...overlayProps
     } = this.props;
-    // @ts-ignore
-    if(props.delay) delete props.delay;
-    // delete props.defaultShow;
 
     const child = React.Children.only(children);
 
@@ -186,10 +185,10 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
     return (
       <>
         <RefHolder ref={this.trigger}>
-          {React.cloneElement(child, triggerProps)}
+          {React.cloneElement(child, {...triggerProps, className: 'tooltip-description'})}
         </RefHolder>
         <Overlay
-          {...props}
+          {...overlayProps}
           // popperConfig={{
           //   ...popperConfig,
           //   modifiers: {
@@ -197,6 +196,7 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
           //     ariaModifier: this.ariaModifier,
           //   },
           // }}
+          container={this}
           show={this.state.show}
           onHide={this.handleHide}
           target={this.getTarget}

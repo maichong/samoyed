@@ -2,7 +2,6 @@ import * as React from 'react';
 
 // Optional
 export interface OverlayTriggerOptions {
-  defaultShow?: boolean;
   animation?: any; // TODO: Add more specific type
   container?: any; // TODO: Add more specific type
   containerPadding?: number;
