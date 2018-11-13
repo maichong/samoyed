@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 // @ts-ignore
 import * as contains from 'dom-helpers/query/contains';
 import Overlay from '@samoyed/overlay';
+import classNames from 'classnames';
 import { OverlayTriggerProps } from '..';
 
 interface OverlayTriggerState {
@@ -185,7 +186,12 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
     return (
       <>
         <RefHolder ref={this.trigger}>
-          {React.cloneElement(child, {...triggerProps, className: 'tooltip-description'})}
+          {React.cloneElement(child, {
+            ...triggerProps, className: classNames(
+              child.props.className,
+              'tooltip-description',
+            )
+          })}
         </RefHolder>
         <Overlay
           {...overlayProps}
