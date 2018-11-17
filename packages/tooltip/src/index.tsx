@@ -7,10 +7,6 @@ export default class Tooltip extends React.Component<TooltipProps> {
     placement: 'left'
   };
 
-  constructor(props: TooltipProps) {
-    super(props);
-  }
-
   render() {
     const {
       innerRef,
@@ -28,7 +24,7 @@ export default class Tooltip extends React.Component<TooltipProps> {
       let key: string = keys[n];
       let keyLowerCase = key.toLocaleLowerCase();
       // @ts-ignore  只处理key为小写 boolean 为字符串
-      newProps[keyLowerCase] = typeof(props[key]) === 'boolean' ? String(props[key]) : props[key];
+      newProps[keyLowerCase] = typeof (props[key]) === 'boolean' ? String(props[key]) : props[key];
     }
     return (
       <div

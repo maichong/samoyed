@@ -90,7 +90,7 @@ function create(type: Type) {
 
       updaters.forEach((update) => update());
     });
-  }
+  };
 }
 
 export const alert = create('alert');

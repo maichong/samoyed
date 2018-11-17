@@ -43,7 +43,7 @@ export default class Swtich extends React.Component<SwitchProps, SwatchState> {
 
     //multi
     if (!value || !(value as SelectValue[]).length) {
-      if (optionsMap[opt] !== undefined && optionsMap[opt].value !== undefined) {
+      if (typeof optionsMap[opt] !== 'undefined' && typeof optionsMap[opt].value !== 'undefined') {
         onChange([optionsMap[opt].value]);
       } else {
         onChange([opt]);
@@ -65,8 +65,8 @@ export default class Swtich extends React.Component<SwitchProps, SwatchState> {
       let vid = String(v);
       if (vid === opt) {
         found = true;
-      } else if (optionsMap[vid] !== undefined) {
-        if (optionsMap[vid].value !== undefined) {
+      } else if (typeof optionsMap[vid] !== 'undefined') {
+        if (typeof optionsMap[vid].value !== 'undefined') {
           res.push(optionsMap[vid].value);
         } else {
           res.push(vid);
@@ -89,7 +89,7 @@ export default class Swtich extends React.Component<SwitchProps, SwatchState> {
           valueMap[getOptionValue(v)] = true;
         });
       }
-    } else if (value !== undefined) {
+    } else if (typeof value !== 'undefined') {
       valueMap[getOptionValue(value as SelectValue)] = true;
     }
     return (

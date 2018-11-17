@@ -32,11 +32,11 @@ export interface ToastOptions {
    */
   timeOut?: number;
   /**
-   * 标题区域样式类，默认	toast-title
+   * 标题区域样式类，默认 toast-title
    */
   titleClassName?: string;
   /**
-   * 内容区域样式类，默认	toast-message
+   * 内容区域样式类，默认 toast-message
    */
   messageClassName?: string;
   /**
@@ -44,23 +44,23 @@ export interface ToastOptions {
    */
   iconClassName?: string;
   /**
-   * 图标样式类映射，默认	{ error: "toast-error", info: "toast-info", success: "toast-success", warning: "toast-warning", }
+   * 图标样式类映射，默认 { error: "toast-error", info: "toast-info", success: "toast-success", warning: "toast-warning", }
    */
   iconClassNames?: {
     error: string;
     info: string;
     success: string;
     warning: string;
-  }
+  };
 }
 
 export interface ToastContainerProps {
   className?: string;
 }
 
-export class ToastContainer extends React.Component<ToastContainerProps>{ }
+export class ToastContainer extends React.Component<ToastContainerProps> { }
 
-export var defaultOptions: ToastOptions;
+export const defaultOptions: ToastOptions;
 export function clear(): void;
 export function error(title: React.ReactNode, body?: React.ReactNode, options?: ToastOptions): void;
 export function success(title: React.ReactNode, body?: React.ReactNode, options?: ToastOptions): void;

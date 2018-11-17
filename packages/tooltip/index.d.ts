@@ -14,5 +14,5 @@ export interface TooltipProps extends React.HTMLProps<Tooltip>, SizeProps {
   arrowProps?: React.HTMLProps<HTMLDivElement>;
 }
 
-export default class Tooltip extends React.Component<TooltipProps>{
+export default class Tooltip extends React.Component<TooltipProps> {
 }

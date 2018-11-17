@@ -17,7 +17,7 @@ class RefHolder extends React.Component {
 }
 
 const normalizeDelay = (delay: any) =>
-  delay && typeof delay === 'object' ? delay : { show: delay, hide: delay };
+  (delay && typeof delay === 'object' ? delay : { show: delay, hide: delay });
 
 export default class OverlayTrigger extends React.Component<OverlayTriggerProps, OverlayTriggerState> {
   static defaultProps = {
@@ -29,8 +29,8 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
   _timeout: number;
   trigger: React.RefObject<any>;
   ariaModifier: {
-    enabled: boolean,
-    order: number,
+    enabled: boolean;
+    order: number;
     fn: (data: any) => any;
   };
 
@@ -70,6 +70,7 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
     return React.Children.only(this.props.children).props;
   }
 
+  // eslint-disable-next-line react/no-find-dom-node
   getTarget = () => ReactDOM.findDOMNode(this.trigger.current);
 
   handleShow = () => {

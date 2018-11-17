@@ -25,5 +25,5 @@ export interface OverlayTriggerProps extends OverlayTriggerOptions {
   overlay: any; // TODO: Add more specific type
 }
 
-export default class OverlayTrgger extends React.Component<OverlayTriggerProps>{
+export default class OverlayTrgger extends React.Component<OverlayTriggerProps> {
 }

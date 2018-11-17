@@ -13,7 +13,7 @@ export interface SwitchProps {
   /**
    * 是否禁用
    */
-  disabled?: boolean,
+  disabled?: boolean;
   /**
    * 当前值，如果多选模式，则为数组
    */
@@ -32,5 +32,5 @@ export interface SwatchState {
   options?: SelectOption[];
 }
 
-export default class Switch extends React.Component<SwitchProps>{
+export default class Switch extends React.Component<SwitchProps> {
 }

@@ -24,7 +24,7 @@ export class ToastContainer extends React.Component<ToastContainerProps> {
   render() {
     return (
       <Container
-        toastMessageFactory={undefined}
+        toastMessageFactory={null}
         className={this.props.className}
         ref={(r) => {
           this.ref = r;
@@ -56,7 +56,7 @@ function create(type?: ToastType) {
       }
     }
     container[type](title, body, options);
-  }
+  };
 }
 
 export const success = create('success');

@@ -4,14 +4,16 @@ import classNames from 'classnames';
 import * as BaseOverlay from 'react-overlays/lib/Overlay';
 import { OverlayProps } from '..';
 
-//TODO 还没找到怎么定义
+// TODO: 还没找到怎么定义
 function wrapRefs(props: any, arrowProps: any) {
   if (props && props.ref) {
     const { ref } = props;
+    // eslint-disable-next-line react/no-find-dom-node
     props.ref = ref.__wrapped || (ref.__wrapped = (r: any) => ref(findDOMNode(r)));
   }
   if (arrowProps && arrowProps.ref) {
     const { ref } = arrowProps;
+    // eslint-disable-next-line react/no-find-dom-node
     arrowProps.ref = ref.__wrapped || (ref.__wrapped = (r: any) => ref(findDOMNode(r)));
   }
 }
@@ -29,7 +31,7 @@ export default class Overlay extends React.Component<OverlayProps> {
 
     wrapRefs(overlayProps, arrowProps);
 
-    var child;
+    let child;
     // @ts-ignore children 不能为string/array等，必须为合法的Element
     let overlay: Function | ReactElement<any> = children;
     if (typeof overlay === 'function') {
@@ -52,6 +54,6 @@ export default class Overlay extends React.Component<OverlayProps> {
       <BaseOverlay {...overlayProps}>
         {child}
       </BaseOverlay>
-    )
+    );
   }
 }

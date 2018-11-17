@@ -41,11 +41,11 @@ function init(
 }
 
 interface SelectState {
-  options: SelectOption[],
+  options: SelectOption[];
   optionsMap: {
-    [value: string]: SelectOption,
-  },
-  value?: SelectOption | SelectOption[]
+    [value: string]: SelectOption;
+  };
+  value?: SelectOption | SelectOption[];
 }
 
 export default class SelectFileld extends React.Component<SelectProps, SelectState> {
@@ -80,7 +80,7 @@ export default class SelectFileld extends React.Component<SelectProps, SelectSta
       }
       let data = init(nextProps.value, options);
       state.options = data.options;
-      state.optionsMap = data.optionsMap
+      state.optionsMap = data.optionsMap;
       state.value = this.processValue(nextProps.value, data);
     }
     this.setState(state);
@@ -126,7 +126,7 @@ export default class SelectFileld extends React.Component<SelectProps, SelectSta
         let arr: SelectValue[] = [];
         let arrVopt: SelectOption[] = [];
         vOpt.forEach((opt: SelectOption) => {
-          if (opt.label != String(opt.value)) {
+          if (opt.label !== String(opt.value)) {
             optionsMap[String(opt.value)] = opt;
           }
           arr.push(opt.value);
@@ -206,7 +206,7 @@ export default class SelectFileld extends React.Component<SelectProps, SelectSta
           isDisabled={!!disabled}
           onChange={this.handleChange}
           value={this.state.value}
-          onInputChange={loadOptions ? this.handleSearchChange : undefined}
+          onInputChange={loadOptions ? this.handleSearchChange : null}
           options={this.state.options}
           placeholder={placeholder ? placeholder : 'Select...'}
           isValidNewOption={(inputValue, selectValue, selectOptions) => {
@@ -231,7 +231,7 @@ export default class SelectFileld extends React.Component<SelectProps, SelectSta
         options={this.state.options}
         placeholder={placeholder ? placeholder : 'Select...'}
         value={this.state.value}
-        onInputChange={loadOptions ? this.handleSearchChange : undefined}
+        onInputChange={loadOptions ? this.handleSearchChange : null}
         {...others}
         {...isOptions}
       />

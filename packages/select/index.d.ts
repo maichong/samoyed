@@ -25,7 +25,7 @@ export interface SelectProps {
   /**
    * 是否禁用
    */
-  disabled?: boolean,
+  disabled?: boolean;
   /**
    * 当前值，如果多选模式，则为数组
    */
@@ -60,5 +60,5 @@ export interface SelectProps {
   loadOptions?: LoadOptionsFunction;
 }
 
-export default class Select extends React.Component<SelectProps>{
+export default class Select extends React.Component<SelectProps> {
 }

@@ -13,7 +13,7 @@ export interface CheckboxGroupProps {
   /**
    * 是否禁用
    */
-  disabled?: boolean,
+  disabled?: boolean;
   /**
    * 当前值，如果多选模式，则为数组
    */
@@ -29,8 +29,8 @@ export interface CheckboxGroupProps {
 }
 
 declare interface CheckboxGroupState {
-  options?: SelectOption[]
+  options?: SelectOption[];
 }
 
-export default class CheckboxGroup extends React.Component<CheckboxGroupProps>{
+export default class CheckboxGroup extends React.Component<CheckboxGroupProps> {
 }

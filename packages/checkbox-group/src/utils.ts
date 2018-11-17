@@ -1,4 +1,4 @@
-import { SelectOption, SelectValue } from "@samoyed/types";
+import { SelectOption, SelectValue } from '@samoyed/types';
 
 export function getOptionValue(opt: SelectOption | SelectValue): string {
   if (Array.isArray(opt)) {

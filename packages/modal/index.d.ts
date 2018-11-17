@@ -11,11 +11,11 @@ export interface ButtonOptions {
  * 通知框选项
  */
 export interface AlertOptions {
-  theme?: string,
-  buttons?: ButtonOptions[],
-  handle?: Function,
-  closeButton?: boolean,
-  props?: Object
+  theme?: string;
+  buttons?: ButtonOptions[];
+  handle?: Function;
+  closeButton?: boolean;
+  props?: Object;
 }
 
 export interface ConfirmOptions extends AlertOptions {
@@ -55,5 +55,5 @@ export function confirm(title: React.ReactNode, body?: React.ReactNode | typeof 
  */
 export function prompt(title: React.ReactNode, body?: React.ReactNode, options?: PromptOptions): Promise<string>;
 
-export default class ModalBus extends React.Component<{}>{
+export default class ModalBus extends React.Component<{}> {
 }
