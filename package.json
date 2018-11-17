@@ -30,7 +30,6 @@
     "@types/react-toastr": "^3.0.3",
     "@types/reactstrap": "^6.4.2",
     "@types/seamless-immutable": "^7.1.4",
-    "execa": "^1.0.0",
     "grackle": "^0.2.0",
     "husky": "^1.1.4",
     "lerna": "^3.4.3",

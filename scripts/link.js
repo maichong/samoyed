@@ -1,9 +1,9 @@
 const fs = require('fs');
 const Path = require('path');
-const execa = require('execa');
+const childProcess = require('child_process');
 
 if (!fs.existsSync(`node_modules/@samoyed`)) {
-  execa.shell(`ln -s ../packages @samoyed`, {
+  childProcess.execSync(`ln -s ../packages @samoyed`, {
     cwd: Path.join(process.cwd(), 'node_modules')
   });
 }
