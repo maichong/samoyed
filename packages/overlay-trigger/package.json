@@ -1,6 +1,6 @@
 {
   "name": "@samoyed/overlay-trigger",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "React overlay-trigger",
   "keywords": [
     "samoyed",
@@ -20,7 +20,7 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/overlay-trigger",
   "license": "MIT",
   "dependencies": {
-    "@samoyed/overlay": "^0.1.1",
+    "@samoyed/overlay": "^0.1.2",
     "dom-helpers": "^3.4.0"
   },
   "devDependencies": {

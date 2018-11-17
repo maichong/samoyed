@@ -1,6 +1,6 @@
 {
   "name": "@samoyed/tooltip-wrapper",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "React tooltip-wrapper",
   "keywords": [
     "samoyed",
@@ -20,8 +20,8 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/tooltip-wrapper",
   "license": "MIT",
   "dependencies": {
-    "@samoyed/tooltip": "^0.1.0",
-    "@samoyed/overlay-trigger": "^0.1.0",
+    "@samoyed/overlay-trigger": "^0.1.2",
+    "@samoyed/tooltip": "^0.1.2",
     "string-random": "^0.1.2"
   }
 }
