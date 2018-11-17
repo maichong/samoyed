@@ -8,6 +8,9 @@
     "bootstrap",
     "toast"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc"
   },

@@ -8,6 +8,9 @@
     "bootstrap",
     "checkbox"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc"
   },

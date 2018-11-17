@@ -11,6 +11,9 @@
     "confirm",
     "prompt"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc"
   },

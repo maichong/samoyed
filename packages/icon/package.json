@@ -9,6 +9,9 @@
     "icon",
     "font-awesome"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc"
   },

@@ -8,6 +8,9 @@
     "bootstrap",
     "tooltip"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc"
   },

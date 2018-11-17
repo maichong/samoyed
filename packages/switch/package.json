@@ -8,6 +8,9 @@
     "bootstrap",
     "switch"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc"
   },
