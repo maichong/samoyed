@@ -20,8 +20,8 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/modal",
   "license": "MIT",
   "dependencies": {
-    "string-random": "^0.1.2",
-    "grackle": "^0.2.0"
+    "grackle": "^0.2.0",
+    "string-random": "^0.1.2"
   },
   "devDependencies": {
     "typescript": "^3.1.6"
