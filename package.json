@@ -2,12 +2,14 @@
   "name": "samoyed",
   "version": "0.1.0",
   "description": "General frontend components based on React and Bootstrap",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "precommit": "npm run build",
     "link": "node scripts/link.js",
     "update": "node scripts/update.js",
     "bootstrap": "lerna bootstrap",
+    "publish": "lerna publish",
     "build": "lerna run build",
     "clean": "lerna clean"
   },
