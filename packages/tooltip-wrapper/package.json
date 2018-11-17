@@ -19,8 +19,9 @@
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/tooltip-wrapper",
   "license": "MIT",
-  "devDependencies": {
-    "@samoyed/overlay-tigger": "^0.1.0",
+  "dependencies": {
+    "@samoyed/tooltip": "^0.1.0",
+    "@samoyed/overlay-trigger": "^0.1.0",
     "string-random": "^0.1.2"
   }
 }

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
-import Tooltip from '@samoyed/tooltip';
 import * as BaseOverlay from 'react-overlays/lib/Overlay';
 import { OverlayProps } from '..';
 

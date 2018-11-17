@@ -21,5 +21,9 @@
   "license": "MIT",
   "dependencies": {
     "classnames": "^2.2.6"
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.6",
+    "@samoyed/types": "^0.1.1"
   }
 }

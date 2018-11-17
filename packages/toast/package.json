@@ -21,5 +21,8 @@
   "license": "MIT",
   "dependencies": {
     "react-toastr": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/react-toastr": "^3.0.3"
   }
 }

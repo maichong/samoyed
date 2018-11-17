@@ -19,6 +19,9 @@
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/checkbox",
   "license": "MIT",
+  "dependencies": {
+    "@samoyed/icon": "^0.1.1"
+  },
   "devDependencies": {
     "typescript": "^3.1.6"
   }

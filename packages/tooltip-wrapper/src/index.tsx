@@ -1,7 +1,6 @@
 import * as React from 'react';
-import OverlayTrigger from '@samoyed/overlay-tigger';
+import OverlayTrigger from '@samoyed/overlay-trigger';
 import Tooltip from '@samoyed/tooltip';
-// import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import * as random from 'string-random';
 import { TooltipWrapperProps } from '..';
 
