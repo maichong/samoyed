@@ -24,9 +24,9 @@ export class ToastContainer extends React.Component<ToastContainerProps> {
   render() {
     return (
       <Container
-        toastMessageFactory={null}
+        // @ts-ignore toastMessageFactory为可选项 TODO暂时先忽略
         className={this.props.className}
-        ref={(r) => {
+        ref={(r: any) => {
           this.ref = r;
           container = r;
         }}
