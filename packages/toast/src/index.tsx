@@ -24,7 +24,9 @@ export class ToastContainer extends React.Component<ToastContainerProps> {
   render() {
     return (
       <Container
-        // @ts-ignore toastMessageFactory为可选项 TODO暂时先忽略
+        // toastMessageFactory 可选，但ts会报错，所以显式传入一个 undefined
+        // eslint-disable-next-line no-undefined
+        toastMessageFactory={undefined}
         className={this.props.className}
         ref={(r: any) => {
           this.ref = r;
