@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import Select from 'react-select';
+import ReactSelect from 'react-select';
 import CreatableSelect from 'react-select/lib/Creatable';
-// import { colors } from 'react-select/lib/theme';
 import { SelectValue, SelectOption } from '@samoyed/types';
 import { SelectProps } from '..';
 
@@ -48,12 +47,11 @@ interface SelectState {
   value?: SelectOption | SelectOption[];
 }
 
-export default class SelectFileld extends React.Component<SelectProps, SelectState> {
+export default class Select extends React.Component<SelectProps, SelectState> {
   _cache: { [key: string]: SelectOption[] };
 
   constructor(props: SelectProps) {
     super(props);
-    let optionsMap = {};
     let data: SelectState = init(props.value, props.options);
     this.state = {
       options: data.options,
@@ -74,10 +72,6 @@ export default class SelectFileld extends React.Component<SelectProps, SelectSta
     let state = {} as SelectState;
     if (nextProps.options !== this.props.options || nextProps.value !== this.props.value) {
       let options = nextProps.options;
-      //如果有loadOptions,使用组件内部options
-      if (nextProps.loadOptions) {
-        options = this.state.options;
-      }
       let data = init(nextProps.value, options);
       state.options = data.options;
       state.optionsMap = data.optionsMap;
@@ -91,7 +85,6 @@ export default class SelectFileld extends React.Component<SelectProps, SelectSta
   }
 
   processValue = (value: SelectValue[] | SelectValue, selectState: SelectState): SelectOption | SelectOption[] => {
-
     let optionsMap = selectState.optionsMap || {};
     let options = selectState.options || {};
 
@@ -152,7 +145,6 @@ export default class SelectFileld extends React.Component<SelectProps, SelectSta
 
   handleSearchChange = (search: string) => {
     const { value } = this.props;
-    let { optionsMap } = this.state;
     let cacheKey: string = 'c_' + (search || JSON.stringify(value));
     if (this._cache[cacheKey]) {
       let data: SelectState = init(value, this._cache[cacheKey]);
@@ -222,7 +214,7 @@ export default class SelectFileld extends React.Component<SelectProps, SelectSta
       );
     }
     return (
-      <Select
+      <ReactSelect
         isMulti={!!multi}
         isDisabled={!!disabled}
         className={className || ''}
