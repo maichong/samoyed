@@ -34,3 +34,27 @@ export interface SelectOption {
   value: SelectValue;
   color?: Colors;
 }
+
+/**
+ * Redux中数据列表通用格式
+ */
+export interface ReduxList<T> {
+  fetching: boolean;
+  loaded?: boolean;
+  error?: Error | null;
+  search: string;
+  filters?: any | null;
+  results: T[];
+}
+
+/**
+ * Redux中分页数据列表通用格式
+ */
+export interface ReduxPaginateList<T> extends ReduxList<T> {
+  total: number;
+  page: number;
+  limit: number;
+  totalPage: number;
+  previous: number;
+  next: number;
+}
