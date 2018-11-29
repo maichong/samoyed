@@ -1,6 +1,6 @@
 {
   "name": "@samoyed/switch",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "description": "React switch",
   "keywords": [
     "samoyed",
@@ -20,6 +20,6 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/switch",
   "license": "MIT",
   "devDependencies": {
-    "@samoyed/types": "^0.1.2"
+    "@samoyed/types": "^0.1.5"
   }
 }
