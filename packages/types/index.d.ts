@@ -36,12 +36,19 @@ export interface SelectOption {
 }
 
 /**
- * Redux中数据列表通用格式
+ * Redux数据通用格式
  */
-export interface ReduxList<T> {
+export interface ReduxData {
+  request: string;
   fetching: boolean;
   loaded?: boolean;
   error?: Error | null;
+}
+
+/**
+ * Redux中数据列表通用格式
+ */
+export interface ReduxList<T> extends ReduxData {
   search: string;
   filters?: any | null;
   results: T[];
