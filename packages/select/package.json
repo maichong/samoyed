@@ -1,6 +1,6 @@
 {
   "name": "@samoyed/select",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "React select",
   "keywords": [
     "samoyed",
@@ -23,7 +23,7 @@
     "react-select": "^2.1.2"
   },
   "devDependencies": {
-    "@samoyed/types": "^0.1.6",
+    "@samoyed/types": "^0.2.0",
     "@types/react-select": "^2.0.8"
   }
 }

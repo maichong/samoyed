@@ -1,6 +1,6 @@
 {
   "name": "@samoyed/checkbox-group",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "React checkbox group",
   "keywords": [
     "samoyed",
@@ -20,7 +20,7 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/checkbox-group",
   "license": "MIT",
   "devDependencies": {
-    "@samoyed/checkbox": "^0.1.2",
-    "@samoyed/types": "^0.1.6"
+    "@samoyed/checkbox": "^0.2.0",
+    "@samoyed/types": "^0.2.0"
   }
 }

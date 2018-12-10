@@ -1,6 +1,6 @@
 {
   "name": "@samoyed/tooltip",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "React tooltip",
   "keywords": [
     "samoyed",
@@ -23,7 +23,7 @@
     "classnames": "^2.2.6"
   },
   "devDependencies": {
-    "@samoyed/types": "^0.1.6",
+    "@samoyed/types": "^0.2.0",
     "@types/classnames": "^2.2.6"
   }
 }
