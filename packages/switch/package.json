@@ -20,6 +20,6 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/switch",
   "license": "MIT",
   "devDependencies": {
-    "@samoyed/types": "^0.1.5"
+    "@samoyed/types": "^0.1.6"
   }
 }

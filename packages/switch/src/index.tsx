@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { SelectValue, SelectOption } from '@samoyed/types';
-import { SwitchProps, SwatchState } from '..';
+import { SwitchProps } from '..';
 import { getOptionValue } from './utils';
+
+interface SwatchState {
+  options?: SelectOption[];
+}
 
 export default class Swtich extends React.Component<SwitchProps, SwatchState> {
   constructor(props: SwitchProps) {
@@ -11,16 +15,10 @@ export default class Swtich extends React.Component<SwitchProps, SwatchState> {
     };
   }
 
-  componentWillMount() {
-    this.init(this.props);
-  }
-
-  componentWillReceiveProps(props: SwitchProps) {
-    this.init(props);
-  }
-
-  init(props: SwitchProps) {
-    this.setState({ options: props.options });
+  static getDerivedStateFromProps(nextProps: SwitchProps) {
+    return {
+      options: nextProps.options
+    };
   }
 
   handleClick(opt: string) {

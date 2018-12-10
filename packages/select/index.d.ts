@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { SelectValue, SelectOption } from '@samoyed/types';
+import { Props } from 'react-select/lib/Select';
 
 export interface LoadOptionsResult {
   options: SelectOption[];
@@ -13,7 +14,10 @@ export interface LoadOptionsFunction {
   (keyword: string, callback: LoadOptionsCallback): void;
 }
 
-export interface SelectProps {
+// eslint-disable-next-line space-infix-ops
+type Omit<T, U> = Pick<T, Exclude<keyof T, keyof U>>;
+
+export interface SelectProps extends Omit<Props, { options: any; value: any; isDisabled: any; isMulti: any }> {
   /**
    * 组件附加的样式类
    */
@@ -46,18 +50,6 @@ export interface SelectProps {
    * 是否可动态创建
    */
   allowCreate?: boolean;
-  /**
-   * 是否可搜索
-   */
-  searchable?: boolean;
-  /**
-   * 是否可清空
-   */
-  clearable?: boolean;
-  /**
-   * 选项加载器
-   */
-  loadOptions?: LoadOptionsFunction;
 }
 
 export default class Select extends React.Component<SelectProps> {

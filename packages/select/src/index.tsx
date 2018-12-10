@@ -36,79 +36,68 @@ function init(
       }
     });
   }
-  return { options: res, optionsMap };
+  return { _value: value, options: res, optionsMap };
+}
+
+function processValue(multi: boolean, value: SelectValue[] | SelectValue, selectState: SelectState): SelectOption | SelectOption[] {
+  let optionsMap = selectState.optionsMap || {};
+  let options = selectState.options || {};
+
+  function processOne(v: SelectValue | any): SelectOption {
+    if (optionsMap[String(v)]) {
+      return optionsMap[String(v)];
+    }
+    let item = _.find(options, (opt: SelectOption) => opt.value === v);
+    if (item) {
+      return item;
+    }
+    return { value: v, label: v };
+  }
+
+  if (multi) {
+    // @ts-ignore multi为true，一定为数组
+    if (!value || !value.length) {
+      return [];
+    }
+    // @ts-ignore multi为true，一定为数组
+    return _.map(value, processOne);
+  }
+  return processOne(value);
 }
 
 interface SelectState {
+  _value: SelectValue | SelectValue[];
+  value?: SelectOption | SelectOption[];
   options: SelectOption[];
   optionsMap: {
     [value: string]: SelectOption;
   };
-  value?: SelectOption | SelectOption[];
 }
 
 export default class Select extends React.Component<SelectProps, SelectState> {
-  _cache: { [key: string]: SelectOption[] };
-
   constructor(props: SelectProps) {
     super(props);
     let data: SelectState = init(props.value, props.options);
     this.state = {
+      _value: props.value,
       options: data.options,
       optionsMap: data.optionsMap,
-      value: this.processValue(props.value, data)
+      value: processValue(props.multi, props.value, data)
     };
-    this._cache = {};
   }
 
-  componentWillMount() {
-    let props = this.props;
-    if (props.loadOptions && (!props.options || !props.options.length)) {
-      this.handleSearchChange('');
-    }
-  }
-
-  componentWillReceiveProps(nextProps: SelectProps) {
-    let state = {} as SelectState;
-    if (nextProps.options !== this.props.options || nextProps.value !== this.props.value) {
-      let options = nextProps.options;
-      let data = init(nextProps.value, options);
+  static getDerivedStateFromProps(nextProps: SelectProps, prevState: SelectState) {
+    let state: Partial<SelectState> = {
+      _value: nextProps.value
+    };
+    if (nextProps.options !== prevState.options || nextProps.value !== prevState._value) {
+      let data = init(nextProps.value, nextProps.options);
       state.options = data.options;
       state.optionsMap = data.optionsMap;
-      state.value = this.processValue(nextProps.value, data);
+      state.value = processValue(nextProps.multi, nextProps.value, data);
     }
-    this.setState(state);
+    return state;
   }
-
-  componentWillUnmount() {
-    this._cache = {};
-  }
-
-  processValue = (value: SelectValue[] | SelectValue, selectState: SelectState): SelectOption | SelectOption[] => {
-    let optionsMap = selectState.optionsMap || {};
-    let options = selectState.options || {};
-
-    function processOne(v: SelectValue | any): SelectOption {
-      if (optionsMap[String(v)]) {
-        return optionsMap[String(v)];
-      }
-      let item = _.find(options, (opt: SelectOption) => opt.value === v);
-      if (item) {
-        return item;
-      }
-      return { value: v, label: v };
-    }
-
-    if (this.props.multi) {
-      // @ts-ignore multi为true，一定为数组
-      if (!value || !value.length) {
-        return [];
-      }
-      // @ts-ignore multi为true，一定为数组
-      return _.map(value, processOne);
-    }
-    return processOne(value);
-  };
 
   handleChange = (vOpt: SelectOption | SelectOption[]) => {
     let { optionsMap } = this.state;
@@ -143,30 +132,6 @@ export default class Select extends React.Component<SelectProps, SelectState> {
     });
   };
 
-  handleSearchChange = (search: string) => {
-    const { value } = this.props;
-    let cacheKey: string = 'c_' + (search || JSON.stringify(value));
-    if (this._cache[cacheKey]) {
-      let data: SelectState = init(value, this._cache[cacheKey]);
-      this.setState({
-        options: data.options,
-        optionsMap: data.optionsMap
-      });
-      return;
-    }
-    this.props.loadOptions(search, (error, res) => {
-      if (!error && res.options) {
-        this._cache[cacheKey] = res.options;
-        let data: SelectState = init(value, this._cache[cacheKey]);
-        this.setState({
-          options: data.options,
-          optionsMap: data.optionsMap,
-          value: this.processValue(value, data)
-        });
-      }
-    });
-  };
-
   render() {
     let {
       onChange,
@@ -174,58 +139,44 @@ export default class Select extends React.Component<SelectProps, SelectState> {
       options,
       multi,
       allowCreate,
-      loadOptions,
       disabled,
       placeholder,
-      clearable,
-      searchable,
-      className,
       ...others
     } = this.props;
-    let isOptions = _.pick(this.props, ['clearable', 'searchable']);
-    isOptions = _.mapKeys(isOptions, (v, k) => {
-      if (k === 'clearable') return 'isClearable';
-      if (k === 'searchable') return 'isSearchable';
-      return k;
-    });
     if (allowCreate) {
       return (
         <CreatableSelect
-          className={className || ''}
           classNamePrefix="Select"
-          isMulti={!!multi}
+          isMulti={multi}
           isClearable
-          isDisabled={!!disabled}
+          isDisabled={disabled}
           onChange={this.handleChange}
+          // @ts-ignore
           value={this.state.value}
-          onInputChange={loadOptions ? this.handleSearchChange : null}
+          // @ts-ignore
           options={this.state.options}
           placeholder={placeholder ? placeholder : 'Select...'}
-          isValidNewOption={(inputValue, selectValue, selectOptions) => {
-            const isNotDuplicated = !selectOptions
+          isValidNewOption={(inputValue: string, selectValue: any, selectOptions: SelectOption[]) => {
+            return inputValue && !selectOptions
               .map(option => option.label)
               .includes(inputValue);
-            const isNotEmpty = inputValue !== '';
-            return isNotEmpty && isNotDuplicated;
           }}
           {...others}
-          {...isOptions}
         />
       );
     }
     return (
       <ReactSelect
-        isMulti={!!multi}
-        isDisabled={!!disabled}
-        className={className || ''}
+        isMulti={multi}
+        isDisabled={disabled}
         classNamePrefix="Select"
-        onChange={this.handleChange}
-        options={this.state.options}
         placeholder={placeholder ? placeholder : 'Select...'}
+        onChange={this.handleChange}
+        // @ts-ignore
+        options={this.state.options}
+        // @ts-ignore
         value={this.state.value}
-        onInputChange={loadOptions ? this.handleSearchChange : null}
         {...others}
-        {...isOptions}
       />
     );
   }

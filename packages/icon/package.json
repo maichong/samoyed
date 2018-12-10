@@ -21,6 +21,6 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/icon",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^3.1.6"
+    "typescript": "^3.2.2"
   }
 }

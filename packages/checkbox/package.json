@@ -23,6 +23,6 @@
     "@samoyed/icon": "^0.1.2"
   },
   "devDependencies": {
-    "typescript": "^3.1.6"
+    "typescript": "^3.2.2"
   }
 }

@@ -2,7 +2,11 @@ import * as React from 'react';
 import { SelectValue, SelectOption } from '@samoyed/types';
 import Checkbox from '@samoyed/checkbox';
 import { getOptionValue } from './utils';
-import { CheckboxGroupProps, CheckboxGroupState } from '..';
+import { CheckboxGroupProps } from '..';
+
+interface CheckboxGroupState {
+  options?: SelectOption[];
+}
 
 export default class CheckboxGroup extends React.Component<CheckboxGroupProps, CheckboxGroupState> {
   constructor(props: CheckboxGroupProps) {
@@ -12,16 +16,8 @@ export default class CheckboxGroup extends React.Component<CheckboxGroupProps, C
     };
   }
 
-  componentWillMount() {
-    this.init(this.props);
-  }
-
-  componentWillReceiveProps(props: CheckboxGroupProps) {
-    this.init(props);
-  }
-
-  init(props: CheckboxGroupProps) {
-    this.setState({ options: props.options });
+  static getDerivedStateFromProps(nextProps: CheckboxGroupProps) {
+    return { options: nextProps.options };
   }
 
   handleCheck(opt: string) {
