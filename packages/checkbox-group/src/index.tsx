@@ -92,24 +92,25 @@ export default class CheckboxGroup extends React.Component<CheckboxGroupProps, C
     }
 
     return (
-      <div>{
-        options.map((opt: SelectOption) => {
-          let vid: string = getOptionValue(opt);
-          let className = '';
-          if (opt.color) {
-            className = 'text-' + opt.color;
-          }
-          return (<Checkbox
-            key={vid}
-            className={className}
-            disabled={disabled}
-            radio={!multi}
-            label={opt.label}
-            value={valueMap[vid] === true}
-            onChange={() => this.handleCheck(vid)}
-          />);
-        })
-      }
+      <div className="checkbox-group">
+        {
+          options.map((opt: SelectOption) => {
+            let vid: string = getOptionValue(opt);
+            let className = '';
+            if (opt.color) {
+              className = 'text-' + opt.color;
+            }
+            return (<Checkbox
+              key={vid}
+              className={className}
+              disabled={disabled}
+              radio={!multi}
+              label={opt.label}
+              value={valueMap[vid] === true}
+              onChange={() => this.handleCheck(vid)}
+            />);
+          })
+        }
       </div>
     );
   }
