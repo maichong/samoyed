@@ -141,6 +141,7 @@ export default class Select extends React.Component<SelectProps, SelectState> {
       allowCreate,
       disabled,
       placeholder,
+      clearable,
       ...others
     } = this.props;
     if (allowCreate) {
@@ -148,7 +149,7 @@ export default class Select extends React.Component<SelectProps, SelectState> {
         <CreatableSelect
           classNamePrefix="Select"
           isMulti={multi}
-          isClearable
+          isClearable={clearable}
           isDisabled={disabled}
           onChange={this.handleChange}
           // @ts-ignore
@@ -168,6 +169,7 @@ export default class Select extends React.Component<SelectProps, SelectState> {
     return (
       <ReactSelect
         isMulti={multi}
+        isClearable={clearable}
         isDisabled={disabled}
         classNamePrefix="Select"
         placeholder={placeholder ? placeholder : 'Select...'}

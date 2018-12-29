@@ -15,6 +15,10 @@ export interface CheckboxGroupProps {
    */
   disabled?: boolean;
   /**
+   * 是否可清除
+   */
+  clearable?: boolean;
+  /**
    * 当前值，如果多选模式，则为数组
    */
   value: SelectValue | SelectValue[];
