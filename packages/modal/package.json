@@ -1,6 +1,6 @@
 {
   "name": "@samoyed/modal",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Modal dialogs for react & bootstrap",
   "keywords": [
     "samoyed",
