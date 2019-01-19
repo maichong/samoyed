@@ -21,9 +21,9 @@
   "license": "MIT",
   "dependencies": {
     "classnames": "^2.2.6",
-    "react-overlays": "^1.0.0"
+    "react-overlays": "^1.1.1"
   },
   "devDependencies": {
-    "@types/classnames": "^2.2.6"
+    "@types/classnames": "^2.2.7"
   }
 }

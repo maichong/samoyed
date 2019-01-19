@@ -15,10 +15,10 @@ export interface OverlayProps {
   placement?: 'top' | 'right' | 'bottom' | 'left';
   rootClose?: boolean;
   show?: boolean;
-  target?: Function | React.ReactInstance;
+  target?: React.ReactInstance | (() => React.ReactInstance);
   shouldUpdatePosition?: boolean;
-  arrowProps?: any; // TODO: 还没找到怎么定义
-  style?: any; // TODO: 还没找到怎么定义
+  arrowProps?: any;
+  style?: any;
 }
 
 export default class Overlay extends React.Component<OverlayProps> {

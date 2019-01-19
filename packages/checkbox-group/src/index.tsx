@@ -21,7 +21,7 @@ export default class CheckboxGroup extends React.Component<CheckboxGroupProps, C
   }
 
   handleCheck(opt: string) {
-    const { value, multi, onChange } = this.props;
+    const { value, multi, onChange, clearable } = this.props;
     const { options } = this.state;
 
     let optionsMap: { [path: string]: SelectOption } = {};
@@ -30,10 +30,11 @@ export default class CheckboxGroup extends React.Component<CheckboxGroupProps, C
     });
 
     if (!multi) {
-      if (optionsMap[opt]) {
-        onChange(optionsMap[opt].value);
+      let v = optionsMap[opt] ? optionsMap[opt].value : optionsMap[opt];
+      if (v === value && clearable) {
+        onChange(null);
       } else {
-        onChange(opt);
+        onChange(v);
       }
       return;
     }

@@ -20,7 +20,5 @@
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/icon",
   "license": "MIT",
-  "devDependencies": {
-    "typescript": "^3.2.2"
-  }
+  "devDependencies": {}
 }

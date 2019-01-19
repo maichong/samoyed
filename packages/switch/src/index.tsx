@@ -22,7 +22,7 @@ export default class Swtich extends React.Component<SwitchProps, SwatchState> {
   }
 
   handleClick(opt: string) {
-    const { value, multi, onChange } = this.props;
+    const { value, multi, onChange, clearable } = this.props;
     const { options } = this.state;
 
     let optionsMap: { [path: string]: SelectOption } = {};
@@ -31,10 +31,11 @@ export default class Swtich extends React.Component<SwitchProps, SwatchState> {
     });
 
     if (!multi) {
-      if (optionsMap[opt]) {
-        onChange(optionsMap[opt].value);
+      let v = optionsMap[opt] ? optionsMap[opt].value : optionsMap[opt];
+      if (v === value && clearable) {
+        onChange(null);
       } else {
-        onChange(opt);
+        onChange(v);
       }
       return;
     }

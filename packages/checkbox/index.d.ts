@@ -12,7 +12,7 @@ export interface CheckboxProps {
   /**
    * 当前值，true 为已选
    */
-  value: boolean;
+  value?: boolean;
   /**
    * 是否禁用
    */

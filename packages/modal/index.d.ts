@@ -1,10 +1,9 @@
 import * as React from 'react';
-
-export type Style = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark' | 'link' | string;
+import { Colors } from '@samoyed/types';
 
 export interface ButtonOptions {
   text: string;
-  style?: Style;
+  color?: Colors;
 }
 
 /**
@@ -55,5 +54,5 @@ export function confirm(title: React.ReactNode, body?: React.ReactNode | typeof 
  */
 export function prompt(title: React.ReactNode, body?: React.ReactNode, options?: PromptOptions): Promise<string>;
 
-export default class ModalBus extends React.Component<{}> {
+export default class ModalContainer extends React.Component<{}> {
 }

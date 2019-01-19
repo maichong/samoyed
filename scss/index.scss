@@ -1,0 +1,47 @@
+$fa-font-path: "//cdn.bootcss.com/font-awesome/4.7.0/fonts";
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~font-awesome/scss/font-awesome.scss";
+.list-group.menu {
+  padding-right: 0;
+  width: 200px;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.page-content {
+  padding: 1rem 1rem 10rem;
+  background: #f6f6f6;
+  margin-left: 200px;
+}
+
+.demo {
+  background: #fff;
+  margin: 1rem;
+  margin-left: 0;
+  .preview {
+    padding: 1rem;
+  }
+  pre {
+    margin-bottom: 0;
+  }
+}
+
+h1 {
+  border-bottom: solid #ccc 1px;
+  padding-bottom: 1rem;
+}
+
+h2 {
+  margin-top: 2rem;
+}
+
+.checkbox {
+  margin-right: 1rem;
+  .fa {
+    margin-right: 0.3rem;
+  }
+  &.disabled {
+    opacity: 0.5;
+  }
+}

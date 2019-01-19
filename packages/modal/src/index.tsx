@@ -36,7 +36,7 @@ function create(type: Type) {
     options = options || {};
     let btns: ButtonOptions[] = options.buttons;
     if (!btns) {
-      btns = [{ text: tr([type + '_button_OK', 'button_OK', 'OK']), style: 'primary' }];
+      btns = [{ text: tr([type + '_button_OK', 'button_OK', 'OK']), color: 'primary' }];
       if (type !== 'alert') {
         btns.unshift({ text: tr([type + '_button_cancel', 'button_cancel', 'Cancel']) });
       }
@@ -45,7 +45,7 @@ function create(type: Type) {
     return new Promise((resolve) => {
       let buttons: React.ReactNode[] = btns.map((btn, index) => (<button
         key={index}
-        className={'btn btn-' + (btn.style || 'light')}
+        className={'btn btn-' + (btn.color || 'light')}
         onClick={() => handle(index)}
       >{btn.text}</button>));
 
@@ -141,7 +141,7 @@ function renderItem(item: Item): React.ReactNode {
   );
 }
 
-export default class ModalBus extends React.Component<{}> {
+export default class ModalContainer extends React.Component<{}> {
   componentDidMount() {
     updaters.add(this.update);
   }

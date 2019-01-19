@@ -71,7 +71,7 @@ export default class OverlayTrigger extends React.Component<OverlayTriggerProps,
   }
 
   // eslint-disable-next-line react/no-find-dom-node
-  getTarget = () => ReactDOM.findDOMNode(this.trigger.current);
+  getTarget = () => ReactDOM.findDOMNode(this.trigger.current) as React.ReactInstance;
 
   handleShow = () => {
     clearTimeout(this._timeout);
