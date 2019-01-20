@@ -12,10 +12,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "scripts": {
-    "build": "tsc"
-  },
-  "main": "lib/index.js",
+  "main": "index.js",
   "types": "index.d.ts",
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/icon",

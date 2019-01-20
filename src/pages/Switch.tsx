@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import Switch from '../../packages/switch/src/index';
+import Switch from '@samoyed/switch';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 import options from './options';

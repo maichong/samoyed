@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import ReactSelect from 'react-select';
 import CreatableSelect from 'react-select/lib/Creatable';
 import { SelectValue, SelectOption } from '@samoyed/types';
-import { SelectProps } from '..';
+import { SelectProps } from '.';
 
 function init(
   value: SelectValue | SelectValue[],

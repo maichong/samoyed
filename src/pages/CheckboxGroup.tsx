@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import CheckboxGroup from '../../packages/checkbox-group/src/index';
+import CheckboxGroup from '@samoyed//checkbox-group';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 import options from './options';

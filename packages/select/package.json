@@ -11,19 +11,12 @@
   "publishConfig": {
     "access": "public"
   },
-  "scripts": {
-    "build": "tsc"
-  },
-  "main": "lib/index.js",
+  "main": "index.js",
   "types": "index.d.ts",
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/select",
   "license": "MIT",
   "dependencies": {
     "react-select": "^2.3.0"
-  },
-  "devDependencies": {
-    "@samoyed/types": "^0.3.0",
-    "@types/react-select": "^2.0.11"
   }
 }

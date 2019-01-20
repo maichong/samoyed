@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { ToastContainer as Container } from 'react-toastr';
-import { ToastContainerProps, ToastType, ToastOptions } from '..';
+import { ToastContainerProps, ToastType, ToastOptions } from '.';
 
 let container: any = null;
 
 export const defaultOptions: ToastOptions = {
-  type: 'success',
+  type: 'info',
   closeButton: true,
   showAnimation: 'animated fadeInRight',
   hideAnimation: 'animated fadeOutRight',
@@ -51,13 +51,13 @@ function create(type?: ToastType) {
       body = '';
     }
     options = options || {};
-    type = options.type || type || defaultOptions.type;
+    let t = options.type || type || defaultOptions.type;
     for (let key in defaultOptions) {
       if (!options.hasOwnProperty(key)) {
         options[key as keyof ToastOptions] = defaultOptions[key as keyof ToastOptions];
       }
     }
-    container[type](title, body, options);
+    container[t](body, title, options);
   };
 }
 

@@ -11,18 +11,12 @@
   "publishConfig": {
     "access": "public"
   },
-  "scripts": {
-    "build": "tsc"
-  },
-  "main": "lib/index.js",
+  "main": "index.js",
   "types": "index.d.ts",
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/checkbox",
   "license": "MIT",
   "dependencies": {
     "@samoyed/icon": "^0.3.0"
-  },
-  "devDependencies": {
-    "typescript": "^3.2.4"
   }
 }

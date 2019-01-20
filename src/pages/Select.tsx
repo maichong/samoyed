@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import Select from '../../packages/select/src/index';
+import Select from '@samoyed/select';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 import options from './options';

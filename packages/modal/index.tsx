@@ -1,10 +1,11 @@
 import * as React from 'react';
-import Modal from 'reactstrap/lib/Modal';
-import ModalHeader from 'reactstrap/lib/ModalHeader';
-import ModalBody from 'reactstrap/lib/ModalBody';
 import * as random from 'string-random';
-import { PromptOptions, ButtonOptions } from '..';
+import { PromptOptions, ButtonOptions } from '.';
 import * as tr from 'grackle';
+import ModalType from 'react-bootstrap/lib/Modal';
+
+// @ts-ignore react-bootstrap lib 目录下的导出与Types声明不符合
+const Modal: typeof ModalType = require('react-bootstrap/lib/Modal');
 
 type Type = 'alert' | 'confirm' | 'prompt';
 
@@ -125,14 +126,14 @@ function renderItem(item: Item): React.ReactNode {
     );
   }
   if (itemBody) {
-    body = <ModalBody>{itemBody}</ModalBody>;
+    body = <Modal.Body>{itemBody}</Modal.Body>;
   }
 
   return (
-    <Modal key={item.id} isOpen toggle={item.cancel}>
-      <ModalHeader toggle={options.closeButton === false ? null : item.cancel}>
+    <Modal key={item.id} show centered onHide={item.cancel}>
+      <Modal.Header closeButton>
         {title}
-      </ModalHeader>
+      </Modal.Header>
       {body}
       {item.buttons.length && <div className="modal-footer">
         {item.buttons}

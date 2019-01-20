@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Icon from '@samoyed/icon';
-import { CheckboxProps } from '..';
+import { CheckboxProps } from '.';
 
 export default class Checkbox extends React.Component<CheckboxProps> {
   handleChange = () => {

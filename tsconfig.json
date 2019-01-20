@@ -4,13 +4,13 @@
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "outDir": "dist",
+    "outDir": "packages",
     "sourceMap": false,
     "moduleResolution": "node",
     "typeRoots": [
       "node_modules/@types"
     ],
-    "baseUrl": "./src",
+    "baseUrl": "./packages",
     "paths": {
       "*": [
         "../typings/*"
@@ -24,7 +24,7 @@
     "jsx": "react"
   },
   "include": [
-    "src/**/*"
+    "packages/**/*"
   ],
   "exclude": [
     "node_modules"

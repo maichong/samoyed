@@ -1,27 +1,26 @@
 import * as React from 'react';
 import { SelectValue, SelectOption } from '@samoyed/types';
-import { SwitchProps } from '..';
+import Checkbox from '@samoyed/checkbox';
 import { getOptionValue } from './utils';
+import { CheckboxGroupProps } from '.';
 
-interface SwatchState {
+interface CheckboxGroupState {
   options?: SelectOption[];
 }
 
-export default class Swtich extends React.Component<SwitchProps, SwatchState> {
-  constructor(props: SwitchProps) {
+export default class CheckboxGroup extends React.Component<CheckboxGroupProps, CheckboxGroupState> {
+  constructor(props: CheckboxGroupProps) {
     super(props);
     this.state = {
       options: props.options
     };
   }
 
-  static getDerivedStateFromProps(nextProps: SwitchProps) {
-    return {
-      options: nextProps.options
-    };
+  static getDerivedStateFromProps(nextProps: CheckboxGroupProps) {
+    return { options: nextProps.options };
   }
 
-  handleClick(opt: string) {
+  handleCheck(opt: string) {
     const { value, multi, onChange, clearable } = this.props;
     const { options } = this.state;
 
@@ -60,7 +59,7 @@ export default class Swtich extends React.Component<SwitchProps, SwatchState> {
 
     let res: SelectValue[] = [];
     let found = false;
-    valueArray.forEach((v: string | number | boolean) => {
+    valueArray.forEach((v: SelectValue) => {
       let vid = String(v);
       if (vid === opt) {
         found = true;
@@ -79,33 +78,40 @@ export default class Swtich extends React.Component<SwitchProps, SwatchState> {
   }
 
   render() {
-    const { value, multi, disabled } = this.props;
+    const { multi, value, disabled } = this.props;
     const { options } = this.state;
     let valueMap: { [path: string]: boolean } = {};
     if (multi) {
       if (Array.isArray(value)) {
-        value.forEach((v) => {
-          valueMap[getOptionValue(v)] = true;
+        (value as SelectValue[]).forEach((v) => {
+          valueMap[String(v)] = true;
         });
       }
-    } else if (typeof value !== 'undefined') {
-      valueMap[getOptionValue(value as SelectValue)] = true;
+    } else {
+      let valueString = String(value);
+      valueMap[valueString] = true;
     }
+
     return (
-      <div className="btn-group">
-        {options.map((o) => {
-          let cls = 'btn';
-          let vid = getOptionValue(o);
-          if (valueMap[vid]) {
-            cls += (o.color ? ' active btn-' + o.color : ' active btn-success');
-          } else {
-            cls += ' btn-light';
-          }
-          if (disabled) {
-            cls += ' disabled';
-          }
-          return <div key={vid} className={cls} onClick={disabled ? null : () => this.handleClick(vid)}>{o.label}</div>;
-        })}
+      <div className="checkbox-group">
+        {
+          options.map((opt: SelectOption) => {
+            let vid: string = getOptionValue(opt);
+            let className = '';
+            if (opt.color) {
+              className = 'text-' + opt.color;
+            }
+            return (<Checkbox
+              key={vid}
+              className={className}
+              disabled={disabled}
+              radio={!multi}
+              label={opt.label}
+              value={valueMap[vid] === true}
+              onChange={() => this.handleCheck(vid)}
+            />);
+          })
+        }
       </div>
     );
   }

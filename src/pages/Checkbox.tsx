@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import Checkbox from '../../packages/checkbox/src/index';
+import Checkbox from '@samoyed/checkbox';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 
