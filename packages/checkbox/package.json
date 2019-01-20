@@ -1,6 +1,6 @@
 {
   "name": "@samoyed/checkbox",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "React checkbox",
   "keywords": [
     "samoyed",
@@ -17,6 +17,6 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/checkbox",
   "license": "MIT",
   "dependencies": {
-    "@samoyed/icon": "^0.3.0"
+    "@samoyed/icon": "^0.4.0"
   }
 }
