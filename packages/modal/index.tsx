@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as random from 'string-random';
 import { PromptOptions, ButtonOptions } from '.';
 import * as tr from 'grackle';
-import ModalType from 'react-bootstrap/lib/Modal';
+import ModalType from 'react-bootstrap/Modal';
 
 // @ts-ignore react-bootstrap lib 目录下的导出与Types声明不符合
-const Modal: typeof ModalType = require('react-bootstrap/lib/Modal');
+const Modal: typeof ModalType = require('react-bootstrap/Modal');
 
 type Type = 'alert' | 'confirm' | 'prompt';
 

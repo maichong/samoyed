@@ -1,6 +1,6 @@
 import * as React from 'react';
-import OverlayTriggerType from 'react-bootstrap/lib/OverlayTrigger';
-import { PropsOf } from 'react-bootstrap/lib/helpers';
+import OverlayTriggerType from 'react-bootstrap/OverlayTrigger';
+import { PropsOf } from 'react-bootstrap/helpers';
 
 type ComponentOrElement = React.ReactInstance | Node;
 export type Placement =
