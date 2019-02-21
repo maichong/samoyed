@@ -17,6 +17,6 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/select",
   "license": "MIT",
   "dependencies": {
-    "react-select": "^2.3.0"
+    "react-select": "^2.4.1"
   }
 }
