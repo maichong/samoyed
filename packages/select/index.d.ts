@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SelectValue, SelectOption } from '@samoyed/types';
-import { Props } from 'react-select/lib/Select';
+import { Props as CreatableProps } from 'react-select/lib/Creatable';
 
 export interface LoadOptionsResult {
   options: SelectOption[];
@@ -17,7 +17,7 @@ export interface LoadOptionsFunction {
 // eslint-disable-next-line space-infix-ops
 type Omit<T, U> = Pick<T, Exclude<keyof T, keyof U>>;
 
-export interface SelectProps extends Omit<Props, { options: any; value: any; isDisabled: any; isMulti: any }> {
+export interface SelectProps extends Omit<CreatableProps<SelectOption>, { options: any; value: any; isDisabled: any; isMulti: any }> {
   /**
    * 组件附加的样式类
    */

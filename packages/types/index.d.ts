@@ -65,3 +65,9 @@ export interface ReduxPaginateList<T> extends ReduxList<T> {
   previous: number;
   next: number;
 }
+
+export interface ErrorsMap {
+  [key: string]: null | string | string[] | ErrorsMap | ErrorsMap[];
+}
+
+export type Errors = null | string | string[] | ErrorsMap | ErrorsMap[];

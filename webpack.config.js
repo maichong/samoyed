@@ -19,7 +19,7 @@ module.exports = {
     mainFields: ['webpack', 'browser', 'main']
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: 'Hot Module Replacement',
       template: 'index.html'
