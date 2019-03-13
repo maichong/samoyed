@@ -1,6 +1,6 @@
 {
   "name": "@samoyed/select",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "React select",
   "keywords": [
     "samoyed",
@@ -17,7 +17,7 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/select",
   "license": "MIT",
   "dependencies": {
-    "react-select": "^2.4.2",
-    "grackle": "^0.2.0"
+    "grackle": "^0.2.0",
+    "react-select": "^2.4.2"
   }
 }
