@@ -17,6 +17,7 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/select",
   "license": "MIT",
   "dependencies": {
+    "classnames": "^2.2.6",
     "grackle": "^0.2.0",
     "react-select": "^2.4.2"
   }

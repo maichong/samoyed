@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as tr from 'grackle';
+import * as classnames from 'classnames';
 import ReactSelect from 'react-select';
 import CreatableSelect from 'react-select/lib/Creatable';
 import { SelectValue, SelectOption } from '@samoyed/types';
@@ -135,6 +136,7 @@ export default class Select extends React.Component<SelectProps, SelectState> {
 
   render() {
     let {
+      className,
       onChange,
       value,
       options,
@@ -148,6 +150,7 @@ export default class Select extends React.Component<SelectProps, SelectState> {
     if (allowCreate) {
       return (
         <CreatableSelect
+          className={classnames('select', className)}
           classNamePrefix="select"
           isMulti={multi}
           isClearable={clearable}
@@ -169,6 +172,7 @@ export default class Select extends React.Component<SelectProps, SelectState> {
     }
     return (
       <ReactSelect
+        className={classnames('select', className)}
         isMulti={multi}
         isClearable={clearable}
         isDisabled={disabled}

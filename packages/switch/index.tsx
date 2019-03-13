@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as classnames from 'classnames';
 import { SelectValue, SelectOption } from '@samoyed/types';
 import { SwitchProps } from '.';
 import { getOptionValue } from './utils';
@@ -79,7 +80,7 @@ export default class Swtich extends React.Component<SwitchProps, SwatchState> {
   }
 
   render() {
-    const { value, multi, disabled } = this.props;
+    const { className, value, multi, disabled } = this.props;
     const { options } = this.state;
     let valueMap: { [path: string]: boolean } = {};
     if (multi) {
@@ -92,7 +93,7 @@ export default class Swtich extends React.Component<SwitchProps, SwatchState> {
       valueMap[getOptionValue(value as SelectValue)] = true;
     }
     return (
-      <div className="btn-group">
+      <div className={classnames('btn-group', className)}>
         {options.map((o) => {
           let cls = 'btn';
           let vid = getOptionValue(o);

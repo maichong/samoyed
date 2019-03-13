@@ -19,6 +19,9 @@
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/switch",
   "license": "MIT",
+  "dependencies": {
+    "classnames": "^2.2.6"
+  },
   "devDependencies": {
     "@samoyed/types": "^0.4.3"
   }

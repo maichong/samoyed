@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as classnames from 'classnames';
 import { SelectValue, SelectOption } from '@samoyed/types';
 import Checkbox from '@samoyed/checkbox';
 import { getOptionValue } from './utils';
@@ -78,7 +79,7 @@ export default class CheckboxGroup extends React.Component<CheckboxGroupProps, C
   }
 
   render() {
-    const { multi, value, disabled } = this.props;
+    const { className, multi, value, disabled } = this.props;
     const { options } = this.state;
     let valueMap: { [path: string]: boolean } = {};
     if (multi) {
@@ -93,7 +94,7 @@ export default class CheckboxGroup extends React.Component<CheckboxGroupProps, C
     }
 
     return (
-      <div className="checkbox-group">
+      <div className={classnames('checkbox-group', className)}>
         {
           options.map((opt: SelectOption) => {
             let vid: string = getOptionValue(opt);
