@@ -3,22 +3,31 @@ import * as _ from 'lodash';
 import * as tr from 'grackle';
 import * as classnames from 'classnames';
 import ReactSelect from 'react-select';
+import AsyncSelect from 'react-select/lib/Async';
 import CreatableSelect from 'react-select/lib/Creatable';
-import { SelectValue, SelectOption } from '@samoyed/types';
+import AsyncCreatableSelect from 'react-select/lib/AsyncCreatable';
+import { SelectValue, SelectOption, ObjectMap } from '@samoyed/types';
 import { SelectProps } from '.';
 
 function init(
   value: SelectValue | SelectValue[],
-  options?: SelectOption[]
+  options: SelectOption[],
+  oldLabelMap: ObjectMap<string>
 ): SelectState {
   let optionsMap: { [value: string]: SelectOption } = {};
   let valueMap: { [key: string]: boolean } = {};
+  let labelMap: ObjectMap<string> = {};
+  let values: string[] = [];
   if (Array.isArray(value)) {
     _.forEach(value, (v) => {
       valueMap[String(v)] = true;
+      values.push(String(v));
+      labelMap[String(v)] = oldLabelMap[String(v)];
     });
   } else {
     valueMap[String(value)] = true;
+    values.push(String(value));
+    labelMap[String(value)] = oldLabelMap[String(value)];
   }
   let res = _.map(options || [], (opt: SelectOption) => {
     if (typeof opt.color === 'string') {
@@ -38,7 +47,12 @@ function init(
       }
     });
   }
-  return { _value: value, options: res, optionsMap };
+  values.forEach((v) => {
+    if (optionsMap[v]) {
+      labelMap[v] = optionsMap[v].label;
+    }
+  });
+  return { _value: value, options: res, optionsMap, labelMap };
 }
 
 function processValue(multi: boolean, value: SelectValue[] | SelectValue, selectState: SelectState): SelectOption | SelectOption[] {
@@ -53,7 +67,7 @@ function processValue(multi: boolean, value: SelectValue[] | SelectValue, select
     if (item) {
       return item;
     }
-    return { value: v, label: v };
+    return { value: v, label: selectState.labelMap[v] || v };
   }
 
   if (multi) {
@@ -74,16 +88,18 @@ interface SelectState {
   optionsMap: {
     [value: string]: SelectOption;
   };
+  labelMap: ObjectMap<string>;
 }
 
 export default class Select extends React.Component<SelectProps, SelectState> {
   constructor(props: SelectProps) {
     super(props);
-    let data: SelectState = init(props.value, props.options);
+    let data: SelectState = init(props.value, props.options || props.defaultOptions as any[], {});
     this.state = {
       _value: props.value,
       options: data.options,
       optionsMap: data.optionsMap,
+      labelMap: data.labelMap,
       value: processValue(props.multi, props.value, data)
     };
   }
@@ -93,12 +109,32 @@ export default class Select extends React.Component<SelectProps, SelectState> {
       _value: nextProps.value
     };
     if (nextProps.options !== prevState.options || nextProps.value !== prevState._value) {
-      let data = init(nextProps.value, nextProps.options);
+      let data = init(nextProps.value, nextProps.options || nextProps.defaultOptions as any[], prevState.labelMap);
       state.options = data.options;
       state.optionsMap = data.optionsMap;
+      state.labelMap = data.labelMap;
       state.value = processValue(nextProps.multi, nextProps.value, data);
     }
     return state;
+  }
+
+  handleSearch = (keyword: string, callback: Function) => {
+    this.props.loadOptions(keyword, (options: SelectOption[]) => {
+      if (_.size(this.state.labelMap)) {
+        let values: string[] = [];
+        options.forEach((opt) => values.push(String(opt.value)));
+        let others: SelectOption[] = [];
+        _.forEach(this.state.labelMap, (label: string, value: string) => {
+          if (values.indexOf(value) < 0) {
+            others.push({ label, value });
+          }
+        });
+        if (others.length) {
+          options = options.concat(others);
+        }
+      }
+      callback(options);
+    });
   }
 
   handleChange = (vOpt: SelectOption | SelectOption[]) => {
@@ -145,46 +181,41 @@ export default class Select extends React.Component<SelectProps, SelectState> {
       disabled,
       placeholder,
       clearable,
+      loadOptions,
       ...others
     } = this.props;
+
+    let View;
+
+    let props = {
+      className: classnames('select', className),
+      classNamePrefix: 'select',
+      isMulti: multi,
+      isClearable: clearable,
+      isDisabled: disabled,
+      placeholder: placeholder || tr('Select...'),
+      onChange: this.handleChange,
+      value: this.state.value,
+      options: this.state.options,
+      loadOptions: this.handleSearch
+    };
+
     if (allowCreate) {
-      return (
-        <CreatableSelect
-          className={classnames('select', className)}
-          classNamePrefix="select"
-          isMulti={multi}
-          isClearable={clearable}
-          isDisabled={disabled}
-          onChange={this.handleChange}
-          // @ts-ignore
-          value={this.state.value}
-          // @ts-ignore
-          options={this.state.options}
-          placeholder={placeholder ? placeholder : tr('Select...')}
-          isValidNewOption={(inputValue: string, selectValue: any, selectOptions: SelectOption[]) => {
-            return inputValue && !selectOptions
-              .map(option => option.label)
-              .includes(inputValue);
-          }}
-          {...others}
-        />
-      );
+      View = CreatableSelect;
+      if (loadOptions) {
+        View = AsyncCreatableSelect;
+      }
+      // @ts-ignore
+      props.isValidNewOption = (inputValue: string, selectValue: any, selectOptions: SelectOption[]) => {
+        return inputValue && !selectOptions
+          .map(option => option.label)
+          .includes(inputValue);
+      };
+    } else if (loadOptions) {
+      View = AsyncSelect;
+    } else {
+      View = ReactSelect;
     }
-    return (
-      <ReactSelect
-        className={classnames('select', className)}
-        isMulti={multi}
-        isClearable={clearable}
-        isDisabled={disabled}
-        classNamePrefix="select"
-        placeholder={placeholder ? placeholder : tr('Select...')}
-        onChange={this.handleChange}
-        // @ts-ignore
-        options={this.state.options}
-        // @ts-ignore
-        value={this.state.value}
-        {...others}
-      />
-    );
+    return React.createElement(View, _.assign(others, props));
   }
 }

@@ -54,6 +54,19 @@ export interface SelectProps extends Omit<CreatableProps<SelectOption>, { option
    * 是否可动态创建
    */
   allowCreate?: boolean;
+
+
+  /* The default set of options to show before the user starts searching. When
+     set to `true`, the results for loadOptions('') will be autoloaded.
+     Default: false. */
+  defaultOptions?: SelectOption[] | boolean;
+  /* Function that returns a promise, which is the set of options to be used
+     once the promise resolves. */
+  loadOptions?: (inputValue: string, callback: ((options: SelectOption[]) => void)) => Promise<any> | void;
+  /* If cacheOptions is truthy, then the loaded data will be cached. The cache
+     will remain until `cacheOptions` changes value.
+     Default: false. */
+  cacheOptions?: any;
 }
 
 export default class Select extends React.Component<SelectProps> {
