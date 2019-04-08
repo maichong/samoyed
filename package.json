@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/maichong/samoyed#readme",
   "resolutions": {
+    "@samoyed/box": "file:packages/box",
     "@samoyed/checkbox": "file:packages/checkbox",
     "@samoyed/checkbox-group": "file:packages/checkbox-group",
     "@samoyed/icon": "file:packages/icon",
@@ -35,15 +36,21 @@
     "@samoyed/switch": "file:packages/switch",
     "@samoyed/toast": "file:packages/toast",
     "@samoyed/types": "file:packages/types",
-    "@samoyed/tooltip-wrapper": "file:packages/tooltip-wrapper"
+    "@samoyed/tooltip-wrapper": "file:packages/tooltip-wrapper",
+    "@samoyed/viewport": "file:packages/viewport"
   },
   "dependencies": {
+    "grackle": "^0.2.0",
+    "string-random": "^0.1.3"
+  },
+  "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/plugin-proposal-class-properties": "^7.4.0",
     "@babel/polyfill": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
+    "@samoyed/box": "file:packages/box",
     "@samoyed/checkbox": "file:packages/checkbox",
     "@samoyed/checkbox-group": "file:packages/checkbox-group",
     "@samoyed/icon": "file:packages/icon",
@@ -53,6 +60,7 @@
     "@samoyed/toast": "file:packages/toast",
     "@samoyed/tooltip-wrapper": "file:packages/tooltip-wrapper",
     "@samoyed/types": "file:packages/types",
+    "@samoyed/viewport": "file:packages/viewport",
     "@types/classnames": "^2.2.7",
     "@types/lodash": "^4.14.123",
     "@types/prop-types": "^15.7.0",

@@ -1481,6 +1481,9 @@
   resolved "https://registry.yarnpkg.com/@restart/hooks/-/hooks-0.1.6.tgz#5417f9f239b19c8427ee6f034940984bd6b4084e"
   integrity sha512-eP1NykkdPlagH60YV+k2qGDCq3rkNtY6Sz0T2DVU1MQPa4pVRofIj+leFM2SLZLzy5nQFga4YnX7oM2d2LJRpA==
 
+"@samoyed/box@file:packages/box", "@samoyed/box@file:packages/viewport/packages/box":
+  version "0.4.0"
+
 "@samoyed/checkbox-group@file:packages/checkbox-group":
   version "0.4.4"
   dependencies:
@@ -1525,6 +1528,11 @@
 
 "@samoyed/types@file:packages/types":
   version "0.4.3"
+
+"@samoyed/viewport@file:packages/viewport":
+  version "0.4.0"
+  dependencies:
+    "@samoyed/box" "file:../../Library/Caches/Yarn/v4/npm-@samoyed-viewport-0.4.0-8e5e71d4-6b64-4fcd-882a-8b5163f006f1-1554722300622/node_modules/@samoyed/viewport/packages/box"
 
 "@types/classnames@^2.2.7":
   version "2.2.7"

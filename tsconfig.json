@@ -12,6 +12,9 @@
     ],
     "baseUrl": "./packages",
     "paths": {
+      "@samoyed/*": [
+        "../packages/*"
+      ],
       "*": [
         "../typings/*"
       ]

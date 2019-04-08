@@ -6,6 +6,11 @@ export interface ObjectMap<T> {
 }
 
 /**
+ * Box布局方式
+ */
+export type Layout = 'fit' | 'card' | 'hbox' | 'vbox';
+
+/**
  * Sizes
  */
 export type Sizes = 'xs' | 'xsmall' | 'sm' | 'small' | 'medium' | 'lg' | 'large';

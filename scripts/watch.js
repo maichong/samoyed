@@ -2,6 +2,7 @@ const fs = require('fs');
 const Path = require('path');
 const childProcess = require('child_process');
 const chokidar = require('chokidar');
+const del = require('del');
 
 const srcPath = 'packages/';
 console.log('watch', srcPath);

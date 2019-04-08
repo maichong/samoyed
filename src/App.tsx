@@ -2,6 +2,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
+import Viewport from '@samoyed/viewport';
 import pages from './pages';
 
 type Props = {
@@ -13,7 +14,7 @@ type State = {
 export default class App extends React.Component<Props, State> {
   render() {
     return (
-      <div className="">
+      <Viewport className="">
         <div className="list-group menu">
           {
             _.map(pages, (C, key) => (<a
@@ -37,7 +38,7 @@ export default class App extends React.Component<Props, State> {
             </Switch>
           </Router>
         </div>
-      </div>
+      </Viewport>
     );
   }
 }
