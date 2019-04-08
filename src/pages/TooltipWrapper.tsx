@@ -1,13 +1,14 @@
 
 import * as React from 'react';
 import TooltipWrapper from '@samoyed/tooltip-wrapper';
+import Page from '@samoyed/page';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 
 export default class TooltipWrapperPage extends React.Component<{}> {
   render() {
     return (
-      <div>
+      <Page scrollable="y">
         <h1>Tooltip Wrapper</h1>
 
         <h2>Tooltip</h2>
@@ -44,7 +45,7 @@ export default class TooltipWrapperPage extends React.Component<{}> {
           `}</SyntaxHighlighter>
         </div>
 
-      </div>
+      </Page>
     );
   }
 }

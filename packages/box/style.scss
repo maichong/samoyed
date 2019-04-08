@@ -1,0 +1,33 @@
+.s-box {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.s-box-inner {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+}
+
+.s-layout-vbox {
+  flex-direction: column;
+}
+
+.s-layout-hbox {
+  flex-direction: row;
+}
+
+.s-flex {
+  flex: 1;
+}
+
+.s-scrollable-x {
+  overflow-x: auto;
+}
+
+.s-scrollable-y {
+  overflow-y: auto;
+}

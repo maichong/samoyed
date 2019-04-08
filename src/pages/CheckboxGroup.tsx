@@ -1,6 +1,7 @@
 
 import * as React from 'react';
 import CheckboxGroup from '@samoyed//checkbox-group';
+import Page from '@samoyed/page';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 import options from './options';
@@ -20,7 +21,7 @@ export default class CheckboxGroupPage extends React.Component<{}, State> {
 
   render() {
     return (
-      <div>
+      <Page scrollable="y">
         <h1>Checkbox Group</h1>
 
         <h2>radio group</h2>
@@ -54,7 +55,7 @@ export default class CheckboxGroupPage extends React.Component<{}, State> {
           </div>
           <SyntaxHighlighter style={docco}>{'<CheckboxGroup disabled multi value={value} options={options} />'}</SyntaxHighlighter>
         </div>
-      </div>
+      </Page>
     );
   }
 }

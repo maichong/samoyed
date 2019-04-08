@@ -3,25 +3,25 @@ $fa-font-path: "//cdn.bootcss.com/font-awesome/4.7.0/fonts";
 @import "~font-awesome/scss/font-awesome.scss";
 @import "~animate.css/animate.css";
 @import "~@samoyed/toast/style.scss";
+@import "~@samoyed/box/style.scss";
+@import "~@samoyed/viewport/style.scss";
+#app {
+  background: #f6f6f6;
+}
+
+.s-page-inner {
+  padding: 1rem;
+}
 
 .list-group.menu {
   padding-right: 0;
   width: 200px;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
-.page-content {
-  padding: 1rem 1rem 10rem;
-  background: #f6f6f6;
-  margin-left: 200px;
+  background: #fff;
 }
 
 .demo {
   background: #fff;
-  margin: 1rem;
-  margin-left: 0;
+  margin: 1rem 0;
   .preview {
     padding: 1rem;
   }

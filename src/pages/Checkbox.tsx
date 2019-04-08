@@ -1,13 +1,14 @@
 
 import * as React from 'react';
 import Checkbox from '@samoyed/checkbox';
+import Page from '@samoyed/page';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 
 export default class CheckboxPage extends React.Component<{}> {
   render() {
     return (
-      <div>
+      <Page scrollable="y">
         <h1>Checkbox</h1>
 
         <h2>checkbox</h2>
@@ -45,7 +46,7 @@ export default class CheckboxPage extends React.Component<{}> {
           </div>
           <SyntaxHighlighter style={docco}>{'<Checkbox value={true} label="Checkbox label"/>'}</SyntaxHighlighter>
         </div>
-      </div>
+      </Page>
     );
   }
 }

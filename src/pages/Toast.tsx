@@ -1,13 +1,14 @@
 
 import * as React from 'react';
 import toast, { ToastContainer, success, error, warning, info, clear } from '@samoyed/toast';
+import Page from '@samoyed/page';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 
 export default class ToastPage extends React.Component<{}> {
   render() {
     return (
-      <div>
+      <Page scrollable="y">
         <h1>Tooltip Wrapper</h1>
         <ToastContainer />
 
@@ -70,7 +71,7 @@ info('title', 'message body')
 clear()
           `}</SyntaxHighlighter>
         </div>
-      </div>
+      </Page>
     );
   }
 }

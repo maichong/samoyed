@@ -2,6 +2,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
+import Box from '@samoyed/box';
 import Viewport from '@samoyed/viewport';
 import pages from './pages';
 
@@ -14,8 +15,8 @@ type State = {
 export default class App extends React.Component<Props, State> {
   render() {
     return (
-      <Viewport className="">
-        <div className="list-group menu">
+      <Viewport className="" layout="hbox">
+        <Box className="list-group menu">
           {
             _.map(pages, (C, key) => (<a
               key={key}
@@ -23,8 +24,8 @@ export default class App extends React.Component<Props, State> {
               className="list-group-item list-group-item-action"
             >{key}</a>))
           }
-        </div>
-        <div className="page-content">
+        </Box>
+        <Box flex>
           <Router>
             <Switch>
               {
@@ -37,7 +38,7 @@ export default class App extends React.Component<Props, State> {
               }
             </Switch>
           </Router>
-        </div>
+        </Box>
       </Viewport>
     );
   }

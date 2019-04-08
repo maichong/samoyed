@@ -23,6 +23,8 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
    */
   layout?: Layout;
   childen?: React.ReactNode | React.ReactNode[];
+  scrollable?: 'both' | 'x' | 'y' | false;
+  flex?: boolean;
 }
 
 export default class Box extends React.Component<BoxProps> {

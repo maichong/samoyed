@@ -1,6 +1,7 @@
 
 import * as React from 'react';
 import Select from '@samoyed/select';
+import Page from '@samoyed/page';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 import options from './options';
@@ -20,7 +21,7 @@ export default class SelectPage extends React.Component<{}, State> {
 
   render() {
     return (
-      <div>
+      <Page scrollable="y">
         <h1>Select</h1>
 
         <h2>select</h2>
@@ -55,7 +56,7 @@ export default class SelectPage extends React.Component<{}, State> {
           <SyntaxHighlighter style={docco}>{'<Select disabled multi value={value} options={options} />'}</SyntaxHighlighter>
         </div>
 
-      </div>
+      </Page>
     );
   }
 }
