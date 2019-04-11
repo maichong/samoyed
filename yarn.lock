@@ -1495,6 +1495,11 @@
   dependencies:
     "@samoyed/icon" "^0.4.0"
 
+"@samoyed/history@file:packages/history":
+  version "0.4.0"
+  dependencies:
+    history "^4.9.0"
+
 "@samoyed/icon@^0.4.0", "@samoyed/icon@file:packages/icon":
   version "0.4.0"
 
@@ -1507,7 +1512,13 @@
 "@samoyed/page@file:packages/page":
   version "0.4.0"
   dependencies:
-    "@samoyed/box" "file:../../Library/Caches/Yarn/v4/npm-@samoyed-page-0.4.0-b71ffe1f-57bd-4659-8b73-ff930c577cc3-1554731510037/node_modules/@samoyed/page/packages/box"
+    "@samoyed/box" "file:../../Library/Caches/Yarn/v4/npm-@samoyed-page-0.4.0-52de6dd8-0c1f-4944-9282-66243223b91b-1554958254092/node_modules/@samoyed/page/packages/box"
+
+"@samoyed/router@file:packages/router":
+  version "0.4.0"
+  dependencies:
+    hoist-non-react-statics "^3.3.0"
+    path-to-regexp "^3.0.0"
 
 "@samoyed/select@file:packages/select":
   version "0.4.5"
@@ -1537,7 +1548,7 @@
 "@samoyed/viewport@file:packages/viewport":
   version "0.4.0"
   dependencies:
-    "@samoyed/box" "file:../../Library/Caches/Yarn/v4/npm-@samoyed-viewport-0.4.0-6bcc883d-82a0-4bbb-bc4a-098615ae2257-1554731510089/node_modules/@samoyed/viewport/packages/box"
+    "@samoyed/box" "file:../../Library/Caches/Yarn/v4/npm-@samoyed-viewport-0.4.0-ccafb0d5-79a1-4615-9f89-e0b0d168b16e-1554958254165/node_modules/@samoyed/viewport/packages/box"
 
 "@types/classnames@^2.2.7":
   version "2.2.7"
@@ -1549,10 +1560,25 @@
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.2.tgz#0e670ea254d559241b6eeb3894f8754991e73220"
   integrity sha512-ui3WwXmjTaY73fOQ3/m3nnajU/Orhi6cEu5rzX+BrAAJxa3eITXZ5ch9suPqtM03OWhAHhPSyBGCN4UKoxO20Q==
 
+"@types/hoist-non-react-statics@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
+  integrity sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
+  dependencies:
+    "@types/react" "*"
+    hoist-non-react-statics "^3.3.0"
+
 "@types/lodash@^4.14.123":
   version "4.14.123"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.123.tgz#39be5d211478c8dd3bdae98ee75bb7efe4abfe4d"
   integrity sha512-pQvPkc4Nltyx7G1Ww45OjVqUsJP4UsZm+GWJpigXgkikZqJgRm4c48g027o6tdgubWHwFRF15iFd+Y4Pmqv6+Q==
+
+"@types/path-to-regexp@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@types/path-to-regexp/-/path-to-regexp-1.7.0.tgz#f1af9d9c9db5f8ad80aa75ed424db665c48d6cd4"
+  integrity sha1-8a+dnJ21+K2AqnXtQk22ZcSNbNQ=
+  dependencies:
+    path-to-regexp "*"
 
 "@types/prop-types@*", "@types/prop-types@^15.7.0":
   version "15.7.0"
@@ -4747,7 +4773,7 @@ hmac-drbg@^1.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hoist-non-react-statics@^3.1.0:
+hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.0.tgz#b09178f0122184fb95acf525daaecb4d8f45958b"
   integrity sha512-0XsbTXxgiaCDYDIWFcwkmerZPSwywfUqYmwT4jzewKTQSWoE6FCMoUVOeBJWK3E/CrWbxRG3m5GzY4lnIwGRBA==
@@ -7024,6 +7050,11 @@ path-parse@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
   integrity sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
+
+path-to-regexp@*, path-to-regexp@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-3.0.0.tgz#c981a218f3df543fa28696be2f88e0c58d2e012a"
+  integrity sha512-ZOtfhPttCrqp2M1PBBH4X13XlvnfhIwD7yCLx+GoGoXRPQyxGOTdQMpIzPSPKXAJT/JQrdfFrgdJOyAzvgpQ9A==
 
 path-to-regexp@0.1.7:
   version "0.1.7"

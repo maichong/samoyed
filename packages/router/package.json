@@ -1,0 +1,23 @@
+{
+  "name": "@samoyed/router",
+  "version": "0.4.0",
+  "description": "Samoyed router",
+  "keywords": [
+    "samoyed",
+    "react",
+    "bootstrap",
+    "router"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "index.js",
+  "types": "index.d.ts",
+  "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/router",
+  "license": "MIT",
+  "dependencies": {
+    "hoist-non-react-statics": "^3.3.0",
+    "path-to-regexp": "^3.0.0"
+  }
+}
