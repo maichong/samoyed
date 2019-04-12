@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as H from 'history';
-import { History, Location } from '@samoyed/history';
 import { StaticRouterProps } from '.';
 import Router from './Router';
 
@@ -8,7 +7,7 @@ function addLeadingSlash(path: string): string {
   return path.charAt(0) === '/' ? path : '/' + path;
 }
 
-function addBasename(basename: string, location: Location): Location {
+function addBasename(basename: string, location: H.Location): H.Location {
   if (!basename) return location;
 
   return {
@@ -17,7 +16,7 @@ function addBasename(basename: string, location: Location): Location {
   };
 }
 
-function stripBasename(basename: string, location: Location): Location {
+function stripBasename(basename: string, location: H.Location): H.Location {
   if (!basename) return location;
 
   const base = addLeadingSlash(basename);
@@ -30,7 +29,7 @@ function stripBasename(basename: string, location: Location): Location {
   };
 }
 
-function createURL(location: H.LocationDescriptorObject | string) {
+function createURL(location: H.LocationDescriptorObject | string): H.Path {
   return typeof location === 'string' ? location : H.createPath(location);
 }
 
@@ -67,8 +66,8 @@ export default class StaticRouter extends React.Component<StaticRouterProps> {
   render() {
     const { basename = '', context = {}, location = '/', ...rest } = this.props;
 
-    // @ts-ignore TODO:
-    const history: History = {
+    const history: H.History = {
+      length: 1,
       createHref: (path: H.LocationDescriptorObject) => addLeadingSlash(basename + createURL(path)),
       action: 'POP',
       location: stripBasename(basename, H.createLocation(location)),

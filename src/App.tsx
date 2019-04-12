@@ -29,12 +29,8 @@ export default class App extends React.Component<Props, State> {
           }
         </Box>
         <Box flex>
-          <Router history={history}>
+          <Router history={history} freeComponent="keepalive" freeEntries="tree">
             <Switch>
-              <Route
-                path={'/'}
-                component={Box}
-              />
               {
                 _.map(pages, (C, key) => (<Route
                   key={key}

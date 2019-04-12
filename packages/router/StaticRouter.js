@@ -54,6 +54,7 @@ class StaticRouter extends React.Component {
     render() {
         const _a = this.props, { basename = '', context = {}, location = '/' } = _a, rest = __rest(_a, ["basename", "context", "location"]);
         const history = {
+            length: 1,
             createHref: (path) => addLeadingSlash(basename + createURL(path)),
             action: 'POP',
             location: stripBasename(basename, H.createLocation(location)),

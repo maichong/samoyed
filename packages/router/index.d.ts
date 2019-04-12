@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as H from 'history';
-import { History, Location } from '@samoyed/history';
+import { Animation, AnimationType } from '@samoyed/types';
 
 export type Omit<T, K extends keyof T> = T extends any ? Pick<T, Exclude<keyof T, K>> : never;
 
@@ -12,14 +12,19 @@ export interface Match<Params extends { [K in keyof Params]?: string } = {}> {
 }
 
 export interface RouterChildContext<Params extends { [K in keyof Params]?: string } = {}> {
-  history: History;
-  location: Location;
+  history: H.History;
+  globalLocation: H.Location;
+  allEntries: H.Location[];
+  entries: H.Location[];
+  last?: H.Location;
+  current?: H.Location;
+  location: H.Location;
   match: Match<Params>;
 }
 
 export interface RouteChildrenProps<Params extends { [K in keyof Params]?: string } = {}, S = H.LocationState> {
-  history: History;
-  location: Location<S>;
+  history: H.History;
+  location: H.Location<S>;
   match: Match<Params>;
 }
 
@@ -37,12 +42,25 @@ export interface StaticContext {
 export interface StaticRouterContext extends StaticContext {
   url?: string;
   action?: 'PUSH' | 'REPLACE';
-  location?: Location;
+  location?: H.Location;
 }
 
 export interface RouterProps {
-  history: History;
+  history: H.History;
   staticContext?: StaticContext;
+  /**
+   * history 中的 entry 记录回收策略
+   * keep 不回收，适用于Web环境，无论怎样跳转，可依次退回
+   * tree 根据树状路由自动回收，适用于App环境，eg. 首页->商品详情->购车，会回收商品详情页，即在购物车中点击返回，会直接返回到首页
+   */
+  freeEntries?: 'keep' | 'tree';
+  /**
+   * 默认的组件回收策略
+   * immediate 当Route切换后，立即回收组件
+   * animation 当Route切换后，并且过度动画执行结束后，销毁组件
+   * keepalive 不自动回收组件，除非 history entry 被回收，或Route组件Props中单独设置其他回收策略
+   */
+  freeComponent?: 'immediate' | 'animation' | 'keepalive';
 }
 
 export class Router extends React.Component<RouterProps> {
@@ -58,7 +76,7 @@ export class StaticRouter extends React.Component<StaticRouterProps> {
 }
 
 export interface RouteProps {
-  location?: Location;
+  location?: H.Location;
   component?: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
   render?: ((props: RouteComponentProps<any>) => React.ReactNode);
   children?: ((props: RouteChildrenProps<any>) => React.ReactNode) | React.ReactNode;
@@ -68,6 +86,13 @@ export interface RouteProps {
   sensitive?: boolean;
   strict?: boolean;
   computedMatch?: Match<any>;
+  /**
+   * 默认的组件回收策略
+   * immediate 当Route切换后，立即回收组件
+   * animation 当Route切换后，并且过度动画执行结束后，销毁组件
+   * keepalive 不自动回收组件，除非 history entry 被回收，或Route组件Props中单独设置其他回收策略
+   */
+  freeComponent?: 'immediate' | 'animation' | 'keepalive';
 }
 
 export class Route extends React.Component<RouteProps> {
@@ -98,7 +123,7 @@ export class Redirect extends React.Component<RedirectProps> {
 }
 
 export interface SwitchProps {
-  location?: Location;
+  animation?: AnimationType | Animation;
 }
 
 export class Switch extends React.Component<SwitchProps> {

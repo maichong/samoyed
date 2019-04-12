@@ -2,16 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const RouterContext_1 = require("./RouterContext");
-const history_1 = require("@samoyed/history");
 function computeRootMatch(pathname) {
     return { path: '/', url: '/', params: {}, isExact: pathname === '/' };
 }
 class Router extends React.Component {
     constructor(props) {
         super(props);
-        let history = props.history || history_1.default;
+        let history = props.history;
         this.state = {
-            location: history.location
+            location: history.location,
+            entries: [history.location]
         };
         this._isMounted = false;
         this._pendingLocation = null;
@@ -38,7 +38,10 @@ class Router extends React.Component {
     }
     render() {
         return (React.createElement(RouterContext_1.default.Provider, { value: {
-                history: this.props.history || history_1.default,
+                globalLocation: this.state.location,
+                allEntries: this.state.entries,
+                entries: this.state.entries,
+                history: this.props.history,
                 location: this.state.location,
                 match: computeRootMatch(this.state.location.pathname)
             } }, this.props.children || null));

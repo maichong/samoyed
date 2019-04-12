@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as H from 'history';
 import RouterContext from './RouterContext';
-import samoyedHistory, { Location } from '@samoyed/history';
 import { RouterProps } from '.';
 
 
@@ -9,21 +9,23 @@ function computeRootMatch(pathname: string) {
 }
 
 interface State {
-  location: Location;
+  location: H.Location;
+  entries: H.Location[];
 }
 
 export default class Router extends React.Component<RouterProps, State> {
   _isMounted: boolean;
-  _pendingLocation: Location;
+  _pendingLocation: H.Location;
   unlisten: () => void;
 
   constructor(props: RouterProps) {
     super(props);
 
-    let history = props.history || samoyedHistory;
+    let history = props.history;
 
     this.state = {
-      location: history.location
+      location: history.location,
+      entries: [history.location]
     };
 
     // This is a bit of a hack. We have to start listening for location
@@ -61,7 +63,10 @@ export default class Router extends React.Component<RouterProps, State> {
     return (
       <RouterContext.Provider
         value={{
-          history: this.props.history || samoyedHistory,
+          globalLocation: this.state.location,
+          allEntries: this.state.entries,
+          entries: this.state.entries,
+          history: this.props.history,
           location: this.state.location,
           match: computeRootMatch(this.state.location.pathname)
         }}
