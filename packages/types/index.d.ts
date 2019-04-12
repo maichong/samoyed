@@ -76,3 +76,28 @@ export interface ErrorsMap {
 }
 
 export type Errors = null | string | string[] | ErrorsMap | ErrorsMap[];
+
+export type AnimationType = 'fade' | 'slide' | 'cover' | 'pop' | 'cover-fade' | string;
+
+export interface Animation {
+  /**
+   * 动画效果
+   */
+  type: AnimationType;
+  /**
+   * 动画持续时间
+   */
+  duration?: number;
+  /**
+   * 效果曲线
+   */
+  easing?: 'linear' | 'easeInQuad' | 'easeOutQuad' | 'easeInOutQuad' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' |
+  'easeInQuart' | 'easeOutQuart' | 'easeInOutQuart' | 'easeInQuint' | 'easeOutQuint' | 'easeInOutQuint' |
+  'easeInSine' | 'easeOutSine' | 'easeInOutSine' | 'easeInExpo' | 'easeOutExpo' | 'easeInOutExpo' |
+  'easeInCirc' | 'easeOutCirc' | 'easeInOutCirc' | 'easeInElastic' | 'easeOutElastic' | 'easeInOutElastic' |
+  'easeInBack' | 'easeOutBack' | 'easeInOutBack' | 'easeInBounce' | 'easeOutBounce' | 'easeInOutBounce';
+  /**
+   * 动画方向
+   */
+  direction?: 'horizontal' | 'vertical';
+}

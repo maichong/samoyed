@@ -16,6 +16,6 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/page",
   "license": "MIT",
   "dependencies": {
-    "@samoyed/box": "file:packages/box"
+    "@samoyed/box": "^0.4.0"
   }
 }

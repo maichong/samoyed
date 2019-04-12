@@ -23,8 +23,8 @@ export default class Box extends React.Component<BoxProps> {
             's-box-inner',
             innerClassName,
             `s-layout-${layout || 'vbox'}`,
-            { 's-scrollable-x': scrollable === 'both' || scrollable === 'x' },
-            { 's-scrollable-y': scrollable === 'both' || scrollable === 'y' },
+            { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' },
+            { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' },
           )}
         >
           {children}

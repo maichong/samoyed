@@ -12,22 +12,14 @@
   display: flex;
 }
 
-.s-layout-vbox {
-  flex-direction: column;
-}
-
-.s-layout-hbox {
-  flex-direction: row;
-}
-
 .s-flex {
   flex: 1;
 }
 
-.s-scrollable-x {
+.s-scrollable-horizontal {
   overflow-x: auto;
 }
 
-.s-scrollable-y {
+.s-scrollable-vertical {
   overflow-y: auto;
 }

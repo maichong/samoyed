@@ -1,0 +1,20 @@
+{
+  "name": "@samoyed/style",
+  "version": "0.4.0",
+  "description": "Samoyed style",
+  "keywords": [
+    "samoyed",
+    "react",
+    "bootstrap",
+    "css",
+    "style"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "sass": "scss/samoyed.scss",
+  "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/style",
+  "license": "MIT",
+  "dependencies": {}
+}

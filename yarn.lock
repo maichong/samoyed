@@ -1481,7 +1481,7 @@
   resolved "https://registry.yarnpkg.com/@restart/hooks/-/hooks-0.1.6.tgz#5417f9f239b19c8427ee6f034940984bd6b4084e"
   integrity sha512-eP1NykkdPlagH60YV+k2qGDCq3rkNtY6Sz0T2DVU1MQPa4pVRofIj+leFM2SLZLzy5nQFga4YnX7oM2d2LJRpA==
 
-"@samoyed/box@file:packages/box", "@samoyed/box@file:packages/page/packages/box", "@samoyed/box@file:packages/viewport/packages/box":
+"@samoyed/box@^0.4.0", "@samoyed/box@file:packages/box":
   version "0.4.0"
 
 "@samoyed/checkbox-group@file:packages/checkbox-group":
@@ -1512,7 +1512,7 @@
 "@samoyed/page@file:packages/page":
   version "0.4.0"
   dependencies:
-    "@samoyed/box" "file:../../Library/Caches/Yarn/v4/npm-@samoyed-page-0.4.0-52de6dd8-0c1f-4944-9282-66243223b91b-1554958254092/node_modules/@samoyed/page/packages/box"
+    "@samoyed/box" "^0.4.0"
 
 "@samoyed/router@file:packages/router":
   version "0.4.0"
@@ -1526,6 +1526,9 @@
     classnames "^2.2.6"
     grackle "^0.2.0"
     react-select "^2.4.2"
+
+"@samoyed/style@file:packages/style":
+  version "0.4.0"
 
 "@samoyed/switch@file:packages/switch":
   version "0.4.4"
@@ -1548,7 +1551,7 @@
 "@samoyed/viewport@file:packages/viewport":
   version "0.4.0"
   dependencies:
-    "@samoyed/box" "file:../../Library/Caches/Yarn/v4/npm-@samoyed-viewport-0.4.0-ccafb0d5-79a1-4615-9f89-e0b0d168b16e-1554958254165/node_modules/@samoyed/viewport/packages/box"
+    "@samoyed/box" "^0.4.0"
 
 "@types/classnames@^2.2.7":
   version "2.2.7"

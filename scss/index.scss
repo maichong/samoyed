@@ -2,9 +2,8 @@ $fa-font-path: "//cdn.bootcss.com/font-awesome/4.7.0/fonts";
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~font-awesome/scss/font-awesome.scss";
 @import "~animate.css/animate.css";
+@import "~@samoyed/style/scss/samoyed.scss";
 @import "~@samoyed/toast/style.scss";
-@import "~@samoyed/box/style.scss";
-@import "~@samoyed/viewport/style.scss";
 #app {
   background: #f6f6f6;
 }
