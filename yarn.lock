@@ -1481,6 +1481,9 @@
   resolved "https://registry.yarnpkg.com/@restart/hooks/-/hooks-0.1.6.tgz#5417f9f239b19c8427ee6f034940984bd6b4084e"
   integrity sha512-eP1NykkdPlagH60YV+k2qGDCq3rkNtY6Sz0T2DVU1MQPa4pVRofIj+leFM2SLZLzy5nQFga4YnX7oM2d2LJRpA==
 
+"@samoyed/app@file:packages/app":
+  version "0.4.0"
+
 "@samoyed/box@^0.4.0", "@samoyed/box@file:packages/box":
   version "0.4.0"
 

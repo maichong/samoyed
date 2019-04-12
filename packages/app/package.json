@@ -1,0 +1,19 @@
+{
+  "name": "@samoyed/app",
+  "version": "0.4.0",
+  "description": "Samoyed app",
+  "keywords": [
+    "samoyed",
+    "react",
+    "bootstrap"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "index.js",
+  "types": "index.d.ts",
+  "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/app",
+  "license": "MIT",
+  "dependencies": {}
+}
