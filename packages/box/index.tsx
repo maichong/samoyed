@@ -5,11 +5,11 @@ import { BoxProps } from '.';
 export default class Box extends React.Component<BoxProps> {
   render() {
     const {
-      children, className, innerClassName, boxRef, innerRef, layout, flex, scrollable, ...others
+      children, className, innerClassName, elRef, innerRef, layout, flex, scrollable, ...others
     } = this.props;
     return (
       <div
-        ref={boxRef}
+        ref={elRef}
         className={classnames(
           's-box',
           className,

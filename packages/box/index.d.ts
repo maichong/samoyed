@@ -13,7 +13,7 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
   /**
    * 外层div ref
    */
-  boxRef?: React.Ref<any>;
+  elRef?: React.Ref<any>;
   /**
    * 内层div ref
    */

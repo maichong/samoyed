@@ -1,6 +1,7 @@
 
 import * as React from 'react';
 import * as _ from 'lodash';
+import * as H from 'history';
 import { Router, Switch, Route } from '@samoyed/router';
 import Box from '@samoyed/box';
 import Viewport from '@samoyed/viewport';
@@ -11,6 +12,8 @@ type Props = {
 
 type State = {
 };
+
+const history = H.createHashHistory();
 
 export default class App extends React.Component<Props, State> {
   render() {
@@ -26,8 +29,12 @@ export default class App extends React.Component<Props, State> {
           }
         </Box>
         <Box flex>
-          <Router>
+          <Router history={history}>
             <Switch>
+              <Route
+                path={'/'}
+                component={Box}
+              />
               {
                 _.map(pages, (C, key) => (<Route
                   key={key}

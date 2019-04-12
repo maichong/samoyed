@@ -13,8 +13,8 @@ const React = require("react");
 const classnames = require("classnames");
 class Box extends React.Component {
     render() {
-        const _a = this.props, { children, className, innerClassName, boxRef, innerRef, layout, flex, scrollable } = _a, others = __rest(_a, ["children", "className", "innerClassName", "boxRef", "innerRef", "layout", "flex", "scrollable"]);
-        return (React.createElement("div", Object.assign({ ref: boxRef, className: classnames('s-box', className, { 's-flex': !!flex }) }, others),
+        const _a = this.props, { children, className, innerClassName, elRef, innerRef, layout, flex, scrollable } = _a, others = __rest(_a, ["children", "className", "innerClassName", "elRef", "innerRef", "layout", "flex", "scrollable"]);
+        return (React.createElement("div", Object.assign({ ref: elRef, className: classnames('s-box', className, { 's-flex': !!flex }) }, others),
             React.createElement("div", { ref: innerRef, className: classnames('s-box-inner', innerClassName, `s-layout-${layout || 'vbox'}`, { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' }, { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' }) }, children)));
     }
 }

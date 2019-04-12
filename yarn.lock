@@ -1484,6 +1484,9 @@
 "@samoyed/box@^0.4.0", "@samoyed/box@file:packages/box":
   version "0.4.0"
 
+"@samoyed/card-layout@file:packages/card-layout":
+  version "0.4.0"
+
 "@samoyed/checkbox-group@file:packages/checkbox-group":
   version "0.4.4"
   dependencies:
