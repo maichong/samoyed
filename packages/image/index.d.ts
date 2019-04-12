@@ -10,9 +10,9 @@ export interface ImageProps {
    */
   url?: string;
   /**
-   * 淡入过渡时间
+   * 动画持续时间
    */
-  timeIn?: string;
+  duration?: number;
 }
 
 export default class Image extends React.Component<ImageProps> {
