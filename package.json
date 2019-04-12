@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/maichong/samoyed#readme",
   "resolutions": {
+    "@samoyed/app": "file:packages/app",
     "@samoyed/box": "file:packages/box",
     "@samoyed/card-layout": "file:packages/card-layout",
     "@samoyed/checkbox": "file:packages/checkbox",
@@ -58,6 +59,7 @@
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
+    "@samoyed/app": "file:packages/app",
     "@samoyed/box": "file:packages/box",
     "@samoyed/card-layout": "file:packages/card-layout",
     "@samoyed/checkbox": "file:packages/checkbox",
