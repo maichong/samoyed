@@ -19,7 +19,21 @@ class Router extends React.Component {
             console.log(action, history.length, location);
             if (this._isMounted) {
                 let entries = this.state.entries;
-                if (entries.length > 1 && action === 'POP' && entries[entries.length - 2].key === location.key) {
+                let type = 'PUSH';
+                if (action === 'REPLACE') {
+                    type = 'REPLACE';
+                }
+                else if (entries.length > 1 && action === 'POP') {
+                    if (history.length < 50) {
+                        if (history.length === this.state.length) {
+                            type = 'POP';
+                        }
+                    }
+                    else if (entries[entries.length - 2].pathname === location.pathname) {
+                        type = 'POP';
+                    }
+                }
+                if (type === 'POP') {
                     entries.pop();
                 }
                 else {
@@ -27,6 +41,7 @@ class Router extends React.Component {
                 }
                 console.log(...entries);
                 this.setState({
+                    action: type,
                     length: history.length,
                     entries,
                     location,
@@ -41,6 +56,7 @@ class Router extends React.Component {
             let { entries } = this.state;
             let keys = list.map((entry) => (typeof entry === 'string' ? entry : entry.key));
             entries = entries.filter((entry) => keys.indexOf(entry.key) > -1);
+            console.log('after free', ...entries);
             this.setState({ entries });
         };
         let history = props.history;
@@ -49,6 +65,7 @@ class Router extends React.Component {
             location.key = random();
         }
         this.state = {
+            action: 'PUSH',
             length: history.length,
             location,
             entries: [location],
@@ -73,6 +90,7 @@ class Router extends React.Component {
     }
     render() {
         return (React.createElement(RouterContext_1.default.Provider, { value: {
+                action: this.state.action,
                 freeEntries: this.freeEntries,
                 history: this.props.history,
                 globalEntries: this.state.entries,

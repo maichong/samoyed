@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class App {
     constructor() {
         this.views = {};
+        this.defaults = {
+            switchAnimationDuration: 300
+        };
     }
     init() {
         const body = window.document.body;

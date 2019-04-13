@@ -1,13 +1,51 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
-const box_1 = require("@samoyed/box");
+const classnames = require("classnames");
+const app_1 = require("@samoyed/app");
 const RouterContext_1 = require("./RouterContext");
 const matchPath_1 = require("./matchPath");
 class Switch extends React.Component {
+    constructor() {
+        super(...arguments);
+        this.handleRef = (ref) => {
+            this.elRef = ref;
+        };
+        this.updateAnimation = () => {
+            if (!this.elRef)
+                return;
+            let classList = this.elRef.classList;
+            if (this.animationStage === 'start') {
+                this.animationStage = 'active';
+                this.animationTimer = setTimeout(this.updateAnimation, this.animation.duration || app_1.default.defaults.switchAnimationDuration);
+                if (classList.contains('s-done')) {
+                    classList.remove('s-done');
+                }
+                classList.remove('s-start');
+                classList.add('s-active');
+            }
+            else if (this.animationStage === 'active') {
+                this.animationStage = 'done';
+                if (classList.contains('s-start')) {
+                    classList.remove('s-start');
+                }
+                classList.remove('s-active');
+                classList.add('s-done');
+                if (this.last) {
+                    this.forceUpdate();
+                }
+            }
+        };
+    }
     render() {
+        let animation = this.props.animation || {};
+        if (typeof animation === 'string') {
+            animation = { type: animation };
+        }
+        this.animation = animation;
+        console.warn('Switch.render');
         return (React.createElement(RouterContext_1.default.Consumer, null, context => {
-            console.log('switch context', context);
+            console.warn('switch context', context);
             const routesWithEntries = [];
             const entriesWithRoute = [];
             const entriesKeys = [];
@@ -63,24 +101,85 @@ class Switch extends React.Component {
                 routesWithEntries,
                 needFree
             });
+            let children = [];
             let item = entriesWithRoute[entriesWithRoute.length - 1];
-            let children = [React.cloneElement(item.route, {
-                    key: item.route.key || 0,
+            if (item.route) {
+                console.error('active', item.entry);
+                children.push(React.cloneElement(item.route, {
+                    key: 'active',
+                    active: true,
                     location: item.entry,
                     entries: (routesWithEntries[item.routeIndex]).entries.map((e) => e.entry),
-                })];
-            const last = context.last;
-            if (last) {
-                let lastEntryRoute = getEntryRoute(last);
-                if (lastEntryRoute.route) {
-                    children.push(React.cloneElement(lastEntryRoute.route, {
-                        key: lastEntryRoute.route.key || 1,
-                        location: lastEntryRoute.entry,
-                        entries: (routesWithEntries[lastEntryRoute.routeIndex]).entries.map((e) => e.entry),
+                }));
+            }
+            else {
+            }
+            if (animation.type) {
+                const last = context.last;
+                let previousEntryRoute = entriesWithRoute[entriesWithRoute.length - 2];
+                if (previousEntryRoute && previousEntryRoute.route) {
+                    console.error('previous', previousEntryRoute.entry);
+                    children.push(React.cloneElement(previousEntryRoute.route, {
+                        key: 'previous',
+                        previous: true,
+                        last: last && last.key === previousEntryRoute.entry.key,
+                        location: previousEntryRoute.entry,
+                        entries: (routesWithEntries[previousEntryRoute.routeIndex]).entries.map((e) => e.entry),
                     }));
                 }
+                this.last = null;
+                if (this.animationLock !== item.entry.key) {
+                    this.animationLock = item.entry.key;
+                    if (last && entriesKeys.indexOf(last.key) === -1) {
+                        let lastEntryRoute = getEntryRoute(last);
+                        this.animationAction = 'backward';
+                        if (lastEntryRoute.route) {
+                            this.last = lastEntryRoute.entry;
+                            console.error('last', lastEntryRoute.entry);
+                            children.push(React.cloneElement(lastEntryRoute.route, {
+                                key: 'last',
+                                last: true,
+                                location: lastEntryRoute.entry,
+                                entries: (routesWithEntries[lastEntryRoute.routeIndex]).entries.map((e) => e.entry),
+                            }));
+                        }
+                    }
+                    this.animationStage = 'start';
+                    this.animationAction = context.action === 'POP' ? 'backward' : 'forward';
+                    if (this.animationTimer)
+                        clearTimeout(this.animationTimer);
+                    this.animationTimer = setTimeout(this.updateAnimation);
+                    if (this.elRef) {
+                        let classList = this.elRef.classList;
+                        if (!classList.contains('s-start'))
+                            classList.add('s-start');
+                        if (classList.contains('s-active'))
+                            classList.remove('s-active');
+                        if (classList.contains('s-done'))
+                            classList.remove('s-done');
+                        if (this.animationAction === 'forward') {
+                            if (!classList.contains('s-forward'))
+                                classList.add('s-forward');
+                            if (classList.contains('s-backward'))
+                                classList.remove('s-backward');
+                        }
+                        else {
+                            if (!classList.contains('s-backward'))
+                                classList.add('s-backward');
+                            if (classList.contains('s-forward'))
+                                classList.remove('s-forward');
+                        }
+                    }
+                }
             }
-            return (React.createElement(box_1.default, { className: "s-router-switch" }, children));
+            console.log('children', children);
+            return (React.createElement("div", { ref: this.handleRef, className: classnames('s-router-switch', {
+                    's-animation': this.animation.type,
+                    's-forward': this.animation.type && this.animationAction === 'forward',
+                    's-backward': this.animation.type && this.animationAction === 'backward',
+                    [`s-${this.animation.type}`]: this.animation.type,
+                    's-start': this.animation.type && this.animationStage === 'start'
+                }) }, children));
         }));
     }
 }

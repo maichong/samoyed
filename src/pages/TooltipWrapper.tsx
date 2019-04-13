@@ -2,13 +2,20 @@
 import * as React from 'react';
 import TooltipWrapper from '@samoyed/tooltip-wrapper';
 import Page from '@samoyed/page';
+import { RouteComponentProps } from '@samoyed/router';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 
-export default class TooltipWrapperPage extends React.Component<{}> {
+export default class TooltipWrapperPage extends React.Component<RouteComponentProps> {
   render() {
     return (
-      <Page className="tooltip-page" scrollable="vertical">
+      <Page
+        className="tooltip-page"
+        scrollable="vertical"
+        previous={this.props.previous}
+        last={this.props.last}
+        active={this.props.active}
+      >
         <h1>Tooltip Wrapper</h1>
 
         <h2>Tooltip</h2>

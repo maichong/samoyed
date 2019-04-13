@@ -1,12 +1,17 @@
 import * as React from 'react';
+import { Defaults } from '.';
 
 export class App {
+  defaults: Defaults;
   views: {
     [name: string]: React.ComponentClass<any>;
   };
 
   constructor() {
     this.views = {};
+    this.defaults = {
+      switchAnimationDuration: 300
+    };
   }
 
   init() {

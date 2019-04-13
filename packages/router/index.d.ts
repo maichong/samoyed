@@ -13,6 +13,7 @@ export interface Match<Params extends { [K in keyof Params]?: string } = {}> {
 
 export interface RouterChildContext<Params extends { [K in keyof Params]?: string } = {}> {
   freeEntries: (list: Array<H.Location | H.LocationKey>) => void;
+  action: H.Action;
   history: H.History;
   globalEntries: H.Location[];
   globalLast?: H.Location;
@@ -27,6 +28,9 @@ export interface RouteChildrenProps<Params extends { [K in keyof Params]?: strin
   history: H.History;
   location: H.Location<S>;
   match: Match<Params>;
+  previous?: boolean;
+  last?: boolean;
+  active?: boolean;
 }
 
 export interface RouteComponentProps<Params extends { [K in keyof Params]?: string } = {}, C extends StaticContext = StaticContext, S = H.LocationState> {
@@ -34,6 +38,9 @@ export interface RouteComponentProps<Params extends { [K in keyof Params]?: stri
   location: H.Location<S>;
   match: Match<Params>;
   staticContext?: C;
+  previous?: boolean;
+  last?: boolean;
+  active?: boolean;
 }
 
 export interface StaticContext {
@@ -90,6 +97,9 @@ export interface RouteProps {
   freeComponent?: 'immediate' | 'animation' | 'keepalive';
   historyLimit?: number;
   entries?: H.Location[];
+  previous?: boolean;
+  last?: boolean;
+  active?: boolean;
 }
 
 export class Route extends React.Component<RouteProps> {

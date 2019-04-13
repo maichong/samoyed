@@ -13,7 +13,7 @@ export default class Route extends React.Component<RouteProps> {
       <RouterContext.Consumer>
         {context => {
 
-          let { children, component, render, entries } = this.props;
+          let { children, component, render, entries, last, previous, active } = this.props;
           const location = this.props.location || context.location;
 
           // Preact uses an empty array as children by
@@ -30,7 +30,14 @@ export default class Route extends React.Component<RouteProps> {
             match,
             entries: entries || context.entries
           };
-          const childProps: RouteChildrenProps = { history: context.history, location, match };
+          const childProps: RouteChildrenProps = {
+            history: context.history,
+            location,
+            match,
+            active,
+            last,
+            previous
+          };
 
           if (typeof children === 'function') {
             // @ts-ignore

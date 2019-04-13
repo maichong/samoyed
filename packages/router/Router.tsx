@@ -12,6 +12,7 @@ function computeRootMatch(pathname: string) {
 }
 
 interface State {
+  action: H.Action;
   entries: H.Location[];
   location: H.Location;
   last?: H.Location;
@@ -33,6 +34,7 @@ export default class Router extends React.Component<RouterProps, State> {
     }
 
     this.state = {
+      action: 'PUSH',
       length: history.length,
       location,
       entries: [location],
@@ -75,13 +77,27 @@ export default class Router extends React.Component<RouterProps, State> {
     console.log(action, history.length, location);
     if (this._isMounted) {
       let entries = this.state.entries;
-      if (entries.length > 1 && action === 'POP' && entries[entries.length - 2].key === location.key) {
+      let type: H.Action = 'PUSH';
+      if (action === 'REPLACE') {
+        type = 'REPLACE';
+      } else if (entries.length > 1 && action === 'POP') {
+        if (history.length < 50) {
+          if (history.length === this.state.length) {
+            type = 'POP';
+          }
+        } else if (entries[entries.length - 2].pathname === location.pathname) {
+          type = 'POP';
+        }
+      }
+
+      if (type === 'POP') {
         entries.pop();
       } else {
         entries = entries.concat(location);
       }
       console.log(...entries);
       this.setState({
+        action: type,
         length: history.length,
         entries,
         location,
@@ -96,6 +112,7 @@ export default class Router extends React.Component<RouterProps, State> {
     let { entries } = this.state;
     let keys: H.LocationKey[] = list.map((entry: H.Location | H.LocationKey) => (typeof entry === 'string' ? entry : entry.key));
     entries = entries.filter((entry) => keys.indexOf(entry.key) > -1);
+    console.log('after free', ...entries);
     this.setState({ entries });
   };
 
@@ -103,6 +120,7 @@ export default class Router extends React.Component<RouterProps, State> {
     return (
       <RouterContext.Provider
         value={{
+          action: this.state.action,
           freeEntries: this.freeEntries,
           history: this.props.history,
           globalEntries: this.state.entries,

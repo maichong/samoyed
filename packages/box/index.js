@@ -14,7 +14,7 @@ const classnames = require("classnames");
 const app_1 = require("@samoyed/app");
 class Box extends React.Component {
     render() {
-        const _a = this.props, { children, className, innerClassName, elRef, innerRef, layout, flex, scrollable } = _a, others = __rest(_a, ["children", "className", "innerClassName", "elRef", "innerRef", "layout", "flex", "scrollable"]);
+        const _a = this.props, { children, className, innerClassName, elRef, innerRef, layout, flex, scrollable, previous, last, active } = _a, others = __rest(_a, ["children", "className", "innerClassName", "elRef", "innerRef", "layout", "flex", "scrollable", "previous", "last", "active"]);
         let LayoutComponent = 'div';
         let layoutClassName = `s-layout-${layout || 'vbox'}`;
         if (layout === 'card') {
@@ -24,7 +24,12 @@ class Box extends React.Component {
                 throw new Error('@samoyed/card-layout must be required!');
             }
         }
-        return (React.createElement("div", Object.assign({ ref: elRef, className: classnames('s-box', className, { 's-flex': !!flex }) }, others),
+        return (React.createElement("div", Object.assign({ ref: elRef, className: classnames('s-box', className, {
+                's-flex': !!flex,
+                's-previous': previous,
+                's-last': last,
+                's-active': active,
+            }) }, others),
             React.createElement(LayoutComponent, { ref: innerRef, className: classnames('s-box-inner', innerClassName, layoutClassName, { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' }, { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' }) }, children)));
     }
 }

@@ -2,6 +2,7 @@
 import * as React from 'react';
 import Select from '@samoyed/select';
 import Page from '@samoyed/page';
+import { RouteComponentProps } from '@samoyed/router';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 import options from './options';
@@ -12,7 +13,7 @@ type State = {
   multi: string[];
 };
 
-export default class SelectPage extends React.Component<{}, State> {
+export default class SelectPage extends React.Component<RouteComponentProps, State> {
   state = {
     value: 'primary',
     clearable: 'primary',
@@ -21,7 +22,13 @@ export default class SelectPage extends React.Component<{}, State> {
 
   render() {
     return (
-      <Page className="select-page" scrollable="vertical">
+      <Page
+        className="select-page"
+        scrollable="vertical"
+        previous={this.props.previous}
+        last={this.props.last}
+        active={this.props.active}
+      >
         <h1>Select</h1>
 
         <h2>select</h2>

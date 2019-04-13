@@ -2,13 +2,20 @@
 import * as React from 'react';
 import Checkbox from '@samoyed/checkbox';
 import Page from '@samoyed/page';
+import { RouteComponentProps } from '@samoyed/router';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 
-export default class CheckboxPage extends React.Component<{}> {
+export default class CheckboxPage extends React.Component<RouteComponentProps> {
   render() {
     return (
-      <Page className="checkbox-page" scrollable="vertical">
+      <Page
+        className="checkbox-page"
+        scrollable="vertical"
+        previous={this.props.previous}
+        last={this.props.last}
+        active={this.props.active}
+      >
         <h1>Checkbox</h1>
 
         <h2>checkbox</h2>

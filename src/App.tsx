@@ -30,7 +30,7 @@ export default class App extends React.Component<Props, State> {
         </Box>
         <Box flex layout="fit">
           <Router history={history} freeComponent="keepalive">
-            <Switch>
+            <Switch animation="slide">
               {
                 _.map(pages, (C, key) => (<Route
                   key={key}

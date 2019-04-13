@@ -9,7 +9,7 @@ function isEmptyChildren(children) {
 class Route extends React.Component {
     render() {
         return (React.createElement(RouterContext_1.default.Consumer, null, context => {
-            let { children, component, render, entries } = this.props;
+            let { children, component, render, entries, last, previous, active } = this.props;
             const location = this.props.location || context.location;
             if (Array.isArray(children) && children.length === 0) {
                 children = null;
@@ -17,7 +17,14 @@ class Route extends React.Component {
             const match = this.props.computedMatch || (this.props.path ? matchPath_1.default(location.pathname, this.props) : context.match);
             const childContext = Object.assign({}, context, { location,
                 match, entries: entries || context.entries });
-            const childProps = { history: context.history, location, match };
+            const childProps = {
+                history: context.history,
+                location,
+                match,
+                active,
+                last,
+                previous
+            };
             if (typeof children === 'function') {
                 children = child(childProps);
                 if (typeof children === 'undefined') {

@@ -2,13 +2,20 @@
 import * as React from 'react';
 import toast, { ToastContainer, success, error, warning, info, clear } from '@samoyed/toast';
 import Page from '@samoyed/page';
+import { RouteComponentProps } from '@samoyed/router';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 
-export default class ToastPage extends React.Component<{}> {
+export default class ToastPage extends React.Component<RouteComponentProps> {
   render() {
     return (
-      <Page className="toast-page" scrollable="vertical">
+      <Page
+        className="toast-page"
+        scrollable="vertical"
+        previous={this.props.previous}
+        last={this.props.last}
+        active={this.props.active}
+      >
         <h1>Toast</h1>
         <ToastContainer />
 

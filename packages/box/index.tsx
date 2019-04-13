@@ -6,7 +6,8 @@ import { BoxProps } from '.';
 export default class Box extends React.Component<BoxProps> {
   render() {
     const {
-      children, className, innerClassName, elRef, innerRef, layout, flex, scrollable, ...others
+      children, className, innerClassName, elRef, innerRef, layout, flex, scrollable,
+      previous, last, active, ...others
     } = this.props;
 
     let LayoutComponent: React.ComponentClass<any> | string = 'div';
@@ -25,7 +26,12 @@ export default class Box extends React.Component<BoxProps> {
         className={classnames(
           's-box',
           className,
-          { 's-flex': !!flex }
+          {
+            's-flex': !!flex,
+            's-previous': previous,
+            's-last': last,
+            's-active': active,
+          }
         )}
         {...others}
       >
