@@ -55,7 +55,7 @@ class Router extends React.Component {
         this.freeEntries = (list) => {
             let { entries } = this.state;
             let keys = list.map((entry) => (typeof entry === 'string' ? entry : entry.key));
-            entries = entries.filter((entry) => keys.indexOf(entry.key) > -1);
+            entries = entries.filter((entry) => keys.indexOf(entry.key) === -1);
             console.log('after free', ...entries);
             this.setState({ entries });
         };

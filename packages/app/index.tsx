@@ -10,7 +10,7 @@ export class App {
   constructor() {
     this.views = {};
     this.defaults = {
-      switchAnimationDuration: 300
+      switchAnimationDuration: 300,
     };
   }
 

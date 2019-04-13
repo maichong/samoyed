@@ -43,6 +43,7 @@ class Switch extends React.Component {
             animation = { type: animation };
         }
         this.animation = animation;
+        const duration = this.animation.duration || app_1.default.defaults.switchAnimationDuration;
         console.warn('Switch.render');
         return (React.createElement(RouterContext_1.default.Consumer, null, context => {
             console.warn('switch context', context);
@@ -174,11 +175,14 @@ class Switch extends React.Component {
             }
             console.log('children', children);
             return (React.createElement("div", { ref: this.handleRef, className: classnames('s-router-switch', {
-                    's-animation': this.animation.type,
-                    's-forward': this.animation.type && this.animationAction === 'forward',
-                    's-backward': this.animation.type && this.animationAction === 'backward',
-                    [`s-${this.animation.type}`]: this.animation.type,
-                    's-start': this.animation.type && this.animationStage === 'start'
+                    's-animation': animation.type,
+                    's-vertical': animation.type && animation.direction === 'vertical',
+                    's-horizontal': animation.type && animation.direction !== 'vertical',
+                    's-forward': animation.type && this.animationAction === 'forward',
+                    's-backward': animation.type && this.animationAction === 'backward',
+                    [`s-duration-${duration}`]: animation.type,
+                    [`s-${animation.type}`]: animation.type,
+                    's-start': animation.type && this.animationStage === 'start'
                 }) }, children));
         }));
     }

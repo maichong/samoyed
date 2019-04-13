@@ -1,6 +1,5 @@
 .s-router-switch {
   >div {
-    display: block;
     position: absolute;
     top: 0;
     left: 0;
@@ -10,57 +9,5 @@
   >.s-previous,
   >.s-last {
     display: none;
-  }
-  &.s-animation {
-    /* 正在进行动画时，上个页面可见 */
-    &.s-start,
-    &.s-active {
-      >.s-last {
-        display: block;
-      }
-    }
-    &.s-forward {
-      >.s-last {
-        z-index: 0;
-      }
-      >.s-active {
-        z-index: 1;
-      }
-    }
-    &.s-backward {
-      >.s-last {
-        z-index: 1;
-      }
-      >.s-active {
-        z-index: 0;
-      }
-    }
-    /* 推入新页面，滑动效果 */
-    &.s-forward.s-slide.s-start {
-      /* 新页面初始情况下在外部 */
-      >.s-active {
-        left: 100%;
-      }
-    }
-    /* 新页面开始滑入 */
-    &.s-forward.s-slide.s-active {
-      >.s-active {
-        transition: left .3s;
-        left: 0;
-      }
-    }
-    &.s-forward.s-slide.s-done {
-      >.s-active {
-        left: 0;
-      }
-    }
-    /* 返回上一页，滑动效果 */
-    /* 老页面开始滑出 */
-    &.s-backward.s-slide.s-active {
-      >.s-last {
-        transition: left .3s;
-        left: 100%;
-      }
-    }
   }
 }

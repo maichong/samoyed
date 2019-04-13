@@ -111,7 +111,7 @@ export default class Router extends React.Component<RouterProps, State> {
   freeEntries = (list: Array<H.Location | H.LocationKey>) => {
     let { entries } = this.state;
     let keys: H.LocationKey[] = list.map((entry: H.Location | H.LocationKey) => (typeof entry === 'string' ? entry : entry.key));
-    entries = entries.filter((entry) => keys.indexOf(entry.key) > -1);
+    entries = entries.filter((entry) => keys.indexOf(entry.key) === -1);
     console.log('after free', ...entries);
     this.setState({ entries });
   };

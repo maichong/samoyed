@@ -69,6 +69,7 @@ export default class Switch extends React.Component<SwitchProps> {
       animation = { type: animation };
     }
     this.animation = animation;
+    const duration = this.animation.duration || app.defaults.switchAnimationDuration;
     console.warn('Switch.render');
     return (
       <RouterContext.Consumer>
@@ -219,11 +220,14 @@ export default class Switch extends React.Component<SwitchProps> {
             <div
               ref={this.handleRef}
               className={classnames('s-router-switch', {
-                's-animation': this.animation.type,
-                's-forward': this.animation.type && this.animationAction === 'forward',
-                's-backward': this.animation.type && this.animationAction === 'backward',
-                [`s-${this.animation.type}`]: this.animation.type,
-                's-start': this.animation.type && this.animationStage === 'start'
+                's-animation': animation.type,
+                's-vertical': animation.type && animation.direction === 'vertical',
+                's-horizontal': animation.type && animation.direction !== 'vertical',
+                's-forward': animation.type && this.animationAction === 'forward',
+                's-backward': animation.type && this.animationAction === 'backward',
+                [`s-duration-${duration}`]: animation.type,
+                [`s-${animation.type}`]: animation.type,
+                's-start': animation.type && this.animationStage === 'start'
               })}
             >
               {children}
