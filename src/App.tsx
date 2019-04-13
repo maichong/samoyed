@@ -23,18 +23,19 @@ export default class App extends React.Component<Props, State> {
           {
             _.map(pages, (C, key) => (<a
               key={key}
-              href={'#/' + key}
+              href={'#/' + key + '/1'}
               className="list-group-item list-group-item-action"
             >{key}</a>))
           }
         </Box>
-        <Box flex>
-          <Router history={history} freeComponent="keepalive" freeEntries="tree">
+        <Box flex layout="fit">
+          <Router history={history} freeComponent="keepalive">
             <Switch>
               {
                 _.map(pages, (C, key) => (<Route
                   key={key}
-                  path={'/' + key}
+                  path={'/' + key + '/:id'}
+                  historyLimit={2}
                   component={C}
                   exact
                 />))

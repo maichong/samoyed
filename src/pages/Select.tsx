@@ -21,7 +21,7 @@ export default class SelectPage extends React.Component<{}, State> {
 
   render() {
     return (
-      <Page scrollable="y">
+      <Page className="select-page" scrollable="vertical">
         <h1>Select</h1>
 
         <h2>select</h2>

@@ -8,7 +8,7 @@ import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 export default class TooltipWrapperPage extends React.Component<{}> {
   render() {
     return (
-      <Page scrollable="y">
+      <Page className="tooltip-page" scrollable="vertical">
         <h1>Tooltip Wrapper</h1>
 
         <h2>Tooltip</h2>

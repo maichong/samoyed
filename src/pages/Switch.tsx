@@ -21,7 +21,7 @@ export default class SwitchPage extends React.Component<{}, State> {
 
   render() {
     return (
-      <Page scrollable="y">
+      <Page className="switch-page" scrollable="vertical">
         <h1>Switch</h1>
 
         <h2>select</h2>

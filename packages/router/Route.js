@@ -9,30 +9,28 @@ function isEmptyChildren(children) {
 class Route extends React.Component {
     render() {
         return (React.createElement(RouterContext_1.default.Consumer, null, context => {
+            let { children, component, render, entries } = this.props;
             const location = this.props.location || context.location;
-            const match = this.props.computedMatch
-                ? this.props.computedMatch
-                : this.props.path
-                    ? matchPath_1.default(location.pathname, this.props)
-                    : context.match;
-            const props = Object.assign({}, context, { location, match });
-            let { children, component, render } = this.props;
             if (Array.isArray(children) && children.length === 0) {
                 children = null;
             }
+            const match = this.props.computedMatch || (this.props.path ? matchPath_1.default(location.pathname, this.props) : context.match);
+            const childContext = Object.assign({}, context, { location,
+                match, entries: entries || context.entries });
+            const childProps = { history: context.history, location, match };
             if (typeof children === 'function') {
-                children = children(props);
+                children = child(childProps);
                 if (typeof children === 'undefined') {
                     children = null;
                 }
             }
-            return (React.createElement(RouterContext_1.default.Provider, { value: props }, children && !isEmptyChildren(children)
+            return (React.createElement(RouterContext_1.default.Provider, { value: childContext }, children && !isEmptyChildren(children)
                 ? children
-                : props.match
+                : childContext.match
                     ? component
-                        ? React.createElement(component, props)
+                        ? React.createElement(component, childProps)
                         : render
-                            ? render(props)
+                            ? render(childProps)
                             : null
                     : null));
         }));

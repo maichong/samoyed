@@ -1,8 +1,30 @@
-
 .s-layout-vbox {
   flex-direction: column;
 }
 
 .s-layout-hbox {
   flex-direction: row;
+}
+
+.s-layout-fit {
+  &>* {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.s-layout-card {
+  flex-direction: row;
+
+  &>div {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
 }

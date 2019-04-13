@@ -21,7 +21,7 @@ export default class CheckboxGroupPage extends React.Component<{}, State> {
 
   render() {
     return (
-      <Page scrollable="y">
+      <Page className="checkbox-group-page" scrollable="vertical">
         <h1>Checkbox Group</h1>
 
         <h2>radio group</h2>

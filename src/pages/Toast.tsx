@@ -8,8 +8,8 @@ import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 export default class ToastPage extends React.Component<{}> {
   render() {
     return (
-      <Page scrollable="y">
-        <h1>Tooltip Wrapper</h1>
+      <Page className="toast-page" scrollable="vertical">
+        <h1>Toast</h1>
         <ToastContainer />
 
         <h2>toast</h2>

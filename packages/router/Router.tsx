@@ -3,14 +3,19 @@ import * as H from 'history';
 import RouterContext from './RouterContext';
 import { RouterProps } from '.';
 
+function random() {
+  return Math.random().toString().substr(2);
+}
 
 function computeRootMatch(pathname: string) {
   return { path: '/', url: '/', params: {}, isExact: pathname === '/' };
 }
 
 interface State {
-  location: H.Location;
   entries: H.Location[];
+  location: H.Location;
+  last?: H.Location;
+  length: number;
 }
 
 export default class Router extends React.Component<RouterProps, State> {
@@ -22,11 +27,20 @@ export default class Router extends React.Component<RouterProps, State> {
     super(props);
 
     let history = props.history;
+    let location = history.location;
+    if (!location.key) {
+      location.key = random();
+    }
 
     this.state = {
-      location: history.location,
-      entries: [history.location]
+      length: history.length,
+      location,
+      entries: [location],
+      last: null
     };
+
+    // @ts-ignore
+    window.h = history;
 
     // This is a bit of a hack. We have to start listening for location
     // changes here in the constructor in case there are any <Redirect>s
@@ -37,13 +51,7 @@ export default class Router extends React.Component<RouterProps, State> {
     this._pendingLocation = null;
 
     if (!props.staticContext) {
-      this.unlisten = history.listen((location) => {
-        if (this._isMounted) {
-          this.setState({ location });
-        } else {
-          this._pendingLocation = location;
-        }
-      });
+      this.unlisten = history.listen(this.handleChange);
     }
   }
 
@@ -59,14 +67,49 @@ export default class Router extends React.Component<RouterProps, State> {
     if (this.unlisten) this.unlisten();
   }
 
+  handleChange = (location: H.Location, action: H.Action) => {
+    const { history } = this.props;
+    if (!location.key) {
+      location.key = random();
+    }
+    console.log(action, history.length, location);
+    if (this._isMounted) {
+      let entries = this.state.entries;
+      if (entries.length > 1 && action === 'POP' && entries[entries.length - 2].key === location.key) {
+        entries.pop();
+      } else {
+        entries = entries.concat(location);
+      }
+      console.log(...entries);
+      this.setState({
+        length: history.length,
+        entries,
+        location,
+        last: this.state.location
+      });
+    } else {
+      this._pendingLocation = location;
+    }
+  };
+
+  freeEntries = (list: Array<H.Location | H.LocationKey>) => {
+    let { entries } = this.state;
+    let keys: H.LocationKey[] = list.map((entry: H.Location | H.LocationKey) => (typeof entry === 'string' ? entry : entry.key));
+    entries = entries.filter((entry) => keys.indexOf(entry.key) > -1);
+    this.setState({ entries });
+  };
+
   render() {
     return (
       <RouterContext.Provider
         value={{
-          globalLocation: this.state.location,
-          allEntries: this.state.entries,
-          entries: this.state.entries,
+          freeEntries: this.freeEntries,
           history: this.props.history,
+          globalEntries: this.state.entries,
+          globalLast: this.state.last,
+          globalLocation: this.state.location,
+          entries: this.state.entries,
+          last: this.state.last,
           location: this.state.location,
           match: computeRootMatch(this.state.location.pathname)
         }}

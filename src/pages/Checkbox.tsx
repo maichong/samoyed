@@ -8,7 +8,7 @@ import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 export default class CheckboxPage extends React.Component<{}> {
   render() {
     return (
-      <Page scrollable="y">
+      <Page className="checkbox-page" scrollable="vertical">
         <h1>Checkbox</h1>
 
         <h2>checkbox</h2>
