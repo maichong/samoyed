@@ -124,6 +124,12 @@ export class Prompt extends React.Component<PromptProps> {
 }
 
 export interface RedirectProps {
+  to: H.LocationDescriptor;
+  push?: boolean;
+  from?: string;
+  path?: string;
+  exact?: boolean;
+  strict?: boolean;
 }
 
 export class Redirect extends React.Component<RedirectProps> {

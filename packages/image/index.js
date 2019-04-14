@@ -18,7 +18,7 @@ class Image extends React.Component {
     }
     render() {
         let { className = '' } = this.props;
-        className = 'image ' + className;
+        className = `image ${className}`;
         return (React.createElement("div", { className: className, ref: (r) => {
                 this.ref = r;
             } }));

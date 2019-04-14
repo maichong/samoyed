@@ -8,7 +8,7 @@ function isEmptyChildren(children) {
 }
 class Route extends React.Component {
     render() {
-        return (React.createElement(RouterContext_1.default.Consumer, null, context => {
+        return (React.createElement(RouterContext_1.default.Consumer, null, (context) => {
             let { children, component, render, entries, last, previous, active } = this.props;
             const location = this.props.location || context.location;
             if (Array.isArray(children) && children.length === 0) {

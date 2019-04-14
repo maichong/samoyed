@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
-import * as _ from 'lodash';
 import app from '@samoyed/app';
 import { Animation } from '@samoyed/types';
 import { CardLayoutProps } from '.';
@@ -54,7 +53,7 @@ class CardLayout extends React.Component<CardLayoutProps, State> {
       animation = { type: animation };
     }
 
-    if (!_.isEqual(animation, prevState.animation)) {
+    if (animation !== prevState.animation) {
       state.animation = animation;
     }
 

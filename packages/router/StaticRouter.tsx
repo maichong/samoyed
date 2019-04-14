@@ -4,7 +4,7 @@ import { StaticRouterProps } from '.';
 import Router from './Router';
 
 function addLeadingSlash(path: string): string {
-  return path.charAt(0) === '/' ? path : '/' + path;
+  return path.charAt(0) === '/' ? path : `/${path}`;
 }
 
 function addBasename(basename: string, location: H.Location): H.Location {

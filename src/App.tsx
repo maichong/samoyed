@@ -2,7 +2,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as H from 'history';
-import { Router, Switch, Route } from '@samoyed/router';
+import { Router, Switch, Route, Redirect } from '@samoyed/router';
 import Box from '@samoyed/box';
 import Viewport from '@samoyed/viewport';
 import pages from './pages';
@@ -23,7 +23,7 @@ export default class App extends React.Component<Props, State> {
           {
             _.map(pages, (C, key) => (<a
               key={key}
-              href={'#/' + key + '/1'}
+              href={`#/${key}`}
               className="list-group-item list-group-item-action"
             >{key}</a>))
           }
@@ -34,12 +34,13 @@ export default class App extends React.Component<Props, State> {
               {
                 _.map(pages, (C, key) => (<Route
                   key={key}
-                  path={'/' + key + '/:id'}
+                  path={`/${key}`}
                   historyLimit={2}
                   component={C}
                   exact
                 />))
               }
+              <Redirect to="/Checkbox" />
             </Switch>
           </Router>
         </Box>

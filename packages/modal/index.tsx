@@ -37,16 +37,16 @@ function create(type: Type) {
     options = options || {};
     let btns: ButtonOptions[] = options.buttons;
     if (!btns) {
-      btns = [{ text: tr([type + '_button_OK', 'button_OK', 'OK']), color: 'primary' }];
+      btns = [{ text: tr([`${type}_button_OK`, 'button_OK', 'OK']), color: 'primary' }];
       if (type !== 'alert') {
-        btns.unshift({ text: tr([type + '_button_cancel', 'button_cancel', 'Cancel']) });
+        btns.unshift({ text: tr([`${type}_button_cancel`, 'button_cancel', 'Cancel']) });
       }
     }
 
     return new Promise((resolve) => {
       let buttons: React.ReactNode[] = btns.map((btn, index) => (<button
         key={index}
-        className={'btn btn-' + (btn.color || 'light')}
+        className={`btn btn-${btn.color || 'light'}`}
         onClick={() => handle(index)}
       >{btn.text}</button>));
 

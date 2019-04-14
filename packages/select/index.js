@@ -178,7 +178,7 @@ class Select extends React.Component {
             }
             props.isValidNewOption = (inputValue, selectValue, selectOptions) => {
                 return inputValue && !selectOptions
-                    .map(option => option.label)
+                    .map((option) => option.label)
                     .includes(inputValue);
             };
         }

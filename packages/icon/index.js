@@ -4,9 +4,9 @@ const React = require("react");
 class Icon extends React.Component {
     render() {
         const { className, name } = this.props;
-        let cls = 'fa fa-' + name;
+        let cls = `fa fa-${name}`;
         if (className) {
-            cls += ' ' + className;
+            cls += ` ${className}`;
         }
         return React.createElement("i", { className: cls });
     }

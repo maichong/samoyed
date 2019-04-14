@@ -14,26 +14,23 @@ class Switch extends React.Component {
         this.updateAnimation = () => {
             if (!this.elRef)
                 return;
-            let classList = this.elRef.classList;
+            let classList = new Set(Array.from(this.elRef.classList));
             if (this.animationStage === 'start') {
                 this.animationStage = 'active';
                 this.animationTimer = setTimeout(this.updateAnimation, this.animation.duration || app_1.default.defaults.switchAnimationDuration);
-                if (classList.contains('s-done')) {
-                    classList.remove('s-done');
-                }
-                classList.remove('s-start');
+                classList.delete('s-done');
+                classList.delete('s-start');
                 classList.add('s-active');
             }
             else if (this.animationStage === 'active') {
                 this.animationStage = 'done';
-                if (classList.contains('s-start')) {
-                    classList.remove('s-start');
-                }
-                classList.remove('s-active');
+                classList.delete('s-start');
+                classList.delete('s-active');
                 classList.add('s-done');
-                if (this.last) {
-                    this.forceUpdate();
-                }
+            }
+            this.elRef.className = Array.from(classList).join(' ');
+            if (this.animationStage === 'done' && this.last) {
+                this.forceUpdate();
             }
         };
     }
@@ -44,9 +41,7 @@ class Switch extends React.Component {
         }
         this.animation = animation;
         const duration = this.animation.duration || app_1.default.defaults.switchAnimationDuration;
-        console.warn('Switch.render');
-        return (React.createElement(RouterContext_1.default.Consumer, null, context => {
-            console.warn('switch context', context);
+        return (React.createElement(RouterContext_1.default.Consumer, null, (context) => {
             const routesWithEntries = [];
             const entriesWithRoute = [];
             const entriesKeys = [];
@@ -71,7 +66,7 @@ class Switch extends React.Component {
             routes.forEach((child) => {
                 let routeEntries = [];
                 context.entries.forEach((entry, index) => {
-                    const path = child.props.path || child.props.from;
+                    const path = child.props.path || child.props.from || '/';
                     let match = matchPath_1.default(entry.pathname, Object.assign({}, child.props, { path }));
                     if (match) {
                         routeEntries.push({ entry, index, match });
@@ -98,14 +93,9 @@ class Switch extends React.Component {
             if (needFree.length) {
                 setTimeout(() => context.freeEntries(needFree));
             }
-            console.log({
-                routesWithEntries,
-                needFree
-            });
             let children = [];
             let item = entriesWithRoute[entriesWithRoute.length - 1];
             if (item.route) {
-                console.error('active', item.entry);
                 children.push(React.cloneElement(item.route, {
                     key: 'active',
                     active: true,
@@ -119,7 +109,6 @@ class Switch extends React.Component {
                 const last = context.last;
                 let previousEntryRoute = entriesWithRoute[entriesWithRoute.length - 2];
                 if (previousEntryRoute && previousEntryRoute.route) {
-                    console.error('previous', previousEntryRoute.entry);
                     children.push(React.cloneElement(previousEntryRoute.route, {
                         key: 'previous',
                         previous: true,
@@ -136,7 +125,6 @@ class Switch extends React.Component {
                         this.animationAction = 'backward';
                         if (lastEntryRoute.route) {
                             this.last = lastEntryRoute.entry;
-                            console.error('last', lastEntryRoute.entry);
                             children.push(React.cloneElement(lastEntryRoute.route, {
                                 key: 'last',
                                 last: true,
@@ -151,29 +139,14 @@ class Switch extends React.Component {
                         clearTimeout(this.animationTimer);
                     this.animationTimer = setTimeout(this.updateAnimation);
                     if (this.elRef) {
-                        let classList = this.elRef.classList;
-                        if (!classList.contains('s-start'))
-                            classList.add('s-start');
-                        if (classList.contains('s-active'))
-                            classList.remove('s-active');
-                        if (classList.contains('s-done'))
-                            classList.remove('s-done');
-                        if (this.animationAction === 'forward') {
-                            if (!classList.contains('s-forward'))
-                                classList.add('s-forward');
-                            if (classList.contains('s-backward'))
-                                classList.remove('s-backward');
-                        }
-                        else {
-                            if (!classList.contains('s-backward'))
-                                classList.add('s-backward');
-                            if (classList.contains('s-forward'))
-                                classList.remove('s-forward');
-                        }
+                        let classList = new Set(Array.from(this.elRef.classList));
+                        classList.add('s-start');
+                        classList.delete('s-active');
+                        classList.delete('s-done');
+                        this.elRef.className = Array.from(classList).join(' ');
                     }
                 }
             }
-            console.log('children', children);
             return (React.createElement("div", { ref: this.handleRef, className: classnames('s-router-switch', {
                     's-animation': animation.type,
                     's-vertical': animation.type && animation.direction === 'vertical',

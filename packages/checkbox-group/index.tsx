@@ -98,13 +98,9 @@ export default class CheckboxGroup extends React.Component<CheckboxGroupProps, C
         {
           options.map((opt: SelectOption) => {
             let vid: string = getOptionValue(opt);
-            let className = '';
-            if (opt.color) {
-              className = 'text-' + opt.color;
-            }
             return (<Checkbox
               key={vid}
-              className={className}
+              className={opt.color ? `text-${opt.color}` : ''}
               disabled={disabled}
               radio={!multi}
               label={opt.label}

@@ -14,7 +14,7 @@ class Checkbox extends React.Component {
     }
     render() {
         let { className = '', radio, value, disabled, label } = this.props;
-        className = 'checkbox ' + className;
+        className = `checkbox ${className}`;
         if (disabled) {
             className += ' disabled';
         }

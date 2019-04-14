@@ -49,9 +49,9 @@ function compilePath(path: string, options: CompileOptions) {
 export default function matchPath(pathname: string, opt: string | MatchOptions = { path: '' }) {
   let options: MatchOptions = typeof opt === 'string' ? { path: opt } : opt;
 
-  const { path, exact = false, strict = false, sensitive = false } = options;
+  const { exact = false, strict = false, sensitive = false } = options;
 
-  const paths = [].concat(path);
+  const paths = [options.path];
 
   return paths.reduce((matched, path) => {
     if (matched) return matched;

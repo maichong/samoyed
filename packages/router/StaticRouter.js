@@ -13,7 +13,7 @@ const React = require("react");
 const H = require("history");
 const Router_1 = require("./Router");
 function addLeadingSlash(path) {
-    return path.charAt(0) === '/' ? path : '/' + path;
+    return path.charAt(0) === '/' ? path : `/${path}`;
 }
 function addBasename(basename, location) {
     if (!basename)

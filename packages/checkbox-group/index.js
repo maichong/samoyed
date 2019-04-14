@@ -85,11 +85,7 @@ class CheckboxGroup extends React.Component {
         }
         return (React.createElement("div", { className: classnames('checkbox-group', className) }, options.map((opt) => {
             let vid = utils_1.getOptionValue(opt);
-            let className = '';
-            if (opt.color) {
-                className = 'text-' + opt.color;
-            }
-            return (React.createElement(checkbox_1.default, { key: vid, className: className, disabled: disabled, radio: !multi, label: opt.label, value: valueMap[vid] === true, onChange: () => this.handleCheck(vid) }));
+            return (React.createElement(checkbox_1.default, { key: vid, className: opt.color ? `text-${opt.color}` : '', disabled: disabled, radio: !multi, label: opt.label, value: valueMap[vid] === true, onChange: () => this.handleCheck(vid) }));
         })));
     }
 }

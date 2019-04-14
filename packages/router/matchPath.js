@@ -20,8 +20,8 @@ function compilePath(path, options) {
 }
 function matchPath(pathname, opt = { path: '' }) {
     let options = typeof opt === 'string' ? { path: opt } : opt;
-    const { path, exact = false, strict = false, sensitive = false } = options;
-    const paths = [].concat(path);
+    const { exact = false, strict = false, sensitive = false } = options;
+    const paths = [options.path];
     return paths.reduce((matched, path) => {
         if (matched)
             return matched;

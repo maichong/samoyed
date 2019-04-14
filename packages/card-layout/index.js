@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const classnames = require("classnames");
-const _ = require("lodash");
 const app_1 = require("@samoyed/app");
 class CardLayout extends React.Component {
     constructor(props) {
@@ -69,7 +68,7 @@ class CardLayout extends React.Component {
         if (typeof animation === 'string') {
             animation = { type: animation };
         }
-        if (!_.isEqual(animation, prevState.animation)) {
+        if (animation !== prevState.animation) {
             state.animation = animation;
         }
         return state;

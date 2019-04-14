@@ -87,7 +87,7 @@ class Swtich extends React.Component {
             let cls = 'btn';
             let vid = utils_1.getOptionValue(o);
             if (valueMap[vid]) {
-                cls += (o.color ? ' active btn-' + o.color : ' active btn-success');
+                cls += (o.color ? ` active btn-${o.color}` : ' active btn-success');
             }
             else {
                 cls += ' btn-light';

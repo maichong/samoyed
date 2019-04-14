@@ -18,13 +18,13 @@ function create(type) {
         options = options || {};
         let btns = options.buttons;
         if (!btns) {
-            btns = [{ text: tr([type + '_button_OK', 'button_OK', 'OK']), color: 'primary' }];
+            btns = [{ text: tr([`${type}_button_OK`, 'button_OK', 'OK']), color: 'primary' }];
             if (type !== 'alert') {
-                btns.unshift({ text: tr([type + '_button_cancel', 'button_cancel', 'Cancel']) });
+                btns.unshift({ text: tr([`${type}_button_cancel`, 'button_cancel', 'Cancel']) });
             }
         }
         return new Promise((resolve) => {
-            let buttons = btns.map((btn, index) => (React.createElement("button", { key: index, className: 'btn btn-' + (btn.color || 'light'), onClick: () => handle(index) }, btn.text)));
+            let buttons = btns.map((btn, index) => (React.createElement("button", { key: index, className: `btn btn-${btn.color || 'light'}`, onClick: () => handle(index) }, btn.text)));
             let item = {
                 id: random(),
                 type,

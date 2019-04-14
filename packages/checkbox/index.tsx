@@ -18,7 +18,7 @@ export default class Checkbox extends React.Component<CheckboxProps> {
       disabled,
       label
     } = this.props;
-    className = 'checkbox ' + className;
+    className = `checkbox ${className}`;
     if (disabled) {
       className += ' disabled';
     }

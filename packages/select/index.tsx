@@ -208,7 +208,7 @@ export default class Select extends React.Component<SelectProps, SelectState> {
       // @ts-ignore
       props.isValidNewOption = (inputValue: string, selectValue: any, selectOptions: SelectOption[]) => {
         return inputValue && !selectOptions
-          .map(option => option.label)
+          .map((option) => option.label)
           .includes(inputValue);
       };
     } else if (loadOptions) {

@@ -11,7 +11,7 @@ export default class Route extends React.Component<RouteProps> {
   render() {
     return (
       <RouterContext.Consumer>
-        {context => {
+        {(context) => {
 
           let { children, component, render, entries, last, previous, active } = this.props;
           const location = this.props.location || context.location;
