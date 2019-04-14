@@ -9,7 +9,7 @@ export interface CardLayoutProps extends React.HTMLAttributes<Element> {
   /**
    * div ref
    */
-  elRef?: React.Ref<any>;
+  elRef?: (instance: any | null) => void;
   /**
    * 子组件列表
    */
@@ -17,7 +17,7 @@ export interface CardLayoutProps extends React.HTMLAttributes<Element> {
   /**
    * 当前激活的子组件
    */
-  active?: number;
+  activeItem?: number;
   /**
    * 子组件切换动画
    */

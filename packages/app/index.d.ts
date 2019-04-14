@@ -3,6 +3,7 @@ import { Layout } from '@samoyed/types';
 
 export interface Defaults {
   switchAnimationDuration: number;
+  animationDuration: number;
 }
 
 export class App {

@@ -5,6 +5,7 @@ import Switch from './Switch';
 import Modal from './Modal';
 import Toast from './Toast';
 import TooltipWrapper from './TooltipWrapper';
+import Layout from './Layout';
 
 export default {
   Checkbox,
@@ -14,4 +15,5 @@ export default {
   Modal,
   Toast,
   'Tooltip Wrapper': TooltipWrapper,
+  Layout,
 };

@@ -49,3 +49,11 @@ h2 {
     opacity: 0.5;
   }
 }
+
+.layout-box {
+  border: solid 5px #aaa;
+  height: 8rem;
+  .item {
+    color: #fff;
+  }
+}

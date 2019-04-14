@@ -1,5 +1,5 @@
 @mixin animation-duration($time) {
-  &.s-duration-#{$time} {
+  &.s-active.s-duration-#{$time} {
     >.s-active,
     >.s-last {
       transition-duration: #{$time}ms;
@@ -21,6 +21,11 @@
       transition-duration: .3s;
     }
   }
+  &.s-done {
+    >.s-last {
+      display: none;
+    }
+  }
   @include animation-duration(100);
   @include animation-duration(200);
   @include animation-duration(300);
@@ -31,6 +36,10 @@
   @include animation-duration(800);
   @include animation-duration(900);
   @include animation-duration(1000);
+  @include animation-duration(2000);
+  @include animation-duration(3000);
+  @include animation-duration(4000);
+  @include animation-duration(5000);
   &.s-forward {
     >.s-last {
       z-index: 0;
@@ -52,6 +61,12 @@
 /* Cover效果 */
 
 .s-animation.s-cover.s-horizontal {
+  &.s-active {
+    >.s-active,
+    >.s-last {
+      transition-property: left;
+    }
+  }
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
     /* 新页面初始情况下在外部 */
@@ -62,7 +77,6 @@
   /* 新页面开始滑入 */
   &.s-forward.s-active {
     >.s-active {
-      transition-property: left;
       left: 0;
     }
   }
@@ -75,13 +89,18 @@
   /* 老页面开始滑出 */
   &.s-backward.s-active {
     >.s-last {
-      transition-property: left;
       left: 100%;
     }
   }
 }
 
 .s-animation.s-cover.s-vertical {
+  &.s-active {
+    >.s-active,
+    >.s-last {
+      transition-property: top;
+    }
+  }
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
     /* 新页面初始情况下在外部 */
@@ -92,7 +111,6 @@
   /* 新页面开始滑入 */
   &.s-forward.s-active {
     >.s-active {
-      transition-property: top;
       top: 0;
     }
   }
@@ -105,7 +123,6 @@
   /* 老页面开始滑出 */
   &.s-backward.s-active {
     >.s-last {
-      transition-property: top;
       top: 100%;
     }
   }
@@ -114,6 +131,12 @@
 /* Cover Fade效果 */
 
 .s-animation.s-cover-fade.s-horizontal {
+  &.s-active {
+    >.s-active,
+    >.s-last {
+      transition-property: left, opacity;
+    }
+  }
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
     /* 新页面初始情况下在外部 */
@@ -125,7 +148,6 @@
   /* 新页面开始滑入 */
   &.s-forward.s-active {
     >.s-active {
-      transition-property: left, opacity;
       left: 0;
       opacity: 1;
     }
@@ -140,7 +162,6 @@
   /* 老页面开始滑出 */
   &.s-backward.s-active {
     >.s-last {
-      transition-property: left, opacity;
       left: 50%;
       opacity: 0;
     }
@@ -148,6 +169,12 @@
 }
 
 .s-animation.s-cover-fade.s-vertical {
+  &.s-active {
+    >.s-active,
+    >.s-last {
+      transition-property: top, opacity;
+    }
+  }
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
     /* 新页面初始情况下在外部 */
@@ -159,7 +186,6 @@
   /* 新页面开始滑入 */
   &.s-forward.s-active {
     >.s-active {
-      transition-property: top, opacity;
       top: 0;
       opacity: 1;
     }
@@ -174,7 +200,6 @@
   /* 老页面开始滑出 */
   &.s-backward.s-active {
     >.s-last {
-      transition-property: top, opacity;
       top: 50%;
       opacity: 0;
     }
@@ -184,6 +209,12 @@
 /* Fade效果 */
 
 .s-animation.s-fade {
+  &.s-active {
+    >.s-active,
+    >.s-last {
+      transition-property: opacity;
+    }
+  }
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
     /* 新页面初始情况下不可见 */
@@ -194,7 +225,6 @@
   /* 新页面开始载入 */
   &.s-forward.s-active {
     >.s-active {
-      transition-property: opacity;
       opacity: 1;
     }
   }
@@ -207,7 +237,6 @@
   /* 老页面开始滑出 */
   &.s-backward.s-active {
     >.s-last {
-      transition-property: opacity;
       opacity: 0;
     }
   }
@@ -216,6 +245,12 @@
 /* Slide 效果 */
 
 .s-animation.s-slide.s-horizontal {
+  &.s-active {
+    >.s-active,
+    >.s-last {
+      transition-property: left;
+    }
+  }
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
     /* 新页面初始情况下在外部 */
@@ -229,11 +264,9 @@
   /* 新页面开始滑入 */
   &.s-forward.s-active {
     >.s-active {
-      transition-property: left;
       left: 0;
     }
     >.s-last {
-      transition-property: left;
       left: -100%;
     }
   }
@@ -254,17 +287,21 @@
   /* 老页面开始滑出 */
   &.s-backward.s-active {
     >.s-active {
-      transition-property: left;
       left: 0;
     }
     >.s-last {
-      transition-property: left;
       left: 100%;
     }
   }
 }
 
 .s-animation.s-slide.s-vertical {
+  &.s-active {
+    >.s-active,
+    >.s-last {
+      transition-property: top;
+    }
+  }
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
     /* 新页面初始情况下在外部 */
@@ -278,11 +315,9 @@
   /* 新页面开始滑入 */
   &.s-forward.s-active {
     >.s-active {
-      transition-property: top;
       top: 0;
     }
     >.s-last {
-      transition-property: top;
       top: -100%;
     }
   }
@@ -303,11 +338,9 @@
   /* 老页面开始滑出 */
   &.s-backward.s-active {
     >.s-active {
-      transition-property: top;
       top: 0;
     }
     >.s-last {
-      transition-property: top;
       top: 100%;
     }
   }

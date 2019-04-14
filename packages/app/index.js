@@ -4,6 +4,7 @@ class App {
     constructor() {
         this.views = {};
         this.defaults = {
+            animationDuration: 300,
             switchAnimationDuration: 300,
         };
     }

@@ -14,23 +14,29 @@ const classnames = require("classnames");
 const app_1 = require("@samoyed/app");
 class Box extends React.Component {
     render() {
-        const _a = this.props, { children, className, innerClassName, elRef, innerRef, layout, flex, scrollable, previous, last, active } = _a, others = __rest(_a, ["children", "className", "innerClassName", "elRef", "innerRef", "layout", "flex", "scrollable", "previous", "last", "active"]);
+        const _a = this.props, { children, className, innerClassName, elRef, innerRef, layout, activeItem, animation, flex, scrollable, previous, last, active } = _a, others = __rest(_a, ["children", "className", "innerClassName", "elRef", "innerRef", "layout", "activeItem", "animation", "flex", "scrollable", "previous", "last", "active"]);
+        let layoutProps = {
+            ref: innerRef
+        };
         let LayoutComponent = 'div';
         let layoutClassName = `s-layout-${layout || 'vbox'}`;
         if (layout === 'card') {
             LayoutComponent = app_1.default.views.CardLayout;
             layoutClassName = '';
+            layoutProps.activeItem = activeItem;
+            layoutProps.animation = animation;
             if (!LayoutComponent) {
                 throw new Error('@samoyed/card-layout must be required!');
             }
         }
+        layoutProps.className = classnames('s-box-inner', innerClassName, layoutClassName, { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' }, { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' });
         return (React.createElement("div", Object.assign({ ref: elRef, className: classnames('s-box', className, {
                 's-flex': !!flex,
                 's-previous': previous,
                 's-last': last,
                 's-active': active,
             }) }, others),
-            React.createElement(LayoutComponent, { ref: innerRef, className: classnames('s-box-inner', innerClassName, layoutClassName, { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' }, { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' }) }, children)));
+            React.createElement(LayoutComponent, Object.assign({}, layoutProps), children)));
     }
 }
 exports.default = Box;
