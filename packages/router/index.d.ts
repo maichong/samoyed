@@ -11,7 +11,7 @@ export interface Match<Params extends { [K in keyof Params]?: string } = {}> {
   url: string;
 }
 
-export interface RouterChildContext<Params extends { [K in keyof Params]?: string } = {}> {
+export interface RouterChildContext<Params extends { [K in keyof Params]?: string } = {}, C extends StaticContext = StaticContext> {
   freeEntries: (list: Array<H.Location | H.LocationKey>) => void;
   action: H.Action;
   history: H.History;
@@ -22,16 +22,17 @@ export interface RouterChildContext<Params extends { [K in keyof Params]?: strin
   last?: H.Location;
   location: H.Location;
   match: Match<Params>;
+  staticContext?: C;
 }
 
-export interface RouteChildrenProps<Params extends { [K in keyof Params]?: string } = {}, S = H.LocationState> {
-  history: H.History;
-  location: H.Location<S>;
-  match: Match<Params>;
-  previous?: boolean;
-  last?: boolean;
-  active?: boolean;
-}
+// export interface RouteChildrenProps<Params extends { [K in keyof Params]?: string } = {}, S = H.LocationState> {
+//   history: H.History;
+//   location: H.Location<S>;
+//   match: Match<Params>;
+//   previous?: boolean;
+//   last?: boolean;
+//   active?: boolean;
+// }
 
 export interface RouteComponentProps<Params extends { [K in keyof Params]?: string } = {}, C extends StaticContext = StaticContext, S = H.LocationState> {
   history: H.History;
@@ -81,7 +82,7 @@ export interface RouteProps {
   location?: H.Location;
   component?: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
   render?: ((props: RouteComponentProps<any>) => React.ReactNode);
-  children?: ((props: RouteChildrenProps<any>) => React.ReactNode) | React.ReactNode;
+  children?: ((props: RouteComponentProps<any>) => React.ReactNode) | React.ReactNode;
   // TODO: string | string[]
   path?: string;
   exact?: boolean;
@@ -130,6 +131,7 @@ export interface RedirectProps {
   path?: string;
   exact?: boolean;
   strict?: boolean;
+  computedMatch?: Match<any>;
 }
 
 export class Redirect extends React.Component<RedirectProps> {

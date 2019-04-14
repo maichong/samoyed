@@ -61,7 +61,7 @@ export default class Router extends React.Component<RouterProps, State> {
     this._isMounted = true;
 
     if (this._pendingLocation) {
-      this.setState({ location: this._pendingLocation });
+      this.setState({ location: this._pendingLocation, entries: [this._pendingLocation] });
     }
   }
 
@@ -74,7 +74,7 @@ export default class Router extends React.Component<RouterProps, State> {
     if (!location.key) {
       location.key = random();
     }
-    console.log(action, history.length, location);
+    // console.log(action, history.length, location, this._isMounted);
     if (this._isMounted) {
       let entries = this.state.entries;
       let type: H.Action = 'PUSH';
@@ -89,13 +89,15 @@ export default class Router extends React.Component<RouterProps, State> {
           type = 'POP';
         }
       }
-
       if (type === 'POP') {
         entries.pop();
-      } else {
+      } else if (type === 'PUSH') {
         entries = entries.concat(location);
+      } else {
+        // replace
+        entries[entries.length - 1] = location;
       }
-      console.log(...entries);
+      // console.log(...entries);
       this.setState({
         action: type,
         length: history.length,

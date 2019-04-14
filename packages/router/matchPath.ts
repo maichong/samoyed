@@ -1,5 +1,6 @@
 import * as pathToRegexp from 'path-to-regexp';
 import { ObjectMap } from '@samoyed/types';
+import { Match } from '.';
 
 interface MatchOptions {
   path?: string;
@@ -46,14 +47,14 @@ function compilePath(path: string, options: CompileOptions) {
 /**
  * Public API for matching a URL pathname to a path.
  */
-export default function matchPath(pathname: string, opt: string | MatchOptions = { path: '' }) {
+export default function matchPath(pathname: string, opt: string | MatchOptions = { path: '' }): Match<any> | null {
   let options: MatchOptions = typeof opt === 'string' ? { path: opt } : opt;
 
   const { exact = false, strict = false, sensitive = false } = options;
 
   const paths = [options.path];
 
-  return paths.reduce((matched, path) => {
+  return paths.reduce((matched: Match<any>, path) => {
     if (matched) return matched;
     const { regexp, keys } = compilePath(path, {
       end: exact,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import RouterContext from './RouterContext';
 import matchPath from './matchPath';
-import { RouteProps, RouterChildContext, RouteChildrenProps } from '.';
+import { RouteProps, RouterChildContext, RouteComponentProps } from '.';
 
 function isEmptyChildren(children: any) {
   return React.Children.count(children) === 0;
@@ -30,7 +30,7 @@ export default class Route extends React.Component<RouteProps> {
             match,
             entries: entries || context.entries
           };
-          const childProps: RouteChildrenProps = {
+          const childProps: RouteComponentProps = {
             history: context.history,
             location,
             match,

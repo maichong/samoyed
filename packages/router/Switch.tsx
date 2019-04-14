@@ -4,6 +4,7 @@ import * as classnames from 'classnames';
 import app from '@samoyed/app';
 import { Animation } from '@samoyed/types';
 import RouterContext from './RouterContext';
+import Redirect from './Redirect';
 import matchPath from './matchPath';
 import { SwitchProps, Match, RouteProps } from '.';
 
@@ -70,6 +71,7 @@ export default class Switch extends React.Component<SwitchProps> {
     return (
       <RouterContext.Consumer>
         {(context) => {
+          // console.error('------------ refresh ---------------', context);
           const routesWithEntries: RouteWithEntries[] = [];
           const entriesWithRoute: EntryWithRoute[] = [];
           const entriesKeys: H.LocationKey[] = [];
@@ -81,11 +83,10 @@ export default class Switch extends React.Component<SwitchProps> {
             for (let i in routes) {
               let route = routes[i];
               // @ts-ignore
-              const path = route.props.path || route.props.from;
+              const path = route.props.path || route.props.from || '/';
               let match = matchPath(entry.pathname, { ...route.props, path });
               if (match) {
-                // @ts-ignore
-                return { entry, route, routeIndex: i, match };
+                return { entry, route, routeIndex: Number(i), match };
               }
             }
             return { entry, routeIndex: -1 };
@@ -129,6 +130,8 @@ export default class Switch extends React.Component<SwitchProps> {
             }
           });
 
+          // console.warn({ routesWithEntries, entriesWithRoute, needFree });
+
           if (needFree.length) {
             setTimeout(() => context.freeEntries(needFree));
           }
@@ -136,21 +139,27 @@ export default class Switch extends React.Component<SwitchProps> {
           let children: React.ReactElement[] = [];
 
           let item = entriesWithRoute[entriesWithRoute.length - 1];
-          if (item.route) {
+          // console.log('item', item);
+          let route = item.route;
+          if (route.type === Redirect && item.entry.key !== context.globalLocation.key) {
+            // Redirect
+            route = null;
+          }
+          if (route) {
+            // console.warn('active', item);
             children.push(React.cloneElement(item.route, {
               key: 'active',
               active: true,
               location: item.entry,
               entries: (routesWithEntries[item.routeIndex]).entries.map((e) => e.entry),
             }));
-          } else {
-            // redirect
           }
 
           if (animation.type) {
             const last = context.last;
             let previousEntryRoute = entriesWithRoute[entriesWithRoute.length - 2];
             if (previousEntryRoute && previousEntryRoute.route) {
+              // console.warn('previous', previousEntryRoute);
               children.push(React.cloneElement(previousEntryRoute.route, {
                 key: 'previous',
                 previous: true,
@@ -170,6 +179,7 @@ export default class Switch extends React.Component<SwitchProps> {
                 this.animationAction = 'backward';
                 if (lastEntryRoute.route) {
                   this.last = lastEntryRoute.entry;
+                  // console.warn('last', lastEntryRoute);
                   children.push(React.cloneElement(lastEntryRoute.route, {
                     key: 'last',
                     last: true,

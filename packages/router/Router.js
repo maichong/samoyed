@@ -16,7 +16,6 @@ class Router extends React.Component {
             if (!location.key) {
                 location.key = random();
             }
-            console.log(action, history.length, location);
             if (this._isMounted) {
                 let entries = this.state.entries;
                 let type = 'PUSH';
@@ -36,10 +35,12 @@ class Router extends React.Component {
                 if (type === 'POP') {
                     entries.pop();
                 }
-                else {
+                else if (type === 'PUSH') {
                     entries = entries.concat(location);
                 }
-                console.log(...entries);
+                else {
+                    entries[entries.length - 1] = location;
+                }
                 this.setState({
                     action: type,
                     length: history.length,
@@ -81,7 +82,7 @@ class Router extends React.Component {
     componentDidMount() {
         this._isMounted = true;
         if (this._pendingLocation) {
-            this.setState({ location: this._pendingLocation });
+            this.setState({ location: this._pendingLocation, entries: [this._pendingLocation] });
         }
     }
     componentWillUnmount() {

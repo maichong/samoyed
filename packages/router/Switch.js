@@ -4,6 +4,7 @@ const React = require("react");
 const classnames = require("classnames");
 const app_1 = require("@samoyed/app");
 const RouterContext_1 = require("./RouterContext");
+const Redirect_1 = require("./Redirect");
 const matchPath_1 = require("./matchPath");
 class Switch extends React.Component {
     constructor() {
@@ -50,10 +51,10 @@ class Switch extends React.Component {
             function getEntryRoute(entry) {
                 for (let i in routes) {
                     let route = routes[i];
-                    const path = route.props.path || route.props.from;
+                    const path = route.props.path || route.props.from || '/';
                     let match = matchPath_1.default(entry.pathname, Object.assign({}, route.props, { path }));
                     if (match) {
-                        return { entry, route, routeIndex: i, match };
+                        return { entry, route, routeIndex: Number(i), match };
                     }
                 }
                 return { entry, routeIndex: -1 };
@@ -95,15 +96,17 @@ class Switch extends React.Component {
             }
             let children = [];
             let item = entriesWithRoute[entriesWithRoute.length - 1];
-            if (item.route) {
+            let route = item.route;
+            if (route.type === Redirect_1.default && item.entry.key !== context.globalLocation.key) {
+                route = null;
+            }
+            if (route) {
                 children.push(React.cloneElement(item.route, {
                     key: 'active',
                     active: true,
                     location: item.entry,
                     entries: (routesWithEntries[item.routeIndex]).entries.map((e) => e.entry),
                 }));
-            }
-            else {
             }
             if (animation.type) {
                 const last = context.last;
