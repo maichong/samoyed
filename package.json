@@ -5,7 +5,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "precommit": "tsc && npm run eslint",
+    "precommit": "tsc --noEmit && npm run eslint",
     "postinstall": "find node_modules -type f -name '*.ts*' | grep -v '\\.d.ts' | xargs rm -f",
     "eslint": "eslint --ext .ts,.tsx ./",
     "fix": "eslint --ext .tsx,.ts --fix ./",
