@@ -106,13 +106,22 @@ export interface RouteProps {
 export class Route extends React.Component<RouteProps> {
 }
 
-export interface LinkProps {
+export interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  to: H.LocationDescriptor;
+  replace?: boolean;
+  innerRef?: (node: HTMLAnchorElement | null) => void;
 }
 
 export class Link extends React.Component<LinkProps> {
 }
 
-export interface NavLinkProps {
+export interface NavLinkProps extends LinkProps {
+  activeClassName?: string;
+  activeStyle?: React.CSSProperties;
+  exact?: boolean;
+  strict?: boolean;
+  isActive?<Params extends { [K in keyof Params]?: string }>(match: Match<Params>, location: H.Location): boolean;
+  location?: H.Location;
 }
 
 export class NavLink extends React.Component<NavLinkProps> {

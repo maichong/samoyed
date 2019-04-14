@@ -41,7 +41,7 @@ export default class Route extends React.Component<RouteProps> {
 
           if (typeof children === 'function') {
             // @ts-ignore
-            children = child(childProps);
+            children = children(childProps);
 
             if (typeof children === 'undefined') {
               children = null;

@@ -9,6 +9,8 @@ export default function Redirect({ computedMatch, to, push = false }: RedirectPr
   return (
     <RouterContext.Consumer>
       {(context: RouterChildContext) => {
+        if (!context || !context.history) throw new Error('You should not use <Redirect> outside a <Router>');
+
         const { history, staticContext } = context;
 
         const method = push ? history.push : history.replace;

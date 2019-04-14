@@ -7,6 +7,8 @@ const Lifecycle_1 = require("./Lifecycle");
 const generatePath_1 = require("./generatePath");
 function Redirect({ computedMatch, to, push = false }) {
     return (React.createElement(RouterContext_1.default.Consumer, null, (context) => {
+        if (!context || !context.history)
+            throw new Error('You should not use <Redirect> outside a <Router>');
         const { history, staticContext } = context;
         const method = push ? history.push : history.replace;
         const location = history_1.createLocation(computedMatch

@@ -17,6 +17,8 @@ function withRouter(Component) {
     const C = (props) => {
         const { wrappedComponentRef } = props, remainingProps = __rest(props, ["wrappedComponentRef"]);
         return (React.createElement(RouterContext_1.default.Consumer, null, (context) => {
+            if (!context || !context.history)
+                throw new Error('You should not use <withRouter> outside a <Router>');
             return (React.createElement(Component, Object.assign({}, remainingProps, context, { ref: wrappedComponentRef })));
         }));
     };

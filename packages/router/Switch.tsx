@@ -71,6 +71,8 @@ export default class Switch extends React.Component<SwitchProps> {
     return (
       <RouterContext.Consumer>
         {(context) => {
+          if (!context || !context.history) throw new Error('You should not use <Switch> outside a <Router>');
+
           // console.error('------------ refresh ---------------', context);
           const routesWithEntries: RouteWithEntries[] = [];
           const entriesWithRoute: EntryWithRoute[] = [];

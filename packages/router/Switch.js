@@ -43,6 +43,8 @@ class Switch extends React.Component {
         this.animation = animation;
         const duration = this.animation.duration || app_1.default.defaults.switchAnimationDuration;
         return (React.createElement(RouterContext_1.default.Consumer, null, (context) => {
+            if (!context || !context.history)
+                throw new Error('You should not use <Switch> outside a <Router>');
             const routesWithEntries = [];
             const entriesWithRoute = [];
             const entriesKeys = [];

@@ -11,6 +11,8 @@ export default function withRouter<P extends RouteComponentProps<any>>(Component
     return (
       <RouterContext.Consumer>
         {(context: RouterChildContext) => {
+          if (!context || !context.history) throw new Error('You should not use <withRouter> outside a <Router>');
+
           return (
             <Component
               {...remainingProps}

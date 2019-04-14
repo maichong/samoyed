@@ -26,7 +26,7 @@ class Route extends React.Component {
                 previous
             };
             if (typeof children === 'function') {
-                children = child(childProps);
+                children = children(childProps);
                 if (typeof children === 'undefined') {
                     children = null;
                 }
