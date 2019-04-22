@@ -4,6 +4,7 @@ class App {
     constructor() {
         this.components = {};
         this.wrappers = {};
+        this._wrapperHooks = [];
         this.defaults = {
             animationDuration: 300,
             switchAnimationDuration: 300,

@@ -152,7 +152,7 @@ class Switch extends React.Component {
                     }
                 }
             }
-            return (React.createElement("div", { ref: this.handleRef, className: classnames('s-router-switch', {
+            return (React.createElement("div", { ref: this.handleRef, className: classnames('s-component s-router-switch', {
                     's-animation': animation.type,
                     's-vertical': animation.type && animation.direction === 'vertical',
                     's-horizontal': animation.type && animation.direction !== 'vertical',

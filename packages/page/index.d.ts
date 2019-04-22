@@ -6,5 +6,6 @@ export interface PageProps extends BoxProps {
   last?: boolean;
 }
 
-export default class Page extends React.Component<PageProps> {
-}
+declare const Page: React.FunctionComponent<PageProps>;
+
+export default Page;

@@ -5,11 +5,13 @@ export class App {
   defaults: Defaults;
   components: Components;
   wrappers: Wrappers;
+  _wrapperHooks: string[];
   is: Environments;
 
   constructor() {
     this.components = {};
     this.wrappers = {};
+    this._wrapperHooks = [];
     this.defaults = {
       animationDuration: 300,
       switchAnimationDuration: 300,

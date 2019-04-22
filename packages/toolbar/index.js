@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const classnames = require("classnames");
 const box_1 = require("@samoyed/box");
-function Page(props) {
+function Toolbar(props) {
     const { children, className, bodyClassName } = props, others = __rest(props, ["children", "className", "bodyClassName"]);
-    return (React.createElement(box_1.default, Object.assign({ className: classnames('s-page', className), bodyClassName: classnames('s-page-body', bodyClassName), layout: "vbox" }, others), children));
+    return (React.createElement(box_1.default, Object.assign({ className: classnames('s-toolbar', className), bodyClassName: classnames('s-toolbar-body', bodyClassName), layout: "hbox" }, others), children));
 }
-exports.default = Page;
+exports.default = Toolbar;

@@ -44,7 +44,7 @@ export interface InitOptions {
 }
 
 export interface Components {
-  [name: string]: React.ComponentClass<any>;
+  [name: string]: React.ComponentClass<any> | React.FunctionComponent<any>;
 }
 
 export interface Wrappers {
@@ -58,6 +58,7 @@ export class App {
   wrappers: Wrappers;
   is: Environments;
   inited: boolean;
+  _wrapperHooks: string[];
 
   init(options?: InitOptions): void;
   generateBodyClassNames(): string[];

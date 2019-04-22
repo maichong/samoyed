@@ -208,7 +208,7 @@ export default class Switch extends React.Component<SwitchProps> {
           return (
             <div
               ref={this.handleRef}
-              className={classnames('s-router-switch', {
+              className={classnames('s-component s-router-switch', {
                 's-animation': animation.type,
                 's-vertical': animation.type && animation.direction === 'vertical',
                 's-horizontal': animation.type && animation.direction !== 'vertical',

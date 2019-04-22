@@ -1,12 +1,11 @@
 {
-  "name": "@samoyed/router",
+  "name": "@samoyed/toolbar",
   "version": "0.4.0",
-  "description": "Samoyed router",
+  "description": "Samoyed toolbar",
   "keywords": [
     "samoyed",
     "react",
-    "bootstrap",
-    "router"
+    "bootstrap"
   ],
   "publishConfig": {
     "access": "public"
@@ -14,11 +13,9 @@
   "main": "index.js",
   "types": "index.d.ts",
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
-  "repository": "https://github.com/maichong/samoyed/tree/master/packages/router",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/toolbar",
   "license": "MIT",
   "dependencies": {
-    "history": "^4.9.0",
-    "hoist-non-react-statics": "^3.3.0",
-    "path-to-regexp": "^3.0.0"
+    "@samoyed/box": "^0.4.0"
   }
 }

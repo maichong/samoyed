@@ -4,5 +4,6 @@ import { BoxProps } from '@samoyed/box';
 export interface ViewportProps extends BoxProps {
 }
 
-export default class Viewport extends React.Component<ViewportProps> {
-}
+declare const Viewport: React.FunctionComponent<ViewportProps>;
+
+export default Viewport;

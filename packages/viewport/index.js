@@ -12,10 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const classnames = require("classnames");
 const box_1 = require("@samoyed/box");
-class Viewport extends React.Component {
-    render() {
-        const _a = this.props, { children, className, innerClassName } = _a, others = __rest(_a, ["children", "className", "innerClassName"]);
-        return (React.createElement(box_1.default, Object.assign({ className: classnames('s-viewport', className), innerClassName: classnames('s-viewport-inner', innerClassName) }, others), children));
-    }
+function Viewport(props) {
+    const { children, className, bodyClassName } = props, others = __rest(props, ["children", "className", "bodyClassName"]);
+    return (React.createElement(box_1.default, Object.assign({ className: classnames('s-viewport', className), bodyClassName: classnames('s-viewport-body', bodyClassName) }, others), children));
 }
 exports.default = Viewport;

@@ -1,17 +1,17 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 import Box from '@samoyed/box';
-import { PageProps } from '.';
+import { ToolbarProps } from '.';
 
-export default function Page(props: PageProps) {
+export default function Toolbar(props: ToolbarProps) {
   const {
     children, className, bodyClassName, ...others
   } = props;
   return (
     <Box
-      className={classnames('s-page', className)}
-      bodyClassName={classnames('s-page-body', bodyClassName)}
-      layout="vbox"
+      className={classnames('s-toolbar', className)}
+      bodyClassName={classnames('s-toolbar-body', bodyClassName)}
+      layout="hbox"
       {...others}
     >
       {children}
