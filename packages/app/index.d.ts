@@ -32,6 +32,10 @@ export interface Environments {
   landscape?: boolean;
   portrait?: boolean;
   touch?: boolean;
+  sm?: boolean;
+  md?: boolean;
+  lg?: boolean;
+  xl?: boolean;
 }
 
 export interface InitOptions {
@@ -39,14 +43,19 @@ export interface InitOptions {
   touch?: boolean;
 }
 
-export interface Views {
+export interface Components {
   [name: string]: React.ComponentClass<any>;
+}
+
+export interface Wrappers {
+  [name: string]: React.ComponentClass<any>[];
 }
 
 export class App {
   options: InitOptions;
   defaults: Defaults;
-  views: Views;
+  components: Components;
+  wrappers: Wrappers;
   is: Environments;
   inited: boolean;
 

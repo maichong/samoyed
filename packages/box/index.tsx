@@ -6,8 +6,8 @@ import { BoxProps } from '.';
 export default class Box extends React.Component<BoxProps> {
   render() {
     const {
-      children, className, innerClassName, elRef, innerRef, layout, activeItem, animation,
-      flex, scrollable, previous, last, active, ...others
+      children, className, innerClassName, elRef, innerRef, flex, scrollable, layout, activeItem, animation,
+      previous, last, active, wrapper, wrapperProps, ...others
     } = this.props;
 
     let layoutProps: any = {
@@ -17,7 +17,7 @@ export default class Box extends React.Component<BoxProps> {
     let LayoutComponent: React.ComponentClass<any> | string = 'div';
     let layoutClassName = `s-layout-${layout || 'vbox'}`;
     if (layout === 'card') {
-      LayoutComponent = app.views.CardLayout;
+      LayoutComponent = app.components.CardLayout;
       layoutClassName = '';
       layoutProps.activeItem = activeItem;
       layoutProps.animation = animation;
@@ -34,7 +34,7 @@ export default class Box extends React.Component<BoxProps> {
       { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' },
     );
 
-    return (
+    let el = (
       <div
         ref={elRef}
         className={classnames(
@@ -54,5 +54,18 @@ export default class Box extends React.Component<BoxProps> {
         </LayoutComponent>
       </div>
     );
+
+    if (wrapper) {
+      let wrappers = app.wrappers[wrapper];
+      if (wrappers && wrappers.length) {
+        el = wrappers.reduce(
+          (c, Wrapper) => React.createElement(Wrapper, wrapperProps, c),
+          el
+        );
+      }
+    }
+    return el;
   }
 }
+
+app.components.Box = Box;

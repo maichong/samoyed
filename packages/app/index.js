@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class App {
     constructor() {
-        this.views = {};
+        this.components = {};
+        this.wrappers = {};
         this.defaults = {
             animationDuration: 300,
             switchAnimationDuration: 300,
@@ -18,7 +19,8 @@ class App {
         options = options || {};
         this.options = options;
         const ssr = typeof window === 'undefined';
-        let ua = options.userAgent || (ssr ? '' : window.navigator.userAgent);
+        const ua = options.userAgent || (ssr ? '' : window.navigator.userAgent);
+        const width = ssr ? 1 : window.innerWidth;
         let is = {
             ssr,
             mac: false,
@@ -44,7 +46,11 @@ class App {
             ie11: false,
             landscape: ssr ? true : (window.innerWidth >= window.innerHeight),
             portrait: ssr ? false : (window.innerWidth < window.innerHeight),
-            touch: false
+            touch: false,
+            sm: width >= 576 && width < 768,
+            md: width >= 768 && width < 992,
+            lg: width >= 992 && width < 1200,
+            xl: width >= 1200
         };
         is.ipad = !is.ie && /iPad/i.test(ua);
         is.iphone = !is.ie && /iPhone/i.test(ua);
@@ -78,23 +84,49 @@ class App {
             return;
         window.document.body.classList.add(...this.generateBodyClassNames());
         if (is.desktop) {
-            window.addEventListener('resize', () => {
-                let landscape = window.innerWidth >= window.innerHeight;
-                if (landscape === is.landscape)
-                    return;
-                is.landscape = landscape;
-                is.portrait = !landscape;
-                const classList = window.document.body.classList;
-                if (landscape) {
-                    classList.remove('s-portrait');
-                    classList.add('s-landscape');
-                }
-                else {
-                    classList.remove('s-landscape');
-                    classList.add('s-portrait');
-                }
-            });
+            this._watchSize();
         }
+    }
+    _watchSize() {
+        let me = this;
+        function toggleSize(name, min, max) {
+            let bool = window.innerWidth >= min && window.innerWidth < max;
+            if (me.is[name] === bool)
+                return;
+            me.is[name] = bool;
+            let className = `s-${name}`;
+            let classList = window.document.body.classList;
+            if (bool) {
+                classList.add(className);
+            }
+            else {
+                classList.remove(className);
+            }
+        }
+        let w = window.innerWidth;
+        window.addEventListener('resize', () => {
+            if (w !== window.innerWidth) {
+                toggleSize('sm', 576, 768);
+                toggleSize('md', 768, 992);
+                toggleSize('lg', 992, 1200);
+                toggleSize('xl', 1200, Infinity);
+            }
+            w = window.innerWidth;
+            let landscape = window.innerWidth >= window.innerHeight;
+            if (landscape === this.is.landscape)
+                return;
+            this.is.landscape = landscape;
+            this.is.portrait = !landscape;
+            const classList = window.document.body.classList;
+            if (landscape) {
+                classList.remove('s-portrait');
+                classList.add('s-landscape');
+            }
+            else {
+                classList.remove('s-landscape');
+                classList.add('s-portrait');
+            }
+        });
     }
     generateBodyClassNames() {
         let classNames = ['powered-by-samoyed', 'maichong-software', 'https://maichong.it', 's-samoyed'];
@@ -108,7 +140,4 @@ class App {
 }
 exports.App = App;
 const app = new App();
-if (typeof window !== 'undefined') {
-    window.sapp = app;
-}
 exports.default = app;

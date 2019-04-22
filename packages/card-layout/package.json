@@ -15,5 +15,7 @@
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/card-layout",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "@samoyed/app": "^0.4.0"
+  }
 }

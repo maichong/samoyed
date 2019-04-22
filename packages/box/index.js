@@ -14,14 +14,14 @@ const classnames = require("classnames");
 const app_1 = require("@samoyed/app");
 class Box extends React.Component {
     render() {
-        const _a = this.props, { children, className, innerClassName, elRef, innerRef, layout, activeItem, animation, flex, scrollable, previous, last, active } = _a, others = __rest(_a, ["children", "className", "innerClassName", "elRef", "innerRef", "layout", "activeItem", "animation", "flex", "scrollable", "previous", "last", "active"]);
+        const _a = this.props, { children, className, innerClassName, elRef, innerRef, flex, scrollable, layout, activeItem, animation, previous, last, active, wrapper, wrapperProps } = _a, others = __rest(_a, ["children", "className", "innerClassName", "elRef", "innerRef", "flex", "scrollable", "layout", "activeItem", "animation", "previous", "last", "active", "wrapper", "wrapperProps"]);
         let layoutProps = {
             ref: innerRef
         };
         let LayoutComponent = 'div';
         let layoutClassName = `s-layout-${layout || 'vbox'}`;
         if (layout === 'card') {
-            LayoutComponent = app_1.default.views.CardLayout;
+            LayoutComponent = app_1.default.components.CardLayout;
             layoutClassName = '';
             layoutProps.activeItem = activeItem;
             layoutProps.animation = animation;
@@ -30,13 +30,21 @@ class Box extends React.Component {
             }
         }
         layoutProps.className = classnames('s-box-inner', innerClassName, layoutClassName, { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' }, { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' });
-        return (React.createElement("div", Object.assign({ ref: elRef, className: classnames('s-box', className, {
+        let el = (React.createElement("div", Object.assign({ ref: elRef, className: classnames('s-box', className, {
                 's-flex': !!flex,
                 's-previous': previous,
                 's-last': last,
                 's-active': active,
             }) }, others),
             React.createElement(LayoutComponent, Object.assign({}, layoutProps), children)));
+        if (wrapper) {
+            let wrappers = app_1.default.wrappers[wrapper];
+            if (wrappers && wrappers.length) {
+                el = wrappers.reduce((c, Wrapper) => React.createElement(Wrapper, wrapperProps, c), el);
+            }
+        }
+        return el;
     }
 }
 exports.default = Box;
+app_1.default.components.Box = Box;

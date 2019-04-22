@@ -7,7 +7,7 @@
 }
 
 .s-layout-fit {
-  &>* {
+  &>.s-box {
     position: absolute;
     top: 0;
     left: 0;
@@ -18,7 +18,8 @@
 
 .s-layout-card {
   flex-direction: row;
-  &>div {
+
+  &>.s-box {
     display: block;
     position: absolute;
     top: 0;

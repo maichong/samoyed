@@ -1,7 +1,17 @@
 import * as React from 'react';
 import { Layout, AnimationType, Animation } from '@samoyed/types';
 
+declare module '@samoyed/app' {
+  export interface Components {
+    Box?: React.ComponentClass<BoxProps>;
+  }
+}
+
 export interface BoxProps extends React.HTMLAttributes<Element> {
+  /**
+   * 子节点
+   */
+  childen?: React.ReactNode | React.ReactNode[];
   /**
    * Box外层样式类
    */
@@ -19,6 +29,14 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
    */
   innerRef?: (instance: any | null) => void;
   /**
+   * Box 滚动
+   */
+  scrollable?: 'both' | 'horizontal' | 'vertical' | false;
+  /**
+   * 是否自动伸缩，如果为true，则自动添加 s-flex 样式类
+   */
+  flex?: boolean;
+  /**
    * 布局方式
    */
   layout?: Layout;
@@ -27,15 +45,29 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
    */
   activeItem?: number;
   /**
-   * 子组件切换动画
+   * Card layout 子组件切换动画
    */
   animation?: AnimationType | Animation;
-  childen?: React.ReactNode | React.ReactNode[];
-  scrollable?: 'both' | 'horizontal' | 'vertical' | false;
-  flex?: boolean;
-  previous?: boolean;
-  last?: boolean;
+  /**
+   * 当前Box是否激活状态，如果为true，则自动添加 s-active 样式类，用于过度动画
+   */
   active?: boolean;
+  /**
+   * 是否为前一个激活Box，如果为true，则自动添加 s-previous 样式类，用于过度动画
+   */
+  previous?: boolean;
+  /**
+   * 是否为上一个激活Box，如果为true，则自动添加 s-last 样式类，用于过度动画
+   */
+  last?: boolean;
+  /**
+   * Box包裹层
+   */
+  wrapper?: string;
+  /**
+   * Box包裹层组件Props
+   */
+  wrapperProps?: any;
 }
 
 export default class Box extends React.Component<BoxProps> {
