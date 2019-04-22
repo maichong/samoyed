@@ -7,8 +7,20 @@ class App {
             animationDuration: 300,
             switchAnimationDuration: 300,
         };
-        let ua = window.navigator.userAgent;
+        this.is = {
+            ssr: typeof window === 'undefined'
+        };
+    }
+    get inited() {
+        return !!this.options;
+    }
+    init(options) {
+        options = options || {};
+        this.options = options;
+        const ssr = typeof window === 'undefined';
+        let ua = options.userAgent || (ssr ? '' : window.navigator.userAgent);
         let is = {
+            ssr,
             mac: false,
             windows: /Windows NT|Windows Phone/i.test(ua),
             linux: false,
@@ -30,8 +42,9 @@ class App {
             ie9: false,
             ie10: false,
             ie11: false,
-            landscape: window.innerWidth >= window.innerHeight,
-            portrait: window.innerWidth < window.innerHeight,
+            landscape: ssr ? true : (window.innerWidth >= window.innerHeight),
+            portrait: ssr ? false : (window.innerWidth < window.innerHeight),
+            touch: false
         };
         is.ipad = !is.ie && /iPad/i.test(ua);
         is.iphone = !is.ie && /iPhone/i.test(ua);
@@ -45,6 +58,7 @@ class App {
         is.linux = !is.android && /Linux/i.test(ua);
         is.tablet = is.ipad || (is.android && !/Mobile/.test(ua));
         is.phone = !is.desktop && !is.tablet;
+        is.touch = options.touch || is.phone || is.tablet;
         if (is.ie) {
             if (/MSIE 8/.test(ua)) {
                 is.ie8 = true;
@@ -60,6 +74,9 @@ class App {
             }
         }
         this.is = is;
+        if (ssr)
+            return;
+        window.document.body.classList.add(...this.generateBodyClassNames());
         if (is.desktop) {
             window.addEventListener('resize', () => {
                 let landscape = window.innerWidth >= window.innerHeight;
@@ -79,16 +96,19 @@ class App {
             });
         }
     }
-    init() {
-        const body = window.document.body;
-        body.classList.add('powered-by-samoyed', 'maichong-software', 'https://maichong.it', 's-samoyed');
+    generateBodyClassNames() {
+        let classNames = ['powered-by-samoyed', 'maichong-software', 'https://maichong.it', 's-samoyed'];
         for (let key in this.is) {
             if (this.is[key]) {
-                body.classList.add(`s-${key}`);
+                classNames.push(`s-${key}`);
             }
         }
+        return classNames;
     }
 }
 exports.App = App;
 const app = new App();
+if (typeof window !== 'undefined') {
+    window.sapp = app;
+}
 exports.default = app;

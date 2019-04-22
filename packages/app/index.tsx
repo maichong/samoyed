@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Defaults, Environments } from '.';
+import { Defaults, Environments, InitOptions } from '.';
 
 export class App {
+  options: InitOptions;
   defaults: Defaults;
   views: {
     [name: string]: React.ComponentClass<any>;
@@ -14,8 +15,24 @@ export class App {
       animationDuration: 300,
       switchAnimationDuration: 300,
     };
-    let ua = window.navigator.userAgent;
+    this.is = {
+      ssr: typeof window === 'undefined'
+    };
+  }
+
+  get inited() {
+    return !!this.options;
+  }
+
+  init(options?: InitOptions) {
+    options = options || {};
+    this.options = options;
+    const ssr = typeof window === 'undefined';
+
+    let ua = options.userAgent || (ssr ? '' : window.navigator.userAgent);
+
     let is: Environments = {
+      ssr,
       mac: false,
       windows: /Windows NT|Windows Phone/i.test(ua),
       linux: false,
@@ -37,9 +54,11 @@ export class App {
       ie9: false,
       ie10: false,
       ie11: false,
-      landscape: window.innerWidth >= window.innerHeight,
-      portrait: window.innerWidth < window.innerHeight,
+      landscape: ssr ? true : (window.innerWidth >= window.innerHeight),
+      portrait: ssr ? false : (window.innerWidth < window.innerHeight),
+      touch: false
     };
+
     is.ipad = !is.ie && /iPad/i.test(ua);
     is.iphone = !is.ie && /iPhone/i.test(ua);
     is.android = !is.ie && /Android/i.test(ua);
@@ -52,6 +71,7 @@ export class App {
     is.linux = !is.android && /Linux/i.test(ua);
     is.tablet = is.ipad || (is.android && !/Mobile/.test(ua));
     is.phone = !is.desktop && !is.tablet;
+    is.touch = options.touch || is.phone || is.tablet;
 
     if (is.ie) {
       if (/MSIE 8/.test(ua)) {
@@ -66,6 +86,10 @@ export class App {
     }
 
     this.is = is;
+
+    if (ssr) return;
+
+    window.document.body.classList.add(...this.generateBodyClassNames());
 
     if (is.desktop) {
       window.addEventListener('resize', () => {
@@ -85,18 +109,25 @@ export class App {
     }
   }
 
-  init() {
-    const body: HTMLElement = window.document.body;
-    body.classList.add('powered-by-samoyed', 'maichong-software', 'https://maichong.it', 's-samoyed');
+  generateBodyClassNames(): string[] {
+    let classNames = ['powered-by-samoyed', 'maichong-software', 'https://maichong.it', 's-samoyed'];
+
     for (let key in this.is) {
       // @ts-ignore indexer
       if (this.is[key]) {
-        body.classList.add(`s-${key}`);
+        classNames.push(`s-${key}`);
       }
     }
+
+    return classNames;
   }
 }
 
 const app = new App();
+
+if (typeof window !== 'undefined') {
+  // @ts-ignore
+  window.sapp = app;
+}
 
 export default app;

@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { Layout, Animation, AnimationType } from '@samoyed/types';
 
+declare module '@samoyed/app' {
+  export interface Views {
+    CardLayout: React.ComponentClass<CardLayoutProps>;
+  }
+}
+
 export interface CardLayoutProps extends React.HTMLAttributes<Element> {
   /**
    * 样式类

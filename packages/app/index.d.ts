@@ -7,6 +7,7 @@ export interface Defaults {
 }
 
 export interface Environments {
+  ssr?: boolean;
   mac?: boolean;
   windows?: boolean;
   linux?: boolean;
@@ -33,14 +34,24 @@ export interface Environments {
   touch?: boolean;
 }
 
-export class App {
-  defaults: Defaults;
-  views: {
-    [name: string]: React.ComponentClass<any>;
-  };
-  is: Environments;
+export interface InitOptions {
+  userAgent?: string;
+  touch?: boolean;
+}
 
-  init(): void;
+export interface Views {
+  [name: string]: React.ComponentClass<any>;
+}
+
+export class App {
+  options: InitOptions;
+  defaults: Defaults;
+  views: Views;
+  is: Environments;
+  inited: boolean;
+
+  init(options?: InitOptions): void;
+  generateBodyClassNames(): string[];
 }
 
 declare const app: App;
