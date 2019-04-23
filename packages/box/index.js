@@ -37,7 +37,7 @@ function Box(props) {
         }) }, others),
         React.createElement(LayoutComponent, Object.assign({}, layoutProps), children)));
     if (wrapper) {
-        if (app_1.default._wrapperHooks.indexOf(wrapper) == -1) {
+        if (app_1.default._wrapperHooks.indexOf(wrapper) === -1) {
             app_1.default._wrapperHooks.push(wrapper);
         }
         let wrappers = app_1.default.wrappers[wrapper];

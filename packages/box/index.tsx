@@ -56,7 +56,7 @@ export default function Box(props: BoxProps) {
   );
 
   if (wrapper) {
-    if (app._wrapperHooks.indexOf(wrapper) == -1) {
+    if (app._wrapperHooks.indexOf(wrapper) === -1) {
       app._wrapperHooks.push(wrapper);
     }
     let wrappers = app.wrappers[wrapper];
