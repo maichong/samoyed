@@ -1,5 +1,6 @@
 @mixin animation-duration($time) {
   &.s-active.s-duration-#{$time} {
+
     >.s-active,
     >.s-last {
       transition-duration: #{$time}ms;
@@ -8,24 +9,29 @@
 }
 
 .s-animation {
+
   /* 正在进行动画时，上个页面可见 */
   &.s-start,
   &.s-active {
     >.s-last {
-      display: block;
+      visibility: visible;
     }
   }
+
   &.s-active {
+
     >.s-active,
     >.s-last {
       transition-duration: .3s;
     }
   }
+
   &.s-done {
     >.s-last {
-      display: none;
+      visibility: hidden;
     }
   }
+
   @include animation-duration(100);
   @include animation-duration(200);
   @include animation-duration(300);
@@ -40,18 +46,22 @@
   @include animation-duration(3000);
   @include animation-duration(4000);
   @include animation-duration(5000);
+
   &.s-forward {
     >.s-last {
       z-index: 0;
     }
+
     >.s-active {
       z-index: 1;
     }
   }
+
   &.s-backward {
     >.s-last {
       z-index: 1;
     }
+
     >.s-active {
       z-index: 0;
     }
@@ -62,29 +72,35 @@
 
 .s-animation.s-cover.s-horizontal {
   &.s-active {
+
     >.s-active,
     >.s-last {
       transition-property: left;
     }
   }
+
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
+
     /* 新页面初始情况下在外部 */
     >.s-active {
       left: 100%;
     }
   }
+
   /* 新页面开始滑入 */
   &.s-forward.s-active {
     >.s-active {
       left: 0;
     }
   }
+
   &.s-forward.s-done {
     >.s-active {
       left: 0;
     }
   }
+
   /* 返回上一页，滑动效果 */
   /* 老页面开始滑出 */
   &.s-backward.s-active {
@@ -96,29 +112,35 @@
 
 .s-animation.s-cover.s-vertical {
   &.s-active {
+
     >.s-active,
     >.s-last {
       transition-property: top;
     }
   }
+
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
+
     /* 新页面初始情况下在外部 */
     >.s-active {
       top: 100%;
     }
   }
+
   /* 新页面开始滑入 */
   &.s-forward.s-active {
     >.s-active {
       top: 0;
     }
   }
+
   &.s-forward.s-done {
     >.s-active {
       top: 0;
     }
   }
+
   /* 返回上一页，滑动效果 */
   /* 老页面开始滑出 */
   &.s-backward.s-active {
@@ -132,19 +154,23 @@
 
 .s-animation.s-cover-fade.s-horizontal {
   &.s-active {
+
     >.s-active,
     >.s-last {
       transition-property: left, opacity;
     }
   }
+
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
+
     /* 新页面初始情况下在外部 */
     >.s-active {
       left: 50%;
       opacity: 0;
     }
   }
+
   /* 新页面开始滑入 */
   &.s-forward.s-active {
     >.s-active {
@@ -152,12 +178,14 @@
       opacity: 1;
     }
   }
+
   &.s-forward.s-done {
     >.s-active {
       left: 0;
       opacity: 1;
     }
   }
+
   /* 返回上一页，滑动效果 */
   /* 老页面开始滑出 */
   &.s-backward.s-active {
@@ -170,19 +198,23 @@
 
 .s-animation.s-cover-fade.s-vertical {
   &.s-active {
+
     >.s-active,
     >.s-last {
       transition-property: top, opacity;
     }
   }
+
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
+
     /* 新页面初始情况下在外部 */
     >.s-active {
       top: 50%;
       opacity: 0;
     }
   }
+
   /* 新页面开始滑入 */
   &.s-forward.s-active {
     >.s-active {
@@ -190,12 +222,14 @@
       opacity: 1;
     }
   }
+
   &.s-forward.s-done {
     >.s-active {
       top: 0;
       opacity: 1;
     }
   }
+
   /* 返回上一页，滑动效果 */
   /* 老页面开始滑出 */
   &.s-backward.s-active {
@@ -210,29 +244,35 @@
 
 .s-animation.s-fade {
   &.s-active {
+
     >.s-active,
     >.s-last {
       transition-property: opacity;
     }
   }
+
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
+
     /* 新页面初始情况下不可见 */
     >.s-active {
       opacity: 0;
     }
   }
+
   /* 新页面开始载入 */
   &.s-forward.s-active {
     >.s-active {
       opacity: 1;
     }
   }
+
   &.s-forward.s-done {
     >.s-active {
       opacity: 1;
     }
   }
+
   /* 返回上一页，滑动效果 */
   /* 老页面开始滑出 */
   &.s-backward.s-active {
@@ -246,49 +286,60 @@
 
 .s-animation.s-slide.s-horizontal {
   &.s-active {
+
     >.s-active,
     >.s-last {
       transition-property: left;
     }
   }
+
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
+
     /* 新页面初始情况下在外部 */
     >.s-active {
       left: 100%;
     }
+
     >.s-last {
       left: 0;
     }
   }
+
   /* 新页面开始滑入 */
   &.s-forward.s-active {
     >.s-active {
       left: 0;
     }
+
     >.s-last {
       left: -100%;
     }
   }
+
   &.s-forward.s-done {
     >.s-active {
       left: 0;
     }
   }
+
   /* 返回上一页，滑动效果 */
   &.s-backward.s-start {
     >.s-active {
       left: -100%;
     }
+
     >.s-last {
       left: 0;
     }
   }
+
   /* 老页面开始滑出 */
   &.s-backward.s-active {
     >.s-active {
       left: 0;
     }
+
     >.s-last {
       left: 100%;
     }
@@ -297,49 +348,60 @@
 
 .s-animation.s-slide.s-vertical {
   &.s-active {
+
     >.s-active,
     >.s-last {
       transition-property: top;
     }
   }
+
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
+
     /* 新页面初始情况下在外部 */
     >.s-active {
       top: 100%;
     }
+
     >.s-last {
       top: 0;
     }
   }
+
   /* 新页面开始滑入 */
   &.s-forward.s-active {
     >.s-active {
       top: 0;
     }
+
     >.s-last {
       top: -100%;
     }
   }
+
   &.s-forward.s-done {
     >.s-active {
       top: 0;
     }
   }
+
   /* 返回上一页，滑动效果 */
   &.s-backward.s-start {
     >.s-active {
       top: -100%;
     }
+
     >.s-last {
       top: 0;
     }
   }
+
   /* 老页面开始滑出 */
   &.s-backward.s-active {
     >.s-active {
       top: 0;
     }
+
     >.s-last {
       top: 100%;
     }

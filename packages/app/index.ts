@@ -9,7 +9,7 @@ export class App {
   is: Environments;
 
   constructor() {
-    this.components = {};
+    // this.components = {};
     this.wrappers = {};
     this._wrapperHooks = [];
     this.defaults = {

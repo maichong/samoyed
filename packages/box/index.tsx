@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 import app from '@samoyed/app';
+import CardLayout from '@samoyed/card-layout';
 import { BoxProps } from '.';
 
 export default function Box(props: BoxProps) {
@@ -16,7 +17,7 @@ export default function Box(props: BoxProps) {
   let LayoutComponent: React.ComponentClass<any> | string = 'div';
   let layoutClassName = `s-layout-${layout || 'auto'}`;
   if (layout === 'card') {
-    LayoutComponent = app.components.CardLayout;
+    LayoutComponent = CardLayout;
     layoutProps.activeItem = activeItem;
     layoutProps.animation = animation;
     if (!LayoutComponent) {
@@ -69,4 +70,4 @@ export default function Box(props: BoxProps) {
   return el;
 }
 
-app.components.Box = Box;
+// app.components.Box = Box;

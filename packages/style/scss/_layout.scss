@@ -20,6 +20,7 @@
 
 .s-layout-fit {
   display: flex;
+
   &>.s-box-body>.s-component {
     position: absolute;
     top: 0;
@@ -31,6 +32,7 @@
 
 .s-layout-card {
   flex-direction: row;
+  overflow: hidden;
 
   &>.s-box-body>.s-component {
     display: block;

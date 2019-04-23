@@ -116,5 +116,4 @@ class CardLayout extends React.Component {
             }), ref: this.handleRef }, children));
     }
 }
-app_1.default.components.CardLayout = CardLayout;
 exports.default = CardLayout;

@@ -54,7 +54,7 @@ export interface Wrappers {
 export class App {
   options: InitOptions;
   defaults: Defaults;
-  components: Components;
+  // components: Components;
   wrappers: Wrappers;
   is: Environments;
   inited: boolean;
