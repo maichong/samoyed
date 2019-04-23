@@ -1489,8 +1489,9 @@
   version "0.4.0"
   dependencies:
     "@samoyed/app" "^0.4.0"
+    "@samoyed/card-layout" "^0.4.0"
 
-"@samoyed/card-layout@file:packages/card-layout":
+"@samoyed/card-layout@^0.4.0", "@samoyed/card-layout@file:packages/card-layout":
   version "0.4.0"
   dependencies:
     "@samoyed/app" "^0.4.0"
@@ -1505,11 +1506,6 @@
   version "0.4.0"
   dependencies:
     "@samoyed/icon" "^0.4.0"
-
-"@samoyed/history@file:packages/history":
-  version "0.4.0"
-  dependencies:
-    history "^4.9.0"
 
 "@samoyed/icon@^0.4.0", "@samoyed/icon@file:packages/icon":
   version "0.4.0"
