@@ -16,7 +16,6 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/drawer",
   "license": "MIT",
   "dependencies": {
-    "@samoyed/box": "^0.4.0",
-    "react-hammerjs": "^1.0.1"
+    "@samoyed/app": "^0.4.0"
   }
 }

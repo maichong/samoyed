@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { BoxProps } from '@samoyed/box';
 
 type RenderFunction = () => React.ReactNode;
 
-export interface DrawerProps extends BoxProps {
+export interface DrawerProps extends React.HTMLAttributes<Element> {
   /**
    * 抽屉元素
    */
@@ -40,6 +39,16 @@ export interface DrawerProps extends BoxProps {
    * 隐藏回调，当手动滑动关闭，或点击mask区域后回调
    */
   onHide?: () => void;
+  /**
+   * 滑动边缘区域大小阈值，只有滑动边缘，才能出发抽屉打开动作，默认 0
+   * 为 0 则允许全屏出发滑动
+   */
+  dragBorderSize?: number;
+  /**
+   * 方向锁定阈值，默认 10
+   * 滑动开始后，x轴和y轴变化先到达此阈值，则锁定为该轴方向
+   */
+  directionLockThreshold?: number;
 }
 
 export default class Drawer extends React.Component<DrawerProps> {
