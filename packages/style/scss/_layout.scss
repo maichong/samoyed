@@ -22,11 +22,7 @@
   display: flex;
 
   &>.s-box-body>.s-component {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
+    @extend .s-full;
   }
 }
 
@@ -35,11 +31,7 @@
   overflow: hidden;
 
   &>.s-box-body>.s-component {
+    @extend .s-full;
     display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
   }
 }

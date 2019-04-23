@@ -62,6 +62,8 @@ export class App {
 
   init(options?: InitOptions): void;
   generateBodyClassNames(): string[];
+  on(event: 'layout-change', callback: Function): void;
+  removeEventListener(event: 'layout-change', callback: Function): void;
 }
 
 declare const app: App;

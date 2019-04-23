@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class App {
     constructor() {
+        this._listeners = [];
         this.wrappers = {};
         this._wrapperHooks = [];
         this.defaults = {
@@ -92,7 +93,7 @@ class App {
         function toggleSize(name, min, max) {
             let bool = window.innerWidth >= min && window.innerWidth < max;
             if (me.is[name] === bool)
-                return;
+                return false;
             me.is[name] = bool;
             let className = `s-${name}`;
             let classList = window.document.body.classList;
@@ -102,29 +103,34 @@ class App {
             else {
                 classList.remove(className);
             }
+            return true;
         }
         let w = window.innerWidth;
         window.addEventListener('resize', () => {
+            let changed = false;
             if (w !== window.innerWidth) {
-                toggleSize('sm', 576, 768);
-                toggleSize('md', 768, 992);
-                toggleSize('lg', 992, 1200);
-                toggleSize('xl', 1200, Infinity);
+                changed = toggleSize('sm', 576, 768);
+                changed = toggleSize('md', 768, 992) || changed;
+                changed = toggleSize('lg', 992, 1200) || changed;
+                changed = toggleSize('xl', 1200, Infinity) || changed;
             }
             w = window.innerWidth;
             let landscape = window.innerWidth >= window.innerHeight;
-            if (landscape === this.is.landscape)
-                return;
-            this.is.landscape = landscape;
-            this.is.portrait = !landscape;
-            const classList = window.document.body.classList;
-            if (landscape) {
-                classList.remove('s-portrait');
-                classList.add('s-landscape');
+            if (landscape !== this.is.landscape) {
+                this.is.landscape = landscape;
+                this.is.portrait = !landscape;
+                const classList = window.document.body.classList;
+                if (landscape) {
+                    classList.remove('s-portrait');
+                    classList.add('s-landscape');
+                }
+                else {
+                    classList.remove('s-landscape');
+                    classList.add('s-portrait');
+                }
             }
-            else {
-                classList.remove('s-landscape');
-                classList.add('s-portrait');
+            if (changed) {
+                this._listeners.forEach((fn) => fn());
             }
         });
     }
@@ -136,6 +142,16 @@ class App {
             }
         }
         return classNames;
+    }
+    on(event, callback) {
+        if (event !== 'layout-change')
+            throw new Error('Unknown event name!');
+        this._listeners.push(callback);
+    }
+    removeEventListener(event, callback) {
+        if (event !== 'layout-change')
+            throw new Error('Unknown event name!');
+        this._listeners = this._listeners.filter((fn) => fn !== callback);
     }
 }
 exports.App = App;
