@@ -20,9 +20,9 @@ export default function Box(props: BoxProps) {
     LayoutComponent = CardLayout;
     layoutProps.activeItem = activeItem;
     layoutProps.animation = animation;
-    if (!LayoutComponent) {
-      throw new Error('@samoyed/card-layout must be required!');
-    }
+    // if (!LayoutComponent) {
+    //   throw new Error('@samoyed/card-layout must be required!');
+    // }
   }
 
   layoutProps.className = classnames(

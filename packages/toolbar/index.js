@@ -14,6 +14,6 @@ const classnames = require("classnames");
 const box_1 = require("@samoyed/box");
 function Toolbar(props) {
     const { children, className, bodyClassName } = props, others = __rest(props, ["children", "className", "bodyClassName"]);
-    return (React.createElement(box_1.default, Object.assign({ className: classnames('s-toolbar', className), bodyClassName: classnames('s-toolbar-body', bodyClassName), layout: "hbox" }, others), children));
+    return (React.createElement(box_1.default, Object.assign({ className: classnames('s-toolbar', className), bodyClassName: classnames('s-toolbar-body', bodyClassName), layout: "horizontal" }, others), children));
 }
 exports.default = Toolbar;

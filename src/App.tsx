@@ -18,7 +18,7 @@ const history = H.createHashHistory();
 export default class App extends React.Component<Props, State> {
   render() {
     return (
-      <Viewport className="" layout="hbox">
+      <Viewport className="" layout="horizontal">
         <Router history={history} freeComponent="keepalive">
           <Box className="list-group menu">
             {

@@ -48,6 +48,7 @@ class App {
             landscape: ssr ? true : (window.innerWidth >= window.innerHeight),
             portrait: ssr ? false : (window.innerWidth < window.innerHeight),
             touch: false,
+            xs: width < 576,
             sm: width >= 576 && width < 768,
             md: width >= 768 && width < 992,
             lg: width >= 992 && width < 1200,
@@ -109,7 +110,8 @@ class App {
         window.addEventListener('resize', () => {
             let changed = false;
             if (w !== window.innerWidth) {
-                changed = toggleSize('sm', 576, 768);
+                changed = toggleSize('xs', 0, 576);
+                changed = toggleSize('sm', 576, 768) || changed;
                 changed = toggleSize('md', 768, 992) || changed;
                 changed = toggleSize('lg', 992, 1200) || changed;
                 changed = toggleSize('xl', 1200, Infinity) || changed;

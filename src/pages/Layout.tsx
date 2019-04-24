@@ -60,17 +60,17 @@ export default class CheckboxPage extends React.Component<RouteComponentProps, S
           `}</SyntaxHighlighter>
         </div>
 
-        <h2>vbox</h2>
+        <h2>vertical</h2>
         <div className="demo">
           <div className="preview">
-            <Box className="layout-box" layout="vbox" >
+            <Box className="layout-box" layout="vertical" >
               <Box className="item bg-danger">Red</Box>
               <Box className="item bg-success">Green</Box>
               <Box className="item bg-primary" flex>Blue</Box>
             </Box>
           </div>
           <SyntaxHighlighter style={docco}>{`
-<Box layout="vbox" >
+<Box layout="vertical" >
   <Box>Red</Box>
   <Box>Green</Box>
   <Box flex>Blue</Box>
@@ -78,17 +78,17 @@ export default class CheckboxPage extends React.Component<RouteComponentProps, S
           `}</SyntaxHighlighter>
         </div>
 
-        <h2>hbox</h2>
+        <h2>horizontal</h2>
         <div className="demo">
           <div className="preview">
-            <Box className="layout-box" layout="hbox" >
+            <Box className="layout-box" layout="horizontal" >
               <Box className="item bg-danger">Red</Box>
               <Box className="item bg-success">Green</Box>
               <Box className="item bg-primary" flex>Blue</Box>
             </Box>
           </div>
           <SyntaxHighlighter style={docco}>{`
-<Box layout="hbox" >
+<Box layout="horizontal" >
   <Box>Red</Box>
   <Box>Green</Box>
   <Box flex>Blue</Box>

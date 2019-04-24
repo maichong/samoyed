@@ -32,6 +32,7 @@ export interface Environments {
   landscape?: boolean;
   portrait?: boolean;
   touch?: boolean;
+  xs?: boolean;
   sm?: boolean;
   md?: boolean;
   lg?: boolean;

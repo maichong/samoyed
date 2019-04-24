@@ -24,9 +24,6 @@ function Box(props) {
         LayoutComponent = card_layout_1.default;
         layoutProps.activeItem = activeItem;
         layoutProps.animation = animation;
-        if (!LayoutComponent) {
-            throw new Error('@samoyed/card-layout must be required!');
-        }
     }
     layoutProps.className = classnames('s-box-body', bodyClassName, { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' }, { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' });
     let el = (React.createElement("div", Object.assign({ ref: elRef, className: classnames('s-component', 's-box', className, layoutClassName, {

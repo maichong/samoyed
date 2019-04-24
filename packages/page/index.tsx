@@ -11,7 +11,7 @@ export default function Page(props: PageProps) {
     <Box
       className={classnames('s-page', className)}
       bodyClassName={classnames('s-page-body', bodyClassName)}
-      layout="vbox"
+      layout="vertical"
       {...others}
     >
       {children}

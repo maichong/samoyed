@@ -11,7 +11,7 @@ export default function Toolbar(props: ToolbarProps) {
     <Box
       className={classnames('s-toolbar', className)}
       bodyClassName={classnames('s-toolbar-body', bodyClassName)}
-      layout="hbox"
+      layout="horizontal"
       {...others}
     >
       {children}

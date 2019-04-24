@@ -14,6 +14,6 @@ const classnames = require("classnames");
 const box_1 = require("@samoyed/box");
 function Page(props) {
     const { children, className, bodyClassName } = props, others = __rest(props, ["children", "className", "bodyClassName"]);
-    return (React.createElement(box_1.default, Object.assign({ className: classnames('s-page', className), bodyClassName: classnames('s-page-body', bodyClassName), layout: "vbox" }, others), children));
+    return (React.createElement(box_1.default, Object.assign({ className: classnames('s-page', className), bodyClassName: classnames('s-page-body', bodyClassName), layout: "vertical" }, others), children));
 }
 exports.default = Page;
