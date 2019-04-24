@@ -1,5 +1,11 @@
 import * as React from 'react';
 
+declare module '@samoyed/app' {
+  export interface Components {
+    Drawer?: React.ComponentClass<DrawerProps>;
+  }
+}
+
 type RenderFunction = () => React.ReactNode;
 
 export interface DrawerProps extends React.HTMLAttributes<Element> {

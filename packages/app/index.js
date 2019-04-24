@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class App {
     constructor() {
+        this.components = {};
         this._listeners = [];
         this.wrappers = {};
         this._wrapperHooks = [];

@@ -16,7 +16,6 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/box",
   "license": "MIT",
   "dependencies": {
-    "@samoyed/app": "^0.4.0",
-    "@samoyed/card-layout": "^0.4.0"
+    "@samoyed/app": "^0.4.0"
   }
 }

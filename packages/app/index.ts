@@ -10,7 +10,7 @@ export class App {
   _listeners: Function[];
 
   constructor() {
-    // this.components = {};
+    this.components = {};
     this._listeners = [];
     this.wrappers = {};
     this._wrapperHooks = [];

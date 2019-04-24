@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const classnames = require("classnames");
 const app_1 = require("@samoyed/app");
-const card_layout_1 = require("@samoyed/card-layout");
 function Box(props) {
     const { children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation, previous, last, active, wrapper, wrapperProps } = props, others = __rest(props, ["children", "className", "bodyClassName", "elRef", "bodyRef", "flex", "scrollable", "layout", "activeItem", "animation", "previous", "last", "active", "wrapper", "wrapperProps"]);
     let layoutProps = {
@@ -21,7 +20,10 @@ function Box(props) {
     let LayoutComponent = 'div';
     let layoutClassName = `s-layout-${layout || 'auto'}`;
     if (layout === 'card') {
-        LayoutComponent = card_layout_1.default;
+        LayoutComponent = app_1.default.components.CardLayout;
+        if (!LayoutComponent) {
+            throw new Error('@samoyed/card-layout must be required!');
+        }
         layoutProps.activeItem = activeItem;
         layoutProps.animation = animation;
     }
@@ -45,3 +47,4 @@ function Box(props) {
     return el;
 }
 exports.default = Box;
+app_1.default.components.Box = Box;

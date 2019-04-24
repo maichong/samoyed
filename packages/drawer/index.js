@@ -319,3 +319,4 @@ Drawer.defaultProps = {
     directionLockThreshold: 10,
 };
 exports.default = Drawer;
+app_1.default.components.Drawer = Drawer;

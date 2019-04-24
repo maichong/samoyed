@@ -380,3 +380,5 @@ export default class Drawer extends React.Component<DrawerProps> {
     );
   }
 }
+
+app.components.Drawer = Drawer;

@@ -146,6 +146,6 @@ class CardLayout extends React.Component<CardLayoutProps, State> {
   }
 }
 
-// app.components.CardLayout = CardLayout;
+app.components.CardLayout = CardLayout;
 
 export default CardLayout;
