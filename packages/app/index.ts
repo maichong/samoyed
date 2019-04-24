@@ -1,19 +1,21 @@
-import { Defaults, Environments, InitOptions, Components, Wrappers } from '.';
+import { Store } from 'redux';
+import { Defaults, Environments, InitOptions, Components, Wrappers, Actions } from '.';
 
 export class App {
+  store: Store;
   is: Environments;
   options: InitOptions;
   defaults: Defaults;
+  actions: Actions;
   components: Components;
   wrappers: Wrappers;
   _wrapperHooks: string[];
   _listeners: Function[];
 
   constructor() {
+    this.actions = {};
     this.components = {};
-    this._listeners = [];
     this.wrappers = {};
-    this._wrapperHooks = [];
     this.defaults = {
       animationDuration: 300,
       switchAnimationDuration: 300,
@@ -21,6 +23,8 @@ export class App {
     this.is = {
       ssr: typeof window === 'undefined'
     };
+    this._wrapperHooks = [];
+    this._listeners = [];
   }
 
   get inited() {
@@ -173,6 +177,14 @@ export class App {
   removeEventListener(event: 'layout-change', callback: Function) {
     if (event !== 'layout-change') throw new Error('Unknown event name!');
     this._listeners = this._listeners.filter((fn) => fn !== callback);
+  }
+
+  addAction(name: string, actionCreator: Function): void {
+    let me = this;
+    // @ts-ignore indexer
+    this.actions[name] = function () {
+      me.store.dispatch(actionCreator.apply(me, arguments));
+    };
   }
 }
 

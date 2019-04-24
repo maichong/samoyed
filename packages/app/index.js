@@ -2,10 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class App {
     constructor() {
+        this.actions = {};
         this.components = {};
-        this._listeners = [];
         this.wrappers = {};
-        this._wrapperHooks = [];
         this.defaults = {
             animationDuration: 300,
             switchAnimationDuration: 300,
@@ -13,6 +12,8 @@ class App {
         this.is = {
             ssr: typeof window === 'undefined'
         };
+        this._wrapperHooks = [];
+        this._listeners = [];
     }
     get inited() {
         return !!this.options;
@@ -155,6 +156,12 @@ class App {
         if (event !== 'layout-change')
             throw new Error('Unknown event name!');
         this._listeners = this._listeners.filter((fn) => fn !== callback);
+    }
+    addAction(name, actionCreator) {
+        let me = this;
+        this.actions[name] = function () {
+            me.store.dispatch(actionCreator.apply(me, arguments));
+        };
     }
 }
 exports.App = App;

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Layout } from '@samoyed/types';
+import { Store } from 'redux';
 
 export interface Defaults {
   switchAnimationDuration: number;
@@ -52,6 +53,9 @@ export interface Wrappers {
   [name: string]: React.ComponentClass<any>[];
 }
 
+export interface Actions {
+}
+
 export class App {
   options: InitOptions;
   defaults: Defaults;
@@ -59,12 +63,15 @@ export class App {
   wrappers: Wrappers;
   is: Environments;
   inited: boolean;
+  store: Store;
+  actions: Actions;
   _wrapperHooks: string[];
 
   init(options?: InitOptions): void;
   generateBodyClassNames(): string[];
   on(event: 'layout-change', callback: Function): void;
   removeEventListener(event: 'layout-change', callback: Function): void;
+  addAction(name: string, actionCreator: Function): void;
 }
 
 declare const app: App;
