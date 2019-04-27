@@ -8,7 +8,7 @@ export interface ObjectMap<T> {
 /**
  * Box布局方式
  */
-export type Layout = 'fit' | 'card' | 'horizontal' | 'vertical';
+export type Layout = 'fit' | 'card' | 'horizontal' | 'vertical' | 'auto' | 'none';
 
 /**
  * 位置

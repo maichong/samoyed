@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 import app from '@samoyed/app';
+import Box from '@samoyed/box';
 import { DrawerProps } from '.';
 
 interface Position {
@@ -32,13 +33,12 @@ export default class Drawer extends React.Component<DrawerProps> {
     directionLockThreshold: 10,
   };
 
-  placement: string;
-  elRef: HTMLDivElement;
+  bodyRef: HTMLDivElement;
   drawerRef: HTMLDivElement;
-  continerRef: HTMLDivElement;
+  containerRef: HTMLDivElement = null;
   maskRef: HTMLDivElement;
-  // drawerHeight: number = 0;
-  // drawerWidth: number = 0;
+  drawerHeight: number = 0;
+  drawerWidth: number = 0;
   dragging: boolean = false;
   draggingLock: boolean | null;
   draggingDirection: boolean;
@@ -60,21 +60,6 @@ export default class Drawer extends React.Component<DrawerProps> {
     bottom: false
   };
 
-  get drawerHeight(): number {
-    if (this.drawerRef) {
-      console.log('this.drawerRef.children[0].clientHeight', this.drawerRef.children[0].clientHeight);
-      return this.drawerRef.children[0].clientHeight;
-    }
-    return 800;
-  }
-
-  get drawerWidth(): number {
-    if (this.drawerRef) {
-      return this.drawerRef.children[0].clientWidth;
-    }
-    return 800;
-  }
-
   getStyles(): Styles {
     const { mode, show, placement } = this.props;
     let drawer = { transform: '' };
@@ -83,8 +68,8 @@ export default class Drawer extends React.Component<DrawerProps> {
     if (mode === 'slide') {
       let drawerPos: PositionString = { x: '0', y: '0' };
       let containerPos: PositionString = { x: '0', y: '0' };
-      let drawerHeight = this.drawerHeight || 800;
-      let drawerWidth = this.drawerWidth || 800;
+      let drawerHeight = this.drawerHeight;
+      let drawerWidth = this.drawerWidth;
       if (show) {
         switch (placement) {
           case 'top':
@@ -124,12 +109,16 @@ export default class Drawer extends React.Component<DrawerProps> {
   }
 
   updateStyles() {
-    let { styles, continerRef, maskRef, drawerRef, _styles } = this;
+    let { styles, containerRef, maskRef, drawerRef, _styles } = this;
     let { contianer, drawer, mask } = styles;
-    if (continerRef && contianer.transform !== _styles.container) {
-      continerRef.style.transform = contianer.transform;
+
+    // update container style
+    if (containerRef && contianer.transform !== _styles.container) {
+      containerRef.style.transform = contianer.transform;
       _styles.container = contianer.transform;
     }
+
+    // update mask style
     if (maskRef && (contianer.transform !== _styles.maskTransform || mask.opacity !== _styles.maskOpacity || mask.display !== _styles.maskDisplay)) {
       maskRef.style.display = mask.display;
       // fix 出现时，mask突然出现、没有动画的bug
@@ -149,19 +138,44 @@ export default class Drawer extends React.Component<DrawerProps> {
       }
       _styles.maskDisplay = mask.display;
     }
+
+    // update drawer style
     if (drawerRef && drawer.transform !== _styles.drawer) {
       drawerRef.style.transform = drawer.transform;
       _styles.drawer = drawer.transform;
     }
   }
 
-  handleRef = (r: HTMLDivElement) => {
-    this.elRef = r;
+  handelDrawerResize = (rect: ClientRect) => {
+    let changed = false;
+    if (rect.height !== this.drawerHeight) {
+      this.drawerHeight = rect.height;
+      changed = true;
+    }
+    if (rect.width !== this.drawerWidth) {
+      this.drawerWidth = rect.width;
+      changed = true;
+    }
+    if (changed) {
+      this.styles = this.getStyles();
+      this.updateStyles();
+    }
+  };
+
+  handleBodyRef = (r: HTMLDivElement) => {
+    this.bodyRef = r;
+    if (this.props.bodyRef) {
+      this.props.bodyRef(r);
+    }
   };
 
   handleDrawerRef = (r: HTMLDivElement) => {
     let init = !this.drawerRef;
     this.drawerRef = r;
+    const drawerProps = this.props.drawerProps || {};
+    if (drawerProps.elRef) {
+      drawerProps.elRef(r);
+    }
     if (!r) return;
     if (init) {
       this.styles = this.getStyles();
@@ -170,8 +184,12 @@ export default class Drawer extends React.Component<DrawerProps> {
     this.updateStyles();
   };
 
-  handleContianerRef = (r: HTMLDivElement) => {
-    this.continerRef = r;
+  handleContainerRef = (r: HTMLDivElement) => {
+    this.containerRef = r;
+    const containerProps = this.props.containerProps || {};
+    if (containerProps.elRef) {
+      containerProps.elRef(r);
+    }
     if (!r) return;
     this._styles.container = null;
     this.updateStyles();
@@ -187,7 +205,7 @@ export default class Drawer extends React.Component<DrawerProps> {
   };
 
   handleStart = (e: any) => {
-    if (e.touches.length > 1 || !this.drawerRef || !this.elRef) return;
+    if (e.touches.length > 1 || !this.drawerRef || !this.bodyRef) return;
     let { draggable, show, placement, onShow, onHide, dragBorderSize } = this.props;
     draggable = typeof draggable === 'undefined' ? app.is.touch : draggable;
     if (!draggable) return;
@@ -221,7 +239,7 @@ export default class Drawer extends React.Component<DrawerProps> {
     this.dragging = true;
     this.draggingDirection = true;
     this.draggingLock = null;
-    this.elRef.classList.add('s-dragging');
+    this.bodyRef.classList.add('s-dragging');
     // console.log(this.draggingDirection);
   };
 
@@ -317,9 +335,9 @@ export default class Drawer extends React.Component<DrawerProps> {
 
   handleEnd = (e: any) => {
     // console.log('handleEnd', this);
-    if (!this.dragging || !this.elRef) return;
+    if (!this.dragging || !this.bodyRef) return;
     this.dragging = false;
-    this.elRef.classList.remove('s-dragging');
+    this.bodyRef.classList.remove('s-dragging');
     let { draggingDirection, draggingLock } = this;
     if (!draggingLock) return;
     let { show, onShow, onHide, placement } = this.props;
@@ -336,7 +354,7 @@ export default class Drawer extends React.Component<DrawerProps> {
 
   render() {
     let {
-      drawer, children, className, containerClassName, drawerClassName,
+      drawer, children, className, bodyClassName, containerProps = {}, drawerProps = {},
       placement, draggable, mode, show, onShow, onHide, directionLockThreshold, dragBorderSize,
       ...others
     } = this.props;
@@ -349,18 +367,6 @@ export default class Drawer extends React.Component<DrawerProps> {
     }
 
     draggable = typeof draggable === 'undefined' ? app.is.touch : draggable;
-
-    if (placement !== this.placement) {
-      this.placement = placement;
-      // let r = this.drawerRef;
-      // if (r) {
-      //   this.drawerHeight = r.children[0].clientHeight;
-      //   this.drawerWidth = r.children[0].clientWidth;
-      // }
-    }
-
-    // @ts-ignore
-    window.test = this;
 
     // fix 消失动画 mask 会突然消失
     let lastMaskDisplay = this.styles ? this.styles.mask.display : 'none';
@@ -376,9 +382,8 @@ export default class Drawer extends React.Component<DrawerProps> {
     this.updateStyles();
 
     return (
-      <div
+      <Box
         className={classnames(
-          's-component',
           's-drawer',
           `s-drawer-${placement}`,
           `s-drawer-${mode}`,
@@ -388,26 +393,32 @@ export default class Drawer extends React.Component<DrawerProps> {
           },
           className
         )}
-        ref={this.handleRef}
+        bodyClassName={classnames('s-drawer-body', bodyClassName)}
+        {...others}
+        bodyRef={this.handleBodyRef}
         onTouchStart={draggable ? this.handleStart : null}
         onTouchMove={draggable ? this.handleMove : null}
         onTouchEnd={draggable ? this.handleEnd : null}
-        {...others}
+        layout="none"
       >
-        <div
-          ref={this.handleDrawerRef}
-          className={classnames('s-drawer-drawer', drawerClassName)}
+        <Box
+          layout="fit"
+          {...drawerProps}
+          elRef={this.handleDrawerRef}
+          className={classnames('s-drawer-drawer', drawerProps.className)}
+          onResize={this.handelDrawerResize}
         >
           {drawer}
-        </div>
+        </Box>
         <div className="s-drawer-mask" onClick={show ? onHide : null} ref={this.handleMaskRef} />
-        <div
-          className={classnames('s-drawer-contianer s-full', containerClassName)}
-          ref={this.handleContianerRef}
+        <Box
+          {...containerProps}
+          elRef={this.handleContainerRef}
+          className={classnames('s-drawer-contianer', containerProps.className)}
         >
           {children}
-        </div>
-      </div>
+        </Box>
+      </Box>
     );
   }
 }

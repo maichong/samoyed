@@ -33,18 +33,18 @@ class Box extends React.Component {
             this.props.onResize(rect);
         };
         this.handleRef = (r) => {
+            const { elRef } = this.props;
+            if (elRef) {
+                elRef(r);
+            }
             if (!this.props.onResize) {
                 this.disconnect();
                 return;
             }
-            let { elRef } = this.props;
             if ((this.observer || this.sensor) && r !== this.ref) {
                 this.disconnect();
             }
             this.ref = r;
-            if (elRef) {
-                elRef(r);
-            }
             this.init();
         };
     }
@@ -96,6 +96,8 @@ class Box extends React.Component {
             }
             layoutProps.activeItem = activeItem;
             layoutProps.animation = animation;
+        }
+        if (['card', 'none'].indexOf(layout) > -1) {
             layoutClassName = '';
         }
         layoutProps.className = classnames('s-box-body', bodyClassName, layoutClassName, { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' }, { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' });

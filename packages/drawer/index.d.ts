@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { BoxProps } from '@samoyed/box';
 import { Placement } from '@samoyed/types';
 
 declare module '@samoyed/app' {
@@ -11,7 +12,7 @@ type RenderFunction = () => React.ReactNode;
 
 export type Mode = 'cover' | 'slide';
 
-export interface DrawerProps extends React.HTMLAttributes<Element> {
+export interface DrawerProps extends BoxProps {
   /**
    * 抽屉元素
    */
@@ -28,14 +29,6 @@ export interface DrawerProps extends React.HTMLAttributes<Element> {
    * 抽屉弹出模式，默认为 cover
    */
   mode?: Mode;
-  /**
-   * 主体容器样式类
-   */
-  containerClassName?: string;
-  /**
-   * 抽屉容器样式类
-   */
-  drawerClassName?: string;
   /**
    * 当前是否可见
    */
@@ -58,6 +51,14 @@ export interface DrawerProps extends React.HTMLAttributes<Element> {
    * 滑动开始后，x轴和y轴变化先到达此阈值，则锁定为该轴方向
    */
   directionLockThreshold?: number;
+  /**
+   * 抽屉组件Props
+   */
+  drawerProps?: BoxProps;
+  /**
+   * 内容组件Props
+   */
+  containerProps?: BoxProps;
 }
 
 export default class Drawer extends React.Component<DrawerProps> {

@@ -40,6 +40,9 @@ export default class CheckboxPage extends React.Component<RouteComponentProps, S
           onHide={() => this.setState({ show: false })}
           onShow={() => this.setState({ show: true })}
           drawer={<div className="drawer-content">drawer</div>}
+          containerProps={{
+            scrollable: 'vertical'
+          }}
         >
 
           <h1>Drawer</h1>

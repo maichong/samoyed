@@ -70,18 +70,18 @@ export default class Box extends React.Component<BoxProps> {
   };
 
   handleRef = (r: HTMLElement) => {
+    const { elRef } = this.props;
+    if (elRef) {
+      elRef(r);
+    }
     if (!this.props.onResize) {
       this.disconnect();
       return;
     }
-    let { elRef } = this.props;
     if ((this.observer || this.sensor) && r !== this.ref) {
       this.disconnect();
     }
     this.ref = r;
-    if (elRef) {
-      elRef(r);
-    }
     this.init();
   };
 
@@ -104,6 +104,9 @@ export default class Box extends React.Component<BoxProps> {
       }
       layoutProps.activeItem = activeItem;
       layoutProps.animation = animation;
+    }
+
+    if (['card', 'none'].indexOf(layout) > -1) {
       layoutClassName = '';
     }
 
