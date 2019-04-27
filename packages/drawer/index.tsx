@@ -66,14 +66,14 @@ export default class Drawer extends React.Component<DrawerProps> {
       return this.drawerRef.children[0].clientHeight;
     }
     return 800;
-  };
+  }
 
   get drawerWidth(): number {
     if (this.drawerRef) {
       return this.drawerRef.children[0].clientWidth;
     }
     return 800;
-  };
+  }
 
   getStyles(): Styles {
     const { mode, show, placement } = this.props;
@@ -88,16 +88,16 @@ export default class Drawer extends React.Component<DrawerProps> {
       if (show) {
         switch (placement) {
           case 'top':
-            containerPos.y = drawerHeight + 'px';
+            containerPos.y = `${drawerHeight}px`;
             break;
           case 'bottom':
-            containerPos.y = -drawerHeight + 'px';
+            containerPos.y = `${-drawerHeight}px`;
             break;
           case 'left':
-            containerPos.x = drawerWidth + 'px';
+            containerPos.x = `${drawerWidth}px`;
             break;
           case 'right':
-            containerPos.x = -drawerWidth + 'px';
+            containerPos.x = `${-drawerWidth}px`;
             break;
         }
       } else {

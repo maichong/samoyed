@@ -215,14 +215,12 @@ class Drawer extends React.Component {
         }
         return 800;
     }
-    ;
     get drawerWidth() {
         if (this.drawerRef) {
             return this.drawerRef.children[0].clientWidth;
         }
         return 800;
     }
-    ;
     getStyles() {
         const { mode, show, placement } = this.props;
         let drawer = { transform: '' };
@@ -236,16 +234,16 @@ class Drawer extends React.Component {
             if (show) {
                 switch (placement) {
                     case 'top':
-                        containerPos.y = drawerHeight + 'px';
+                        containerPos.y = `${drawerHeight}px`;
                         break;
                     case 'bottom':
-                        containerPos.y = -drawerHeight + 'px';
+                        containerPos.y = `${-drawerHeight}px`;
                         break;
                     case 'left':
-                        containerPos.x = drawerWidth + 'px';
+                        containerPos.x = `${drawerWidth}px`;
                         break;
                     case 'right':
-                        containerPos.x = -drawerWidth + 'px';
+                        containerPos.x = `${-drawerWidth}px`;
                         break;
                 }
             }

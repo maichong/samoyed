@@ -1,20 +1,24 @@
 
 import * as React from 'react';
-import Checkbox from '@samoyed/checkbox';
+import { Placement } from '@samoyed/types';
 import Page from '@samoyed/page';
 import Box from '@samoyed/box';
+import Switch from '@samoyed/switch';
 import { RouteComponentProps } from '@samoyed/router';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 
 type State = {
   rect?: ClientRect;
+  dockedPlacement: Placement;
 };
 
 export default class CheckboxPage extends React.Component<RouteComponentProps, State> {
   constructor(props: RouteComponentProps) {
     super(props);
-    this.state = {};
+    this.state = {
+      dockedPlacement: 'top'
+    };
   }
 
   render() {
@@ -53,10 +57,39 @@ export default class CheckboxPage extends React.Component<RouteComponentProps, S
           `}</SyntaxHighlighter>
         </div>
 
+        <h2>docked</h2>
+        <div className="demo">
+          <div className="preview">
+            <Box layout="horizontal" docked={<Box bodyClassName="bg-info">Title</Box>} dockedPlacement={this.state.dockedPlacement}>
+              <Box bodyClassName="bg-success">Green</Box>
+              <Box bodyClassName="bg-danger" flex>Red</Box>
+            </Box>
+            <Switch
+              className="mt-2"
+              options={[
+                { label: 'Left', value: 'left' },
+                { label: 'Right', value: 'right' },
+                { label: 'Top', value: 'top' },
+                { label: 'Bottom', value: 'bottom' },
+              ]}
+              value={this.state.dockedPlacement}
+              onChange={(v) => this.setState({ dockedPlacement: v })}
+            />
+          </div>
+          <SyntaxHighlighter style={docco}>{`
+<Box 
+  docked={<Box bodyClassName="bg-info">Title</Box>}
+  dockedPlacement="${this.state.dockedPlacement}"
+>
+  // ...
+</Box>
+          `}</SyntaxHighlighter>
+        </div>
+
         <h2>onResize</h2>
         <div className="demo">
           <div className="preview">
-            <Box onResize={(rect) => this.setState({ rect })}>
+            <Box onResize={(r) => this.setState({ rect: r })}>
               <div className="p-2 bg-info">Box</div>
             </Box>
             {rect && <div>Width: {rect.width}</div>}

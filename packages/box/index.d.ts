@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Layout, AnimationType, Animation } from '@samoyed/types';
+import { Layout, AnimationType, Animation, Placement } from '@samoyed/types';
 
 declare module '@samoyed/app' {
   export interface Components {
@@ -11,7 +11,7 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
   /**
    * 子节点
    */
-  childen?: React.ReactNode | React.ReactNode[];
+  childen?: React.ReactNode;
   /**
    * Box外层样式类
    */
@@ -28,6 +28,14 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
    * 内层div ref
    */
   bodyRef?: (instance: any | null) => void;
+  /**
+   * 停靠组件
+   */
+  docked?: React.ReactNode;
+  /**
+   * 停靠位置，默认为 top
+   */
+  dockedPlacement?: Placement;
   /**
    * Box 滚动
    */
@@ -74,5 +82,5 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
   onResize?: (rect: ClientRect) => any;
 }
 
-export default class Box extends React.Component<BoxProps>{
+export default class Box extends React.Component<BoxProps> {
 }

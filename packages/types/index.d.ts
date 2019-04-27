@@ -11,6 +11,11 @@ export interface ObjectMap<T> {
 export type Layout = 'fit' | 'card' | 'horizontal' | 'vertical';
 
 /**
+ * 位置
+ */
+export type Placement = 'top' | 'right' | 'bottom' | 'left';
+
+/**
  * Sizes
  */
 export type Sizes = 'xs' | 'xsmall' | 'sm' | 'small' | 'medium' | 'lg' | 'large';

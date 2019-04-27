@@ -9,7 +9,7 @@ const ResizeSensor: typeof ResizeSensorType = require('css-element-queries/src/R
 // @ts-ignore
 const ResizeObserver = window.ResizeObserver;
 
-export default class Box extends React.Component<BoxProps>{
+export default class Box extends React.Component<BoxProps> {
   ref: HTMLElement;
   observer: any;
   sensor: ResizeSensorType;
@@ -88,7 +88,7 @@ export default class Box extends React.Component<BoxProps>{
   render() {
     const {
       children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation,
-      previous, last, active, wrapper, wrapperProps, onResize, ...others
+      previous, last, active, wrapper, wrapperProps, onResize, docked, dockedPlacement, ...others
     } = this.props;
 
     let layoutProps: any = {
@@ -115,6 +115,11 @@ export default class Box extends React.Component<BoxProps>{
       { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' },
     );
 
+    let dockedClassName = '';
+    if (docked) {
+      dockedClassName = `s-docked-${dockedPlacement || 'top'}`;
+    }
+
     let el = (
       <div
         ref={this.handleRef}
@@ -122,6 +127,7 @@ export default class Box extends React.Component<BoxProps>{
           's-component',
           's-box',
           className,
+          dockedClassName,
           {
             's-flex': !!flex,
             's-previous': previous,
@@ -131,6 +137,7 @@ export default class Box extends React.Component<BoxProps>{
         )}
         {...others}
       >
+        {docked}
         <LayoutComponent {...layoutProps}>
           {children}
         </LayoutComponent>

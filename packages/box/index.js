@@ -83,7 +83,7 @@ class Box extends React.Component {
         }
     }
     render() {
-        const _a = this.props, { children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation, previous, last, active, wrapper, wrapperProps, onResize } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "elRef", "bodyRef", "flex", "scrollable", "layout", "activeItem", "animation", "previous", "last", "active", "wrapper", "wrapperProps", "onResize"]);
+        const _a = this.props, { children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation, previous, last, active, wrapper, wrapperProps, onResize, docked, dockedPlacement } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "elRef", "bodyRef", "flex", "scrollable", "layout", "activeItem", "animation", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "docked", "dockedPlacement"]);
         let layoutProps = {
             ref: bodyRef
         };
@@ -99,12 +99,17 @@ class Box extends React.Component {
             layoutClassName = '';
         }
         layoutProps.className = classnames('s-box-body', bodyClassName, layoutClassName, { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' }, { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' });
-        let el = (React.createElement("div", Object.assign({ ref: this.handleRef, className: classnames('s-component', 's-box', className, {
+        let dockedClassName = '';
+        if (docked) {
+            dockedClassName = `s-docked-${dockedPlacement || 'top'}`;
+        }
+        let el = (React.createElement("div", Object.assign({ ref: this.handleRef, className: classnames('s-component', 's-box', className, dockedClassName, {
                 's-flex': !!flex,
                 's-previous': previous,
                 's-last': last,
                 's-active': active,
             }) }, others),
+            docked,
             React.createElement(LayoutComponent, Object.assign({}, layoutProps), children)));
         if (wrapper) {
             if (app_1.default._wrapperHooks.indexOf(wrapper) === -1) {

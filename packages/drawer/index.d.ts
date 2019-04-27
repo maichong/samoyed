@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Placement } from '@samoyed/types';
 
 declare module '@samoyed/app' {
   export interface Components {
@@ -7,8 +8,6 @@ declare module '@samoyed/app' {
 }
 
 type RenderFunction = () => React.ReactNode;
-
-export type Placement = 'top' | 'right' | 'bottom' | 'left';
 
 export type Mode = 'cover' | 'slide';
 

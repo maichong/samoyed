@@ -1,7 +1,7 @@
 
 import * as React from 'react';
-import Box from '@samoyed/box';
-import Drawer, { Placement, Mode } from '@samoyed/drawer';
+import { Placement } from '@samoyed/types';
+import Drawer, { Mode } from '@samoyed/drawer';
 import Page from '@samoyed/page';
 import Switch from '@samoyed/switch';
 import { RouteComponentProps } from '@samoyed/router';
@@ -26,22 +26,22 @@ export default class CheckboxPage extends React.Component<RouteComponentProps, S
 
   render() {
     return (
-      <Drawer
-        show={this.state.show}
-        mode={this.state.mode}
-        placement={this.state.placement}
-        onHide={() => this.setState({ show: false })}
-        onShow={() => this.setState({ show: true })}
-        drawer={<div className="drawer-content">drawer</div>}
+      <Page
+        className="drawer-page"
+        layout="fit"
+        previous={this.props.previous}
+        last={this.props.last}
+        active={this.props.active}
       >
-
-        <Page
-          className="drawer-page"
-          scrollable="vertical"
-          previous={this.props.previous}
-          last={this.props.last}
-          active={this.props.active}
+        <Drawer
+          show={this.state.show}
+          mode={this.state.mode}
+          placement={this.state.placement}
+          onHide={() => this.setState({ show: false })}
+          onShow={() => this.setState({ show: true })}
+          drawer={<div className="drawer-content">drawer</div>}
         >
+
           <h1>Drawer</h1>
 
           <div className="demo">
@@ -87,8 +87,8 @@ export default class CheckboxPage extends React.Component<RouteComponentProps, S
 </Box>
   `}</SyntaxHighlighter>
           </div>
-        </Page>
-      </Drawer>
+        </Drawer>
+      </Page>
     );
   }
 }
