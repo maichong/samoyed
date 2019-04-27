@@ -3,7 +3,7 @@ import { Layout, AnimationType, Animation } from '@samoyed/types';
 
 declare module '@samoyed/app' {
   export interface Components {
-    Box?: React.FunctionComponent<BoxProps>;
+    Box?: React.ComponentClass<BoxProps>;
   }
 }
 
@@ -68,8 +68,11 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
    * Box包裹层组件Props
    */
   wrapperProps?: any;
+  /**
+   * 监听div宽高变化
+   */
+  onResize?: (rect: ClientRect) => any;
 }
 
-declare const Box: React.FunctionComponent<BoxProps>;
-
-export default Box;
+export default class Box extends React.Component<BoxProps>{
+}

@@ -1489,6 +1489,7 @@
   version "0.4.0"
   dependencies:
     "@samoyed/app" "^0.4.0"
+    css-element-queries "^1.1.1"
 
 "@samoyed/card-layout@file:packages/card-layout":
   version "0.4.0"
@@ -3254,6 +3255,11 @@ crypto-browserify@^3.11.0:
     public-encrypt "^4.0.0"
     randombytes "^2.0.0"
     randomfill "^1.0.3"
+
+css-element-queries@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/css-element-queries/-/css-element-queries-1.1.1.tgz#129e104ecb277aa6337b7302cbb6d511c2d1633a"
+  integrity sha512-/PX6Bkk77ShgbOx/mpawHdEvS3PGgy1mmMktcztDPndWdMJxcorcQiivrs+nEljqtBpvNEhAmQky9tQR6FSm8Q==
 
 css-loader@^2.1.1:
   version "2.1.1"

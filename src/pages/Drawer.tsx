@@ -19,7 +19,7 @@ export default class CheckboxPage extends React.Component<RouteComponentProps, S
     super(props);
     this.state = {
       show: false,
-      placement: 'top',
+      placement: 'left',
       mode: 'slide'
     };
   }

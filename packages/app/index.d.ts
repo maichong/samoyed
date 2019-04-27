@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Layout } from '@samoyed/types';
 import { Store } from 'redux';
 
+type ComponentClass<T = any> = React.ComponentClass<T> | React.FunctionComponent<T>;
+
 export interface Defaults {
   switchAnimationDuration: number;
   animationDuration: number;
@@ -46,11 +48,11 @@ export interface InitOptions {
 }
 
 export interface Components {
-  [name: string]: React.ComponentClass<any> | React.FunctionComponent<any>;
+  [name: string]: ComponentClass;
 }
 
 export interface Wrappers {
-  [name: string]: React.ComponentClass<any>[];
+  [name: string]: ComponentClass[];
 }
 
 export interface Actions {

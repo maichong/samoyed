@@ -7,8 +7,12 @@ import Toast from './Toast';
 import TooltipWrapper from './TooltipWrapper';
 import Layout from './Layout';
 import Drawer from './Drawer';
+import Box from './Box';
 
 export default {
+  Box,
+  Layout,
+  Drawer,
   Checkbox,
   'Checkbox group': CheckboxGroup,
   Select,
@@ -16,6 +20,4 @@ export default {
   Modal,
   Toast,
   'Tooltip Wrapper': TooltipWrapper,
-  Layout,
-  Drawer,
 };

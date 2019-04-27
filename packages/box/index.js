@@ -12,39 +12,111 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const classnames = require("classnames");
 const app_1 = require("@samoyed/app");
-function Box(props) {
-    const { children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation, previous, last, active, wrapper, wrapperProps } = props, others = __rest(props, ["children", "className", "bodyClassName", "elRef", "bodyRef", "flex", "scrollable", "layout", "activeItem", "animation", "previous", "last", "active", "wrapper", "wrapperProps"]);
-    let layoutProps = {
-        ref: bodyRef
-    };
-    let LayoutComponent = 'div';
-    let layoutClassName = `s-layout-${layout || 'auto'}`;
-    if (layout === 'card') {
-        LayoutComponent = app_1.default.components.CardLayout;
-        if (!LayoutComponent) {
-            throw new Error('@samoyed/card-layout must be required!');
-        }
-        layoutProps.activeItem = activeItem;
-        layoutProps.animation = animation;
+const ResizeSensor = require('css-element-queries/src/ResizeSensor');
+const ResizeObserver = window.ResizeObserver;
+class Box extends React.Component {
+    constructor() {
+        super(...arguments);
+        this.handleResize = (entries) => {
+            if (!this.props.onResize)
+                return;
+            let rect;
+            if (Array.isArray(entries)) {
+                rect = entries[0].contentRect;
+            }
+            else if (this.ref) {
+                rect = this.ref.getBoundingClientRect();
+            }
+            else {
+                rect = DOMRect.fromRect(entries);
+            }
+            this.props.onResize(rect);
+        };
+        this.handleRef = (r) => {
+            if (!this.props.onResize) {
+                this.disconnect();
+                return;
+            }
+            let { elRef } = this.props;
+            if ((this.observer || this.sensor) && r !== this.ref) {
+                this.disconnect();
+            }
+            this.ref = r;
+            if (elRef) {
+                elRef(r);
+            }
+            this.init();
+        };
     }
-    layoutProps.className = classnames('s-box-body', bodyClassName, { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' }, { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' });
-    let el = (React.createElement("div", Object.assign({ ref: elRef, className: classnames('s-component', 's-box', className, layoutClassName, {
-            's-flex': !!flex,
-            's-previous': previous,
-            's-last': last,
-            's-active': active,
-        }) }, others),
-        React.createElement(LayoutComponent, Object.assign({}, layoutProps), children)));
-    if (wrapper) {
-        if (app_1.default._wrapperHooks.indexOf(wrapper) === -1) {
-            app_1.default._wrapperHooks.push(wrapper);
+    componentDidMount() {
+        this.init();
+    }
+    componentDidUpdate() {
+        this.init();
+    }
+    componentWillUnmount() {
+        this.disconnect();
+        this.ref = null;
+    }
+    init() {
+        if (this.observer || this.sensor || !this.ref)
+            return;
+        if (!this.props.onResize) {
+            this.disconnect();
+            return;
         }
-        let wrappers = app_1.default.wrappers[wrapper];
-        if (wrappers && wrappers.length) {
-            el = wrappers.reduce((c, Wrapper) => React.createElement(Wrapper, wrapperProps, c), el);
+        if (typeof ResizeObserver === 'function') {
+            this.observer = new ResizeObserver(this.handleResize);
+            this.observer.observe(this.ref);
+            return;
+        }
+        this.sensor = new ResizeSensor(this.ref, this.handleResize);
+    }
+    disconnect() {
+        if (this.observer) {
+            this.observer.disconnect();
+            this.observer = null;
+        }
+        if (this.sensor) {
+            this.sensor.detach();
+            this.sensor = null;
         }
     }
-    return el;
+    render() {
+        const _a = this.props, { children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation, previous, last, active, wrapper, wrapperProps, onResize } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "elRef", "bodyRef", "flex", "scrollable", "layout", "activeItem", "animation", "previous", "last", "active", "wrapper", "wrapperProps", "onResize"]);
+        let layoutProps = {
+            ref: bodyRef
+        };
+        let LayoutComponent = 'div';
+        let layoutClassName = `s-layout-${layout || 'auto'}`;
+        if (layout === 'card') {
+            LayoutComponent = app_1.default.components.CardLayout;
+            if (!LayoutComponent) {
+                throw new Error('@samoyed/card-layout must be required!');
+            }
+            layoutProps.activeItem = activeItem;
+            layoutProps.animation = animation;
+            layoutClassName = '';
+        }
+        layoutProps.className = classnames('s-box-body', bodyClassName, layoutClassName, { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' }, { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' });
+        let el = (React.createElement("div", Object.assign({ ref: this.handleRef, className: classnames('s-component', 's-box', className, {
+                's-flex': !!flex,
+                's-previous': previous,
+                's-last': last,
+                's-active': active,
+            }) }, others),
+            React.createElement(LayoutComponent, Object.assign({}, layoutProps), children)));
+        if (wrapper) {
+            if (app_1.default._wrapperHooks.indexOf(wrapper) === -1) {
+                app_1.default._wrapperHooks.push(wrapper);
+            }
+            let wrappers = app_1.default.wrappers[wrapper];
+            if (wrappers && wrappers.length) {
+                el = wrappers.reduce((c, Wrapper) => React.createElement(Wrapper, wrapperProps, c), el);
+            }
+        }
+        return el;
+    }
 }
 exports.default = Box;
 app_1.default.components.Box = Box;

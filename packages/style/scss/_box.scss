@@ -1,14 +1,15 @@
-.s-box {
+.s-component {
   position: relative;
+}
+
+.s-box {
+  display: flex;
+  flex-direction: column;
 }
 
 .s-box-body {
   flex: 1;
   position: relative;
-}
-
-.s-flex {
-  flex: 1;
 }
 
 .s-scrollable-horizontal {

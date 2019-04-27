@@ -1,38 +1,23 @@
 .s-layout-vertical {
   display: flex;
   flex-direction: column;
-
-  &>.s-box-body {
-    display: flex;
-    flex-direction: column;
-  }
 }
 
 .s-layout-horizontal {
   display: flex;
-  flex-direction: column;
-
-  &>.s-box-body {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-  }
+  flex-direction: row;
+  height: 100%;
 }
 
 .s-layout-fit {
-  display: flex;
-
-  &>.s-box-body>.s-component {
+  &>.s-component {
     @extend .s-full;
   }
 }
 
 .s-layout-card {
-  display: flex;
-  flex-direction: row;
   overflow: hidden;
-
-  &>.s-box-body>.s-component {
+  &>.s-component {
     @extend .s-full;
     display: block;
   }
