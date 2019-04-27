@@ -5,6 +5,7 @@ $fa-font-path: "//cdn.bootcss.com/font-awesome/4.7.0/fonts";
 @import "~@samoyed/style/scss/samoyed.scss";
 @import "~@samoyed/toast/style.scss";
 @import "~@samoyed/image/style.scss";
+
 #app {
   background: #f6f6f6;
 }
@@ -23,9 +24,11 @@ $fa-font-path: "//cdn.bootcss.com/font-awesome/4.7.0/fonts";
 .demo {
   background: #fff;
   margin: 1rem 0;
+
   .preview {
     padding: 1rem;
   }
+
   pre {
     margin-bottom: 0;
   }
@@ -42,9 +45,11 @@ h2 {
 
 .checkbox {
   margin-right: 1rem;
+
   .fa {
     margin-right: 0.3rem;
   }
+
   &.disabled {
     opacity: 0.5;
   }
@@ -53,7 +58,31 @@ h2 {
 .layout-box {
   border: solid 5px #aaa;
   height: 8rem;
+
   .item {
     color: #fff;
+  }
+}
+
+.drawer-content {
+  background: #fff;
+  padding: 50px;
+  text-align: center;
+  line-height: 100px;
+}
+
+.s-drawer-top,
+.s-drawer-bottom {
+  .drawer-content {
+    height: 200px;
+    width: 100%;
+  }
+}
+
+.s-drawer-left,
+.s-drawer-right {
+  .drawer-content {
+    height: 100%;
+    width: 200px;
   }
 }

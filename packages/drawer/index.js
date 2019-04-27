@@ -15,8 +15,6 @@ const app_1 = require("@samoyed/app");
 class Drawer extends React.Component {
     constructor() {
         super(...arguments);
-        this.drawerHeight = 0;
-        this.drawerWidth = 0;
         this.dragging = false;
         this._styles = {};
         this.placementDirection = {
@@ -33,8 +31,6 @@ class Drawer extends React.Component {
             this.drawerRef = r;
             if (!r)
                 return;
-            this.drawerHeight = r.children[0].clientHeight;
-            this.drawerWidth = r.children[0].clientWidth;
             if (init) {
                 this.styles = this.getStyles();
             }
@@ -212,50 +208,65 @@ class Drawer extends React.Component {
             this.updateStyles();
         };
     }
+    get drawerHeight() {
+        if (this.drawerRef) {
+            console.log('this.drawerRef.children[0].clientHeight', this.drawerRef.children[0].clientHeight);
+            return this.drawerRef.children[0].clientHeight;
+        }
+        return 800;
+    }
+    ;
+    get drawerWidth() {
+        if (this.drawerRef) {
+            return this.drawerRef.children[0].clientWidth;
+        }
+        return 800;
+    }
+    ;
     getStyles() {
         const { mode, show, placement } = this.props;
         let drawer = { transform: '' };
         let contianer = { transform: '' };
         let mask = { opacity: show ? 1 : 0, display: show ? 'block' : 'none' };
         if (mode === 'slide') {
-            let drawerPos = { x: 0, y: 0 };
-            let containerPos = { x: 0, y: 0 };
+            let drawerPos = { x: '0', y: '0' };
+            let containerPos = { x: '0', y: '0' };
             let drawerHeight = this.drawerHeight || 800;
             let drawerWidth = this.drawerWidth || 800;
             if (show) {
                 switch (placement) {
                     case 'top':
-                        containerPos.y = drawerHeight;
+                        containerPos.y = drawerHeight + 'px';
                         break;
                     case 'bottom':
-                        containerPos.y = -drawerHeight;
+                        containerPos.y = -drawerHeight + 'px';
                         break;
                     case 'left':
-                        containerPos.x = drawerWidth;
+                        containerPos.x = drawerWidth + 'px';
                         break;
                     case 'right':
-                        containerPos.x = -drawerWidth;
+                        containerPos.x = -drawerWidth + 'px';
                         break;
                 }
             }
             else {
                 switch (placement) {
                     case 'top':
-                        drawerPos.y = -drawerHeight;
+                        drawerPos.y = '-100%';
                         break;
                     case 'bottom':
-                        drawerPos.y = drawerHeight;
+                        drawerPos.y = '100%';
                         break;
                     case 'left':
-                        drawerPos.x = -drawerWidth;
+                        drawerPos.x = '-100%';
                         break;
                     case 'right':
-                        drawerPos.x = drawerWidth;
+                        drawerPos.x = '100%';
                         break;
                 }
             }
-            contianer.transform = `translate(${containerPos.x}px, ${containerPos.y}px)`;
-            drawer.transform = `translate(${drawerPos.x}px, ${drawerPos.y}px)`;
+            contianer.transform = `translate(${containerPos.x}, ${containerPos.y})`;
+            drawer.transform = `translate(${drawerPos.x}, ${drawerPos.y})`;
         }
         return { contianer, mask, drawer };
     }
@@ -295,6 +306,10 @@ class Drawer extends React.Component {
             drawer = drawer();
         }
         draggable = typeof draggable === 'undefined' ? app_1.default.is.touch : draggable;
+        if (placement !== this.placement) {
+            this.placement = placement;
+        }
+        window.test = this;
         let lastMaskDisplay = this.styles ? this.styles.mask.display : 'none';
         this.styles = this.getStyles();
         if (!show && !this.dragging && this.maskRef && lastMaskDisplay !== this.styles.mask.display) {

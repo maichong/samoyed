@@ -8,6 +8,10 @@ declare module '@samoyed/app' {
 
 type RenderFunction = () => React.ReactNode;
 
+export type Placement = 'top' | 'right' | 'bottom' | 'left';
+
+export type Mode = 'cover' | 'slide';
+
 export interface DrawerProps extends React.HTMLAttributes<Element> {
   /**
    * 抽屉元素
@@ -16,7 +20,7 @@ export interface DrawerProps extends React.HTMLAttributes<Element> {
   /**
    * 抽屉位置
    */
-  placement: 'top' | 'right' | 'bottom' | 'left';
+  placement: Placement;
   /**
    * 是否可手动滑动抽屉，默认情况下会判断 app.is.touch
    */
@@ -24,7 +28,7 @@ export interface DrawerProps extends React.HTMLAttributes<Element> {
   /**
    * 抽屉弹出模式，默认为 cover
    */
-  mode?: 'cover' | 'slide';
+  mode?: Mode;
   /**
    * 主体容器样式类
    */

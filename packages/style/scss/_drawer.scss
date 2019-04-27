@@ -3,7 +3,7 @@
 }
 
 .s-drawer-mask,
-.s-drawer-drawer>*,
+.s-drawer-drawer>.s-box,
 .s-drawer-contianer>* {
   @extend .s-full;
 }
@@ -38,6 +38,7 @@
 }
 
 .s-drawer.s-dragging {
+
   &>.s-drawer-contianer,
   &>.s-drawer-mask,
   &>.s-drawer-drawer {
@@ -77,6 +78,7 @@
   .s-drawer-mask {
     // opacity: 0;
   }
+
   &.s-show>.s-drawer-drawer {
     transform: translate(0, 0);
   }

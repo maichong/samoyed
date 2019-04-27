@@ -8,6 +8,11 @@ interface Position {
   y: number;
 }
 
+interface PositionString {
+  x: string;
+  y: string;
+}
+
 interface Styles {
   contianer: {
     transform?: string;
@@ -27,12 +32,13 @@ export default class Drawer extends React.Component<DrawerProps> {
     directionLockThreshold: 10,
   };
 
+  placement: string;
   elRef: HTMLDivElement;
   drawerRef: HTMLDivElement;
   continerRef: HTMLDivElement;
   maskRef: HTMLDivElement;
-  drawerHeight: number = 0;
-  drawerWidth: number = 0;
+  // drawerHeight: number = 0;
+  // drawerWidth: number = 0;
   dragging: boolean = false;
   draggingLock: boolean | null;
   draggingDirection: boolean;
@@ -54,50 +60,65 @@ export default class Drawer extends React.Component<DrawerProps> {
     bottom: false
   };
 
+  get drawerHeight(): number {
+    if (this.drawerRef) {
+      console.log('this.drawerRef.children[0].clientHeight', this.drawerRef.children[0].clientHeight);
+      return this.drawerRef.children[0].clientHeight;
+    }
+    return 800;
+  };
+
+  get drawerWidth(): number {
+    if (this.drawerRef) {
+      return this.drawerRef.children[0].clientWidth;
+    }
+    return 800;
+  };
+
   getStyles(): Styles {
     const { mode, show, placement } = this.props;
     let drawer = { transform: '' };
     let contianer = { transform: '' };
     let mask = { opacity: show ? 1 : 0, display: show ? 'block' : 'none' };
     if (mode === 'slide') {
-      let drawerPos: Position = { x: 0, y: 0 };
-      let containerPos: Position = { x: 0, y: 0 };
+      let drawerPos: PositionString = { x: '0', y: '0' };
+      let containerPos: PositionString = { x: '0', y: '0' };
       let drawerHeight = this.drawerHeight || 800;
       let drawerWidth = this.drawerWidth || 800;
       if (show) {
         switch (placement) {
           case 'top':
-            containerPos.y = drawerHeight;
+            containerPos.y = drawerHeight + 'px';
             break;
           case 'bottom':
-            containerPos.y = -drawerHeight;
+            containerPos.y = -drawerHeight + 'px';
             break;
           case 'left':
-            containerPos.x = drawerWidth;
+            containerPos.x = drawerWidth + 'px';
             break;
           case 'right':
-            containerPos.x = -drawerWidth;
+            containerPos.x = -drawerWidth + 'px';
             break;
         }
       } else {
         // hidden
         switch (placement) {
           case 'top':
-            drawerPos.y = -drawerHeight;
+            drawerPos.y = '-100%';
             break;
           case 'bottom':
-            drawerPos.y = drawerHeight;
+            drawerPos.y = '100%';
             break;
           case 'left':
-            drawerPos.x = -drawerWidth;
+            drawerPos.x = '-100%';
             break;
           case 'right':
-            drawerPos.x = drawerWidth;
+            drawerPos.x = '100%';
             break;
         }
       }
-      contianer.transform = `translate(${containerPos.x}px, ${containerPos.y}px)`;
-      drawer.transform = `translate(${drawerPos.x}px, ${drawerPos.y}px)`;
+      contianer.transform = `translate(${containerPos.x}, ${containerPos.y})`;
+      drawer.transform = `translate(${drawerPos.x}, ${drawerPos.y})`;
     }
     return { contianer, mask, drawer };
   }
@@ -142,8 +163,6 @@ export default class Drawer extends React.Component<DrawerProps> {
     let init = !this.drawerRef;
     this.drawerRef = r;
     if (!r) return;
-    this.drawerHeight = r.children[0].clientHeight;
-    this.drawerWidth = r.children[0].clientWidth;
     if (init) {
       this.styles = this.getStyles();
     }
@@ -330,6 +349,18 @@ export default class Drawer extends React.Component<DrawerProps> {
     }
 
     draggable = typeof draggable === 'undefined' ? app.is.touch : draggable;
+
+    if (placement !== this.placement) {
+      this.placement = placement;
+      // let r = this.drawerRef;
+      // if (r) {
+      //   this.drawerHeight = r.children[0].clientHeight;
+      //   this.drawerWidth = r.children[0].clientWidth;
+      // }
+    }
+
+    // @ts-ignore
+    window.test = this;
 
     // fix 消失动画 mask 会突然消失
     let lastMaskDisplay = this.styles ? this.styles.mask.display : 'none';
