@@ -1,12 +1,20 @@
 .s-layout-vertical {
   display: flex;
   flex-direction: column;
+
+  &>.s-component {
+    flex-shrink: 0;
+  }
 }
 
 .s-layout-horizontal {
   display: flex;
   flex-direction: row;
   height: 100%;
+
+  &>.s-component {
+    flex-shrink: 0;
+  }
 }
 
 .s-layout-fit {
@@ -17,6 +25,7 @@
 
 .s-layout-card {
   overflow: hidden;
+
   &>.s-component {
     @extend .s-full;
     display: block;
