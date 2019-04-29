@@ -23,7 +23,7 @@
 .s-drawer-mask {
   z-index: 20;
   transition-timing-function: linear;
-  transition-property: transform, opacity;
+  transition-property: opacity;
   transition-duration: .3s;
   transform: translate(0, 0);
 }
@@ -34,9 +34,15 @@
   transition-timing-function: linear;
   transition-property: transform;
   transition-duration: .3s;
+
+  &>.s-box-body>.s-component {
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .s-drawer.s-dragging>.s-drawer-body {
+
   &>.s-drawer-contianer,
   &>.s-drawer-mask,
   &>.s-drawer-drawer {
@@ -76,6 +82,7 @@
   .s-drawer-mask {
     // opacity: 0;
   }
+
   &.s-show>.s-drawer-body>.s-drawer-drawer {
     transform: translate(0, 0);
   }

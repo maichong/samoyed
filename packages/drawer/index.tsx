@@ -49,7 +49,6 @@ export default class Drawer extends React.Component<DrawerProps> {
   _styles: {
     container?: string;
     maskDisplay?: string;
-    maskTransform?: string;
     maskOpacity?: number;
     drawer?: string;
   } = {};
@@ -119,21 +118,17 @@ export default class Drawer extends React.Component<DrawerProps> {
     }
 
     // update mask style
-    if (maskRef && (contianer.transform !== _styles.maskTransform || mask.opacity !== _styles.maskOpacity || mask.display !== _styles.maskDisplay)) {
+    if (maskRef && (mask.opacity !== _styles.maskOpacity || mask.display !== _styles.maskDisplay)) {
       maskRef.style.display = mask.display;
       // fix 出现时，mask突然出现、没有动画的bug
       if (_styles.maskDisplay === 'none' && mask.display === 'block') {
         // 先显示出来
-        _styles.maskTransform = 'translate(0,0)';
-        maskRef.style.transform = _styles.maskTransform;
         maskRef.style.opacity = '0';
         _styles.maskOpacity = 0;
         // 延迟更新 Transform，实现动画
         setTimeout(() => this.updateStyles(), 1);
       } else {
-        maskRef.style.transform = contianer.transform;
         maskRef.style.opacity = mask.opacity.toString().substr(0, 4);
-        _styles.maskTransform = contianer.transform;
         _styles.maskOpacity = mask.opacity;
       }
       _styles.maskDisplay = mask.display;
@@ -198,7 +193,6 @@ export default class Drawer extends React.Component<DrawerProps> {
   handleMaskRef = (r: HTMLDivElement) => {
     this.maskRef = r;
     if (!r) return;
-    this._styles.maskTransform = null;
     this._styles.maskDisplay = null;
     this._styles.maskOpacity = null;
     this.updateStyles();
@@ -402,7 +396,7 @@ export default class Drawer extends React.Component<DrawerProps> {
         layout="none"
       >
         <Box
-          layout="fit"
+          layout="none"
           {...drawerProps}
           elRef={this.handleDrawerRef}
           className={classnames('s-drawer-drawer', drawerProps.className)}
@@ -412,6 +406,7 @@ export default class Drawer extends React.Component<DrawerProps> {
         </Box>
         <div className="s-drawer-mask" onClick={show ? onHide : null} ref={this.handleMaskRef} />
         <Box
+          layout="fit"
           {...containerProps}
           elRef={this.handleContainerRef}
           className={classnames('s-drawer-contianer', containerProps.className)}

@@ -78,7 +78,6 @@ class Drawer extends React.Component {
             this.maskRef = r;
             if (!r)
                 return;
-            this._styles.maskTransform = null;
             this._styles.maskDisplay = null;
             this._styles.maskOpacity = null;
             this.updateStyles();
@@ -292,19 +291,15 @@ class Drawer extends React.Component {
             containerRef.style.transform = contianer.transform;
             _styles.container = contianer.transform;
         }
-        if (maskRef && (contianer.transform !== _styles.maskTransform || mask.opacity !== _styles.maskOpacity || mask.display !== _styles.maskDisplay)) {
+        if (maskRef && (mask.opacity !== _styles.maskOpacity || mask.display !== _styles.maskDisplay)) {
             maskRef.style.display = mask.display;
             if (_styles.maskDisplay === 'none' && mask.display === 'block') {
-                _styles.maskTransform = 'translate(0,0)';
-                maskRef.style.transform = _styles.maskTransform;
                 maskRef.style.opacity = '0';
                 _styles.maskOpacity = 0;
                 setTimeout(() => this.updateStyles(), 1);
             }
             else {
-                maskRef.style.transform = contianer.transform;
                 maskRef.style.opacity = mask.opacity.toString().substr(0, 4);
-                _styles.maskTransform = contianer.transform;
                 _styles.maskOpacity = mask.opacity;
             }
             _styles.maskDisplay = mask.display;
@@ -335,9 +330,9 @@ class Drawer extends React.Component {
                 's-draggable': draggable,
                 's-show': show
             }, className), bodyClassName: classnames('s-drawer-body', bodyClassName) }, others, { bodyRef: this.handleBodyRef, onTouchStart: draggable ? this.handleStart : null, onTouchMove: draggable ? this.handleMove : null, onTouchEnd: draggable ? this.handleEnd : null, layout: "none" }),
-            React.createElement(box_1.default, Object.assign({ layout: "fit" }, drawerProps, { elRef: this.handleDrawerRef, className: classnames('s-drawer-drawer', drawerProps.className), onResize: this.handelDrawerResize }), drawer),
+            React.createElement(box_1.default, Object.assign({ layout: "none" }, drawerProps, { elRef: this.handleDrawerRef, className: classnames('s-drawer-drawer', drawerProps.className), onResize: this.handelDrawerResize }), drawer),
             React.createElement("div", { className: "s-drawer-mask", onClick: show ? onHide : null, ref: this.handleMaskRef }),
-            React.createElement(box_1.default, Object.assign({}, containerProps, { elRef: this.handleContainerRef, className: classnames('s-drawer-contianer', containerProps.className) }), children)));
+            React.createElement(box_1.default, Object.assign({ layout: "fit" }, containerProps, { elRef: this.handleContainerRef, className: classnames('s-drawer-contianer', containerProps.className) }), children)));
     }
 }
 Drawer.defaultProps = {
