@@ -63,11 +63,13 @@ class Box extends React.Component {
                     clientWidth: currentTarget.clientWidth
                 });
             }
-            if (this.reachedBottom && scrollTop < this.lastScrollTop) {
-                this.reachedBottom = false;
+            let bottom = scrollHeight - clientHeight - scrollTop;
+            if (this.reachedBottom) {
+                if (scrollTop < this.lastScrollTop
+                    || bottom > reachBottomBorder)
+                    this.reachedBottom = false;
             }
-            else if (!this.reachedBottom && vertical && onReachBottom && scrollTop > this.lastScrollTop) {
-                let bottom = scrollHeight - clientHeight - scrollTop;
+            else if (vertical && onReachBottom && scrollTop > this.lastScrollTop) {
                 if (bottom <= reachBottomBorder) {
                     this.reachedBottom = true;
                     onReachBottom();
