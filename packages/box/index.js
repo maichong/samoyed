@@ -17,6 +17,7 @@ const ResizeObserver = window.ResizeObserver;
 class Box extends React.Component {
     constructor() {
         super(...arguments);
+        this.lastScrollTop = 0;
         this.handleResize = (entries) => {
             if (!this.props.onResize)
                 return;
@@ -46,6 +47,33 @@ class Box extends React.Component {
             }
             this.ref = r;
             this.init();
+        };
+        this.handleScroll = (event) => {
+            const currentTarget = event.currentTarget;
+            const { scrollHeight, clientHeight, scrollTop, scrollLeft } = currentTarget;
+            const { scrollable, onBodyScroll, onReachBottom, reachBottomBorder = 0 } = this.props;
+            const vertical = scrollable === 'both' || scrollable === 'vertical';
+            if (onBodyScroll) {
+                onBodyScroll({
+                    scrollTop,
+                    scrollLeft,
+                    scrollHeight,
+                    scrollWidth: currentTarget.scrollWidth,
+                    clientHeight,
+                    clientWidth: currentTarget.clientWidth
+                });
+            }
+            if (this.reachedBottom && scrollTop < this.lastScrollTop) {
+                this.reachedBottom = false;
+            }
+            else if (!this.reachedBottom && vertical && onReachBottom && scrollTop > this.lastScrollTop) {
+                let bottom = scrollHeight - clientHeight - scrollTop;
+                if (bottom <= reachBottomBorder) {
+                    this.reachedBottom = true;
+                    onReachBottom();
+                }
+            }
+            this.lastScrollTop = scrollTop;
         };
     }
     componentDidMount() {
@@ -83,9 +111,11 @@ class Box extends React.Component {
         }
     }
     render() {
-        const _a = this.props, { children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation, previous, last, active, wrapper, wrapperProps, onResize, docked, dockedPlacement } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "elRef", "bodyRef", "flex", "scrollable", "layout", "activeItem", "animation", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "docked", "dockedPlacement"]);
+        const _a = this.props, { children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation, previous, last, active, wrapper, wrapperProps, onResize, docked, dockedPlacement, onBodyScroll, reachBottomBorder, onReachBottom } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "elRef", "bodyRef", "flex", "scrollable", "layout", "activeItem", "animation", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "docked", "dockedPlacement", "onBodyScroll", "reachBottomBorder", "onReachBottom"]);
+        const vertical = scrollable === 'both' || scrollable === 'vertical';
         let layoutProps = {
-            ref: bodyRef
+            ref: bodyRef,
+            onScroll: (scrollable && onBodyScroll) || (vertical && onReachBottom) ? this.handleScroll : null,
         };
         let LayoutComponent = 'div';
         let layoutClassName = `s-layout-${layout || 'auto'}`;

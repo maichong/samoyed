@@ -7,6 +7,15 @@ declare module '@samoyed/app' {
   }
 }
 
+export interface ScrollData {
+  scrollTop: number;
+  scrollLeft: number;
+  scrollHeight: number;
+  scrollWidth: number;
+  clientHeight: number;
+  clientWidth: number;
+}
+
 export interface BoxProps extends React.HTMLAttributes<Element> {
   /**
    * 子节点
@@ -80,6 +89,18 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
    * 监听div宽高变化
    */
   onResize?: (rect: ClientRect) => any;
+  /**
+   * Box内容滚动事件
+   */
+  onBodyScroll?: (data: ScrollData) => any;
+  /**
+   * Box内容滚动触底，只有 scrollable 为 vertical/both 才可用
+   */
+  onReachBottom?: () => any;
+  /**
+   * Box内容滚动触底边距，用于提前触发 onReachBottom，默认为0
+   */
+  reachBottomBorder?: number;
 }
 
 export default class Box extends React.Component<BoxProps> {

@@ -13,6 +13,8 @@ export default class Box extends React.Component<BoxProps> {
   ref: HTMLElement;
   observer: any;
   sensor: ResizeSensorType;
+  lastScrollTop: number = 0;
+  reachedBottom: boolean;
 
   componentDidMount() {
     this.init();
@@ -85,14 +87,46 @@ export default class Box extends React.Component<BoxProps> {
     this.init();
   };
 
+  handleScroll = (event: any) => {
+    const currentTarget = event.currentTarget;
+    const { scrollHeight, clientHeight, scrollTop, scrollLeft } = currentTarget;
+    const { scrollable, onBodyScroll, onReachBottom, reachBottomBorder = 0 } = this.props;
+    const vertical = scrollable === 'both' || scrollable === 'vertical';
+
+    if (onBodyScroll) {
+      onBodyScroll({
+        scrollTop,
+        scrollLeft,
+        scrollHeight,
+        scrollWidth: currentTarget.scrollWidth,
+        clientHeight,
+        clientWidth: currentTarget.clientWidth
+      });
+    }
+    if (this.reachedBottom && scrollTop < this.lastScrollTop) {
+      this.reachedBottom = false;
+    } else if (!this.reachedBottom && vertical && onReachBottom && scrollTop > this.lastScrollTop) {
+      let bottom = scrollHeight - clientHeight - scrollTop;
+      if (bottom <= reachBottomBorder) {
+        this.reachedBottom = true;
+        onReachBottom();
+      }
+    }
+    this.lastScrollTop = scrollTop;
+  };
+
   render() {
     const {
       children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation,
-      previous, last, active, wrapper, wrapperProps, onResize, docked, dockedPlacement, ...others
+      previous, last, active, wrapper, wrapperProps, onResize, docked, dockedPlacement,
+      onBodyScroll, reachBottomBorder, onReachBottom, ...others
     } = this.props;
 
+    const vertical = scrollable === 'both' || scrollable === 'vertical';
+
     let layoutProps: any = {
-      ref: bodyRef
+      ref: bodyRef,
+      onScroll: (scrollable && onBodyScroll) || (vertical && onReachBottom) ? this.handleScroll : null,
     };
 
     let LayoutComponent: React.ComponentClass<any> | string = 'div';
