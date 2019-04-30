@@ -40,11 +40,11 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
   /**
    * 停靠组件
    */
-  docked?: React.ReactNode;
+  dock?: React.ReactNode;
   /**
    * 停靠位置，默认为 top
    */
-  dockedPlacement?: Placement;
+  dockPlacement?: Placement;
   /**
    * Box 滚动
    */

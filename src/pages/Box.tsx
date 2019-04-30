@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Placement } from '@samoyed/types';
 import Page from '@samoyed/page';
-import Box from '@samoyed/box';
+import Box, { ScrollData } from '@samoyed/box';
 import Switch from '@samoyed/switch';
 import { RouteComponentProps } from '@samoyed/router';
 import SyntaxHighlighter from 'react-syntax-highlighter';
@@ -10,19 +10,24 @@ import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 
 type State = {
   rect?: ClientRect;
-  dockedPlacement: Placement;
+  dockPlacement: Placement;
+  scroll: Partial<ScrollData>;
+  reachEvent: string[];
 };
 
 export default class CheckboxPage extends React.Component<RouteComponentProps, State> {
   constructor(props: RouteComponentProps) {
     super(props);
     this.state = {
-      dockedPlacement: 'top'
+      dockPlacement: 'top',
+      scroll: {
+      },
+      reachEvent: []
     };
   }
 
   render() {
-    const { rect } = this.state;
+    const { rect, scroll } = this.state;
     return (
       <Page
         className="box-page"
@@ -57,10 +62,10 @@ export default class CheckboxPage extends React.Component<RouteComponentProps, S
           `}</SyntaxHighlighter>
         </div>
 
-        <h2>docked</h2>
+        <h2>dock</h2>
         <div className="demo">
           <div className="preview">
-            <Box layout="horizontal" docked={<Box bodyClassName="bg-info">Title</Box>} dockedPlacement={this.state.dockedPlacement}>
+            <Box layout="horizontal" dock={<Box bodyClassName="bg-info">Title</Box>} dockPlacement={this.state.dockPlacement}>
               <Box bodyClassName="bg-success">Green</Box>
               <Box bodyClassName="bg-danger" flex>Red</Box>
             </Box>
@@ -72,16 +77,18 @@ export default class CheckboxPage extends React.Component<RouteComponentProps, S
                 { label: 'Top', value: 'top' },
                 { label: 'Bottom', value: 'bottom' },
               ]}
-              value={this.state.dockedPlacement}
-              onChange={(v) => this.setState({ dockedPlacement: v })}
+              value={this.state.dockPlacement}
+              onChange={(v) => this.setState({ dockPlacement: v })}
             />
           </div>
           <SyntaxHighlighter style={docco}>{`
 <Box 
-  docked={<Box bodyClassName="bg-info">Title</Box>}
-  dockedPlacement="${this.state.dockedPlacement}"
+  layout="horizontal"
+  dock={<Box bodyClassName="bg-info">Title</Box>}
+  dockPlacement="${this.state.dockPlacement}"
 >
-  // ...
+  <Box>Green</Box>
+  <Box flex>Red</Box>
 </Box>
           `}</SyntaxHighlighter>
         </div>
@@ -98,6 +105,57 @@ export default class CheckboxPage extends React.Component<RouteComponentProps, S
             {rect && <div>Top: {rect.top}</div>}
           </div>
           <SyntaxHighlighter style={docco}>{'<Box onResize={(rect) => this.setState({ rect })}></Box>'}</SyntaxHighlighter>
+        </div>
+
+        <h2>onBodyScroll</h2>
+        <div className="demo">
+          <div className="preview">
+            <Box onBodyScroll={(data) => this.setState({ scroll: data })} scrollable="vertical" style={{ height: 100 }}>
+              <div className="bg-light">
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+              </div>
+            </Box>
+            <div>clientHeight: {scroll.clientHeight}</div>
+            <div>clientWidth: {scroll.clientWidth}</div>
+            <div>scrollHeight: {scroll.scrollHeight}</div>
+            <div>scrollWidth: {scroll.scrollWidth}</div>
+            <div>scrollTop: {scroll.scrollTop}</div>
+            <div>scrollLeft: {scroll.scrollLeft}</div>
+          </div>
+          <SyntaxHighlighter style={docco}>{'<Box scrollable="vertical" onBodyScroll={(scroll) => this.setState({ scroll })}></Box>'}</SyntaxHighlighter>
+        </div>
+
+        <h2>onReachBottom</h2>
+        <div className="demo">
+          <div className="preview">
+            <Box
+              scrollable="vertical"
+              style={{ height: 100 }}
+              onReachBottom={() => this.setState({ reachEvent: ['onReachBottom'].concat(this.state.reachEvent) })}
+            >
+              <div className="bg-light">
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+                <div className="p-2">Box</div>
+              </div>
+            </Box>
+            {this.state.reachEvent.map((text, i) => <div key={i}>{text}</div>)}
+          </div>
+          <SyntaxHighlighter style={docco}>{'<Box scrollable="vertical" onReachBottom={this.loadMore}></Box>'}</SyntaxHighlighter>
         </div>
       </Page>
     );

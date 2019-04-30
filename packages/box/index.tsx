@@ -123,7 +123,7 @@ export default class Box extends React.Component<BoxProps> {
   render() {
     const {
       children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation,
-      previous, last, active, wrapper, wrapperProps, onResize, docked, dockedPlacement,
+      previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement,
       onBodyScroll, reachBottomBorder, onReachBottom, ...others
     } = this.props;
 
@@ -157,9 +157,9 @@ export default class Box extends React.Component<BoxProps> {
       { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' },
     );
 
-    let dockedClassName = '';
-    if (docked) {
-      dockedClassName = `s-docked-${dockedPlacement || 'top'}`;
+    let dockClassName = '';
+    if (dock) {
+      dockClassName = `s-dock s-dock-${dockPlacement || 'top'}`;
     }
 
     let el = (
@@ -169,7 +169,7 @@ export default class Box extends React.Component<BoxProps> {
           's-component',
           's-box',
           className,
-          dockedClassName,
+          dockClassName,
           {
             's-flex': !!flex,
             's-previous': previous,
@@ -179,7 +179,7 @@ export default class Box extends React.Component<BoxProps> {
         )}
         {...others}
       >
-        {docked}
+        {dock}
         <LayoutComponent {...layoutProps}>
           {children}
         </LayoutComponent>

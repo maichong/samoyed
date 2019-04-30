@@ -113,7 +113,7 @@ class Box extends React.Component {
         }
     }
     render() {
-        const _a = this.props, { children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation, previous, last, active, wrapper, wrapperProps, onResize, docked, dockedPlacement, onBodyScroll, reachBottomBorder, onReachBottom } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "elRef", "bodyRef", "flex", "scrollable", "layout", "activeItem", "animation", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "docked", "dockedPlacement", "onBodyScroll", "reachBottomBorder", "onReachBottom"]);
+        const _a = this.props, { children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation, previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement, onBodyScroll, reachBottomBorder, onReachBottom } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "elRef", "bodyRef", "flex", "scrollable", "layout", "activeItem", "animation", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "dock", "dockPlacement", "onBodyScroll", "reachBottomBorder", "onReachBottom"]);
         const vertical = scrollable === 'both' || scrollable === 'vertical';
         let layoutProps = {
             ref: bodyRef,
@@ -133,17 +133,17 @@ class Box extends React.Component {
             layoutClassName = '';
         }
         layoutProps.className = classnames('s-box-body', bodyClassName, layoutClassName, { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' }, { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' });
-        let dockedClassName = '';
-        if (docked) {
-            dockedClassName = `s-docked-${dockedPlacement || 'top'}`;
+        let dockClassName = '';
+        if (dock) {
+            dockClassName = `s-dock s-dock-${dockPlacement || 'top'}`;
         }
-        let el = (React.createElement("div", Object.assign({ ref: this.handleRef, className: classnames('s-component', 's-box', className, dockedClassName, {
+        let el = (React.createElement("div", Object.assign({ ref: this.handleRef, className: classnames('s-component', 's-box', className, dockClassName, {
                 's-flex': !!flex,
                 's-previous': previous,
                 's-last': last,
                 's-active': active,
             }) }, others),
-            docked,
+            dock,
             React.createElement(LayoutComponent, Object.assign({}, layoutProps), children)));
         if (wrapper) {
             if (app_1.default._wrapperHooks.indexOf(wrapper) === -1) {

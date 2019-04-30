@@ -5,13 +5,13 @@
 .s-box {
   display: flex;
   flex-direction: column;
-  &.s-docked-left {
+  &.s-dock-left {
     flex-direction: row;
   }
-  &.s-docked-right {
+  &.s-dock-right {
     flex-direction: row-reverse;
   }
-  &.s-docked-bottom {
+  &.s-dock-bottom {
     flex-direction: column-reverse;
   }
 }
