@@ -108,9 +108,10 @@ export default class Box extends React.Component<BoxProps> {
       if (
         scrollTop < this.lastScrollTop // 往上滑了，标记未触底
         || bottom > reachBottomBorder // 未触底
-      )
+      ) {
         // 标记未触底
         this.reachedBottom = false;
+      }
     } else if (vertical && onReachBottom && scrollTop > this.lastScrollTop) {
       if (bottom <= reachBottomBorder) {
         this.reachedBottom = true;

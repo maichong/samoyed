@@ -6,7 +6,7 @@
 .s-toolbar-body {
   align-items: center;
   padding: 0 $s-toolbar-padding;
-  height: $s-toolbar-height;
+  min-height: $s-toolbar-height;
 
   .btn-group {
     .btn {

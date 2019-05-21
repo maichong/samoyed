@@ -5,12 +5,15 @@
 .s-box {
   display: flex;
   flex-direction: column;
+
   &.s-dock-left {
     flex-direction: row;
   }
+
   &.s-dock-right {
     flex-direction: row-reverse;
   }
+
   &.s-dock-bottom {
     flex-direction: column-reverse;
   }
@@ -19,6 +22,7 @@
 .s-box-body {
   flex: 1;
   position: relative;
+  overflow: hidden; // 防止内部元素撑破 flex:1
 }
 
 .s-scrollable-horizontal {
