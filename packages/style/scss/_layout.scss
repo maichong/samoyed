@@ -1,6 +1,7 @@
 .s-layout-vertical {
   display: flex;
   flex-direction: column;
+  overflow: hidden; // 防止内部元素撑破 flex:1
 
   &>.s-component {
     flex-shrink: 0;
@@ -11,6 +12,7 @@
   display: flex;
   flex-direction: row;
   height: 100%;
+  overflow: hidden; // 防止内部元素撑破 flex:1
 
   &>.s-component {
     flex-shrink: 0;

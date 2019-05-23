@@ -22,13 +22,12 @@
 .s-box-body {
   flex: 1;
   position: relative;
-  overflow: hidden; // 防止内部元素撑破 flex:1
 }
 
-.s-scrollable-horizontal {
+.s-box-body.s-scrollable-horizontal {
   overflow-x: auto;
 }
 
-.s-scrollable-vertical {
+.s-box-body.s-scrollable-vertical {
   overflow-y: auto;
 }
