@@ -16,6 +16,7 @@ chokidar.watch(srcPath, {
   let target = Path.join('node_modules/@samoyed', path);
   switch (event) {
     case 'modified':
+    case 'change':
       if (fs.existsSync(target) && fs.readFileSync(file).compare(fs.readFileSync(target)) === 0) {
         return;
       }

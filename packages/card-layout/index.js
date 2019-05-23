@@ -22,7 +22,7 @@ class CardLayout extends React.Component {
             let classList = new Set(Array.from(this.elRef.classList));
             if (this.animationStage === 'start') {
                 this.animationStage = 'active';
-                this.animationTimer = setTimeout(this.updateAnimation, animation.duration || app_1.default.defaults.animationDuration);
+                this.animationTimer = window.setTimeout(this.updateAnimation, animation.duration || app_1.default.defaults.animationDuration);
                 classList.delete('s-done');
                 classList.delete('s-start');
                 classList.add('s-active');
@@ -95,7 +95,7 @@ class CardLayout extends React.Component {
             this.animationStage = 'start';
             if (this.animationTimer)
                 clearTimeout(this.animationTimer);
-            this.animationTimer = setTimeout(this.updateAnimation, 100);
+            this.animationTimer = window.setTimeout(this.updateAnimation, 100);
             if (this.elRef) {
                 let classList = this.elRef.classList;
                 if (classList.contains('s-active'))

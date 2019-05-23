@@ -44,7 +44,7 @@ export default class Switch extends React.Component<SwitchProps> {
     let classList = new Set(Array.from(this.elRef.classList));
     if (this.animationStage === 'start') {
       this.animationStage = 'active';
-      this.animationTimer = setTimeout(this.updateAnimation, this.animation.duration || app.defaults.switchAnimationDuration);
+      this.animationTimer = window.setTimeout(this.updateAnimation, this.animation.duration || app.defaults.switchAnimationDuration);
       classList.delete('s-done');
       classList.delete('s-start');
       classList.add('s-active');
@@ -135,7 +135,7 @@ export default class Switch extends React.Component<SwitchProps> {
           // console.warn({ routesWithEntries, entriesWithRoute, needFree });
 
           if (needFree.length) {
-            setTimeout(() => context.freeEntries(needFree));
+            window.setTimeout(() => context.freeEntries(needFree));
           }
 
           let children: React.ReactElement[] = [];
@@ -194,7 +194,7 @@ export default class Switch extends React.Component<SwitchProps> {
               this.animationStage = 'start';
               this.animationAction = context.action === 'POP' ? 'backward' : 'forward';
               if (this.animationTimer) clearTimeout(this.animationTimer);
-              this.animationTimer = setTimeout(this.updateAnimation);
+              this.animationTimer = window.setTimeout(this.updateAnimation);
               if (this.elRef) {
                 let classList = new Set(Array.from(this.elRef.classList));
                 classList.add('s-start');
