@@ -25,3 +25,16 @@ html,
   flex: 1;
   overflow: hidden; // firefox 防止内部元素撑破
 }
+
+a:not([href]):not([tabindex]).s-link,
+.s-link {
+  color: $link-color;
+  text-decoration: $link-decoration;
+  background-color: transparent;
+  cursor: pointer;
+
+  &:hover {
+    color: $link-hover-color;
+    text-decoration: $link-hover-decoration;
+  }
+}

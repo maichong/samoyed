@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as H from 'history';
 import { Layout } from '@samoyed/types';
 import { Store } from 'redux';
 
@@ -65,6 +66,7 @@ export class App {
   wrappers: Wrappers;
   is: Environments;
   inited: boolean;
+  history: H.History;
   store: Store;
   actions: Actions;
   _wrapperHooks: string[];

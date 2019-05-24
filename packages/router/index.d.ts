@@ -25,20 +25,19 @@ export interface RouterChildContext<Params extends { [K in keyof Params]?: strin
   staticContext?: C;
 }
 
-// export interface RouteChildrenProps<Params extends { [K in keyof Params]?: string } = {}, S = H.LocationState> {
-//   history: H.History;
-//   location: H.Location<S>;
-//   match: Match<Params>;
-//   previous?: boolean;
-//   last?: boolean;
-//   active?: boolean;
-// }
-
+/**
+ * Route 给所调用的组件注如的Props
+ * 即，各个页面组件会额外获得的Props
+ */
 export interface RouteComponentProps<Params extends { [K in keyof Params]?: string } = {}, C extends StaticContext = StaticContext, S = H.LocationState> {
   history: H.History;
   location: H.Location<S>;
   match: Match<Params>;
   staticContext?: C;
+  /**
+   * 路由信息
+   */
+  router: RouterChildContext<Params, S>;
   previous?: boolean;
   last?: boolean;
   active?: boolean;
@@ -57,13 +56,6 @@ export interface StaticRouterContext extends StaticContext {
 export interface RouterProps {
   history: H.History;
   staticContext?: StaticContext;
-  /**
-   * 默认的组件回收策略
-   * immediate 当Route切换后，立即回收组件
-   * animation 当Route切换后，并且过度动画执行结束后，销毁组件
-   * keepalive 不自动回收组件，除非 history entry 被回收，或Route组件Props中单独设置其他回收策略
-   */
-  freeComponent?: 'immediate' | 'animation' | 'keepalive';
 }
 
 export class Router extends React.Component<RouterProps> {
@@ -88,19 +80,31 @@ export interface RouteProps {
   exact?: boolean;
   sensitive?: boolean;
   strict?: boolean;
-  computedMatch?: Match<any>;
   /**
-   * 默认的组件回收策略
-   * immediate 当Route切换后，立即回收组件
-   * animation 当Route切换后，并且过度动画执行结束后，销毁组件
-   * keepalive 不自动回收组件，除非 history entry 被回收，或Route组件Props中单独设置其他回收策略
+   * History 历史栈中，当前Route最多保存多少个副本，默认不限
+   * 如果超过此值，则采用区间回收，比如Route A限制为2，路由跳转关系为
+   * A1 -> B1 -> A2 -> C1 -> A3
+   * 当载入A3时，Route A的副本数大于2，则 A1、B1 将被销毁，最后，历史栈变为
+   * A2 -> C1 -> A3
    */
-  freeComponent?: 'immediate' | 'animation' | 'keepalive';
   historyLimit?: number;
   entries?: H.Location[];
+  /**
+   * @private
+   */
   previous?: boolean;
+  /**
+   * @private
+   */
   last?: boolean;
+  /**
+   * @private
+   */
   active?: boolean;
+  /**
+   * @private
+   */
+  computedMatch?: Match<any>;
 }
 
 export class Route extends React.Component<RouteProps> {

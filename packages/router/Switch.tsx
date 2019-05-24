@@ -132,7 +132,7 @@ export default class Switch extends React.Component<SwitchProps> {
             }
           });
 
-          // console.warn({ routesWithEntries, entriesWithRoute, needFree });
+          // console.warn(this.props.animation ? 'out' : 'inner', { context, routes, routesWithEntries, entriesWithRoute, needFree });
 
           if (needFree.length) {
             window.setTimeout(() => context.freeEntries(needFree));
@@ -141,7 +141,11 @@ export default class Switch extends React.Component<SwitchProps> {
           let children: React.ReactElement[] = [];
 
           let item = entriesWithRoute[entriesWithRoute.length - 1];
-          // console.log('item', item);
+          if (!item || !item.route) {
+            console.error('No route found for location', context.location);
+            return null;
+          }
+          // console.log('item', this.props, item);
           let route = item.route;
           if (route.type === Redirect && item.entry.key !== context.globalLocation.key) {
             // Redirect
@@ -157,9 +161,9 @@ export default class Switch extends React.Component<SwitchProps> {
             }));
           }
 
-          if (animation.type) {
+          let previousEntryRoute = entriesWithRoute[entriesWithRoute.length - 2];
+          if (animation.type && previousEntryRoute && previousEntryRoute.route !== route) {
             const last = context.last;
-            let previousEntryRoute = entriesWithRoute[entriesWithRoute.length - 2];
             if (previousEntryRoute && previousEntryRoute.route) {
               // console.warn('previous', previousEntryRoute);
               children.push(React.cloneElement(previousEntryRoute.route, {

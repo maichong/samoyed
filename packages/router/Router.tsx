@@ -41,9 +41,6 @@ export default class Router extends React.Component<RouterProps, State> {
       last: null
     };
 
-    // @ts-ignore
-    window.h = history;
-
     // This is a bit of a hack. We have to start listening for location
     // changes here in the constructor in case there are any <Redirect>s
     // on the initial render. If there are, they will replace/push when
@@ -114,7 +111,7 @@ export default class Router extends React.Component<RouterProps, State> {
     let { entries } = this.state;
     let keys: H.LocationKey[] = list.map((entry: H.Location | H.LocationKey) => (typeof entry === 'string' ? entry : entry.key));
     entries = entries.filter((entry) => keys.indexOf(entry.key) === -1);
-    console.log('after free', ...entries);
+    // console.log('after free', ...entries);
     this.setState({ entries });
   };
 

@@ -23,7 +23,8 @@ class Route extends React.Component {
                 match,
                 active,
                 last,
-                previous
+                previous,
+                router: childContext
             };
             if (typeof children === 'function') {
                 children = children(childProps);

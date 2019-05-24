@@ -57,7 +57,6 @@ class Router extends React.Component {
             let { entries } = this.state;
             let keys = list.map((entry) => (typeof entry === 'string' ? entry : entry.key));
             entries = entries.filter((entry) => keys.indexOf(entry.key) === -1);
-            console.log('after free', ...entries);
             this.setState({ entries });
         };
         let history = props.history;
@@ -72,7 +71,6 @@ class Router extends React.Component {
             entries: [location],
             last: null
         };
-        window.h = history;
         this._isMounted = false;
         this._pendingLocation = null;
         if (!props.staticContext) {

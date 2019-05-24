@@ -1,11 +1,12 @@
 
 import * as React from 'react';
 import * as _ from 'lodash';
-import * as H from 'history';
 import { Router, Switch, Route, Redirect, NavLink } from '@samoyed/router';
+import app from '@samoyed/app';
 import Box from '@samoyed/box';
 import Viewport from '@samoyed/viewport';
 import pages from './pages';
+import RouterPage from './pages/Router';
 
 type Props = {
 };
@@ -13,13 +14,11 @@ type Props = {
 type State = {
 };
 
-const history = H.createHashHistory();
-
 export default class App extends React.Component<Props, State> {
   render() {
     return (
       <Viewport className="" layout="horizontal">
-        <Router history={history} freeComponent="keepalive">
+        <Router history={app.history}>
           <Box className="list-group menu">
             {
               _.map(pages, (C, key) => (<NavLink
@@ -28,6 +27,10 @@ export default class App extends React.Component<Props, State> {
                 className="list-group-item list-group-item-action"
               >{key}</NavLink>))
             }
+            <NavLink
+              to="/Router"
+              className="list-group-item list-group-item-action"
+            >Router</NavLink>
           </Box>
           <Box flex layout="fit">
             <Switch animation={{ type: 'slide' }}>
@@ -40,7 +43,11 @@ export default class App extends React.Component<Props, State> {
                   exact
                 />))
               }
-              <Redirect to="/Checkbox" />
+              <Route
+                path="/Router"
+                component={RouterPage}
+              />
+              <Redirect to="/Box" />
             </Switch>
           </Box>
         </Router>

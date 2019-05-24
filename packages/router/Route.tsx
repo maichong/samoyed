@@ -36,7 +36,8 @@ export default class Route extends React.Component<RouteProps> {
             match,
             active,
             last,
-            previous
+            previous,
+            router: childContext
           };
 
           if (typeof children === 'function') {

@@ -98,6 +98,10 @@ class Switch extends React.Component {
             }
             let children = [];
             let item = entriesWithRoute[entriesWithRoute.length - 1];
+            if (!item || !item.route) {
+                console.error('No route found for location', context.location);
+                return null;
+            }
             let route = item.route;
             if (route.type === Redirect_1.default && item.entry.key !== context.globalLocation.key) {
                 route = null;
@@ -110,9 +114,9 @@ class Switch extends React.Component {
                     entries: (routesWithEntries[item.routeIndex]).entries.map((e) => e.entry),
                 }));
             }
-            if (animation.type) {
+            let previousEntryRoute = entriesWithRoute[entriesWithRoute.length - 2];
+            if (animation.type && previousEntryRoute && previousEntryRoute.route !== route) {
                 const last = context.last;
-                let previousEntryRoute = entriesWithRoute[entriesWithRoute.length - 2];
                 if (previousEntryRoute && previousEntryRoute.route) {
                     children.push(React.cloneElement(previousEntryRoute.route, {
                         key: 'previous',
