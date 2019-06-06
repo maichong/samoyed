@@ -33,3 +33,15 @@
     display: block;
   }
 }
+
+body.s-firefox {
+  // firefox 防止内部元素撑破
+
+  .s-layout-vertical>.s-flex {
+    overflow-y: hidden;
+  }
+
+  .s-layout-horizontal>.s-flex {
+    overflow-x: hidden;
+  }
+}

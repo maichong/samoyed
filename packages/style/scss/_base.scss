@@ -23,7 +23,6 @@ html,
 
 .s-flex {
   flex: 1;
-  overflow: hidden; // firefox 防止内部元素撑破
 }
 
 a:not([href]):not([tabindex]).s-link,
