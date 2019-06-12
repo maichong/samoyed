@@ -7,11 +7,11 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 import options from './options';
 
-type State = {
+interface State {
   value: string;
   clearable: string;
   multi: string[];
-};
+}
 
 export default class SwitchPage extends React.Component<RouteComponentProps, State> {
   state = {

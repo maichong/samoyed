@@ -8,6 +8,7 @@ class App {
         this.defaults = {
             animationDuration: 300,
             switchAnimationDuration: 300,
+            listLimit: 10
         };
         this.is = {
             ssr: typeof window === 'undefined'
@@ -92,12 +93,11 @@ class App {
         }
     }
     _watchSize() {
-        let me = this;
-        function toggleSize(name, min, max) {
+        const toggleSize = (name, min, max) => {
             let bool = window.innerWidth >= min && window.innerWidth < max;
-            if (me.is[name] === bool)
+            if (this.is[name] === bool)
                 return false;
-            me.is[name] = bool;
+            this.is[name] = bool;
             let className = `s-${name}`;
             let classList = window.document.body.classList;
             if (bool) {
@@ -107,7 +107,7 @@ class App {
                 classList.remove(className);
             }
             return true;
-        }
+        };
         let w = window.innerWidth;
         window.addEventListener('resize', () => {
             let changed = false;
@@ -158,9 +158,8 @@ class App {
         this._listeners = this._listeners.filter((fn) => fn !== callback);
     }
     addAction(name, actionCreator) {
-        let me = this;
-        this.actions[name] = function () {
-            me.store.dispatch(actionCreator.apply(me, arguments));
+        this.actions[name] = () => {
+            this.store.dispatch(actionCreator.apply(this, arguments));
         };
     }
 }

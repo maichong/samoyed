@@ -1,6 +1,6 @@
 import { List, ListSelector } from '.';
 
-export { List , ListSelector };
+export { List, ListSelector };
 
 export function matchList(list: List, selector: ListSelector): boolean;
 

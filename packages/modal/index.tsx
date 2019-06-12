@@ -20,7 +20,7 @@ interface Item {
   cancel: () => void;
 }
 
-const updaters = new Set();
+const updaters: Set<Function> = new Set();
 const items: Item[] = [];
 
 function isOptions(options: any): boolean {

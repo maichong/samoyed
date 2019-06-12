@@ -14,16 +14,14 @@ export default function Redirect({ computedMatch, to, push = false }: RedirectPr
         const { history, staticContext } = context;
 
         const method = push ? history.push : history.replace;
-        const location = createLocation(
-          computedMatch
-            ? typeof to === 'string'
-              ? generatePath(to, computedMatch.params)
-              : {
-                ...to,
-                pathname: generatePath(to.pathname, computedMatch.params)
-              }
-            : to
-        );
+        const location = createLocation(computedMatch
+          ? typeof to === 'string'
+            ? generatePath(to, computedMatch.params)
+            : {
+              ...to,
+              pathname: generatePath(to.pathname, computedMatch.params)
+            }
+          : to);
 
         // When rendering in a static context,
         // set the new location immediately.

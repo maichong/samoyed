@@ -41,7 +41,7 @@ export default class Swtich extends React.Component<SwitchProps, SwatchState> {
       return;
     }
 
-    //multi
+    // multi
     if (!value || !(value as SelectValue[]).length) {
       if (typeof optionsMap[opt] !== 'undefined' && typeof optionsMap[opt].value !== 'undefined') {
         onChange([optionsMap[opt].value]);

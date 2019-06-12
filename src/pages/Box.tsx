@@ -8,12 +8,12 @@ import { RouteComponentProps } from '@samoyed/router';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 
-type State = {
+interface State {
   rect?: ClientRect;
   dockPlacement: Placement;
   scroll: Partial<ScrollData>;
   reachEvent: string[];
-};
+}
 
 export default class CheckboxPage extends React.Component<RouteComponentProps, State> {
   constructor(props: RouteComponentProps) {

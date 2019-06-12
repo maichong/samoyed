@@ -135,7 +135,7 @@ export default class Select extends React.Component<SelectProps, SelectState> {
       }
       callback(options);
     });
-  }
+  };
 
   handleChange = (vOpt: SelectOption | SelectOption[]) => {
     let { optionsMap } = this.state;

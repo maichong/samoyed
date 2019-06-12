@@ -54,7 +54,8 @@ function create(type?: ToastType) {
     let t = options.type || type || defaultOptions.type;
     for (let key in defaultOptions) {
       if (!options.hasOwnProperty(key)) {
-        options[key as keyof ToastOptions] = defaultOptions[key as keyof ToastOptions];
+        // @ts-ignore 拷贝 options 不存在的设置
+        options[key] = defaultOptions[key];
       }
     }
     container[t](body, title, options);

@@ -124,8 +124,8 @@ export interface NavLinkProps extends LinkProps {
   activeStyle?: React.CSSProperties;
   exact?: boolean;
   strict?: boolean;
-  isActive?<Params extends { [K in keyof Params]?: string }>(match: Match<Params>, location: H.Location): boolean;
   location?: H.Location;
+  isActive?<Params extends { [K in keyof Params]?: string }>(match: Match<Params>, location: H.Location): boolean;
 }
 
 export class NavLink extends React.Component<NavLinkProps> {

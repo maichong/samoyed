@@ -8,11 +8,11 @@ import Viewport from '@samoyed/viewport';
 import pages from './pages';
 import RouterPage from './pages/Router';
 
-type Props = {
-};
+interface Props {
+}
 
-type State = {
-};
+interface State {
+}
 
 export default class App extends React.Component<Props, State> {
   render() {

@@ -58,7 +58,7 @@ export default class Box extends React.Component<BoxProps> {
     }
   }
 
-  handleResize = (entries?: any[] | { width: number; height: number; }) => {
+  handleResize = (entries?: any[] | { width: number; height: number }) => {
     if (!this.props.onResize) return;
     let rect;
     if (Array.isArray(entries)) {

@@ -40,7 +40,7 @@ export default class CheckboxGroup extends React.Component<CheckboxGroupProps, C
       return;
     }
 
-    //multi
+    // multi
     if (!value || !(value as SelectValue[]).length) {
       if (typeof optionsMap[opt] !== 'undefined' && typeof optionsMap[opt].value !== 'undefined') {
         onChange([optionsMap[opt].value]);

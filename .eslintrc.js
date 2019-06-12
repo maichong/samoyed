@@ -1,6 +1,7 @@
 module.exports = {
   extends: [
-    'eslint-config-alloy/typescript-react',
+    'eslint-config-alloy/react',
+    'eslint-config-alloy/typescript'
   ],
   globals: {},
   settings: {
@@ -28,8 +29,60 @@ module.exports = {
     'no-shadow': 'error',
     'object-curly-spacing': ['error', 'always'],
     'prefer-template': 'error',
+    'prefer-object-spread': 'off',
     radix: 'off',
-    'react/jsx-indent-props': ['error', 2]
+    'react/jsx-indent': ['error', 2],
+    'react/jsx-indent-props': ['error', 2],
+    // 一个缩进必须用两个空格替代
+    '@typescript-eslint/indent': [
+      'error',
+      2,
+      { SwitchCase: 1, flatTernaryExpressions: true }
+    ],
+    '@typescript-eslint/explicit-member-accessibility': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/no-inferrable-types': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/prefer-function-type': 'off',
+    '@typescript-eslint/member-ordering': ['error', {
+      default: [
+        "public-static-field",
+        "protected-static-field",
+        "private-static-field",
+
+        "public-instance-field",
+        "protected-instance-field",
+        "private-instance-field",
+
+        "public-field",
+        "protected-field",
+        "private-field",
+
+        "static-field",
+        "instance-field",
+
+        "field",
+
+        "constructor",
+
+        "public-static-method",
+        "protected-static-method",
+        "private-static-method",
+
+        "public-instance-method",
+        "protected-instance-method",
+        "private-instance-method",
+
+        "public-method",
+        "protected-method",
+        "private-method",
+
+        "static-method",
+        "instance-method",
+
+        "method"
+      ]
+    }]
   },
   overrides: [{
     files: ['*.d.ts'],
@@ -37,7 +90,6 @@ module.exports = {
       'no-dupe-class-members': 'off',
       'no-use-before-define': 'off',
       'no-useless-constructor': 'off',
-      'typescript/member-ordering': 'off'
     }
   }]
 }
