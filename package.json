@@ -45,6 +45,7 @@
     "@samoyed/toolbar": "file:packages/toolbar",
     "@samoyed/types": "file:packages/types",
     "@samoyed/tooltip-wrapper": "file:packages/tooltip-wrapper",
+    "@samoyed/utils": "file:packages/utils",
     "@samoyed/viewport": "file:packages/viewport"
   },
   "dependencies": {
@@ -78,6 +79,7 @@
     "@samoyed/toolbar": "file:packages/toolbar",
     "@samoyed/tooltip-wrapper": "file:packages/tooltip-wrapper",
     "@samoyed/types": "file:packages/types",
+    "@samoyed/utils": "file:packages/utils",
     "@samoyed/viewport": "file:packages/viewport",
     "@types/classnames": "^2.2.7",
     "@types/hoist-non-react-statics": "^3.3.1",
@@ -91,7 +93,7 @@
     "@types/react-select": "^2.0.18",
     "@types/react-syntax-highlighter": "^10.2.0",
     "@types/react-toastr": "^3.0.4",
-    "akita": "^0.7.4",
+    "akita": "^0.8.0",
     "animate.css": "^3.7.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.6",

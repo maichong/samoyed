@@ -45,37 +45,6 @@ export interface SelectOption {
   color?: Colors;
 }
 
-/**
- * Redux数据通用格式
- */
-export interface ReduxData {
-  request: string;
-  fetching: boolean;
-  loaded?: boolean;
-  error?: Error | null;
-}
-
-/**
- * Redux中数据列表通用格式
- */
-export interface ReduxList<T> extends ReduxData {
-  search: string;
-  filters?: any | null;
-  results: T[];
-}
-
-/**
- * Redux中分页数据列表通用格式
- */
-export interface ReduxPaginateList<T> extends ReduxList<T> {
-  total: number;
-  page: number;
-  limit: number;
-  totalPage: number;
-  previous: number;
-  next: number;
-}
-
 export interface ErrorsMap {
   [key: string]: null | string | string[] | ErrorsMap | ErrorsMap[];
 }

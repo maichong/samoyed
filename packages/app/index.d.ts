@@ -8,6 +8,7 @@ type ComponentClass<T = any> = React.ComponentClass<T> | React.FunctionComponent
 export interface Defaults {
   switchAnimationDuration: number;
   animationDuration: number;
+  listLimit: number;
 }
 
 export interface Environments {
