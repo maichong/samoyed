@@ -158,8 +158,9 @@ class App {
         this._listeners = this._listeners.filter((fn) => fn !== callback);
     }
     addAction(name, actionCreator) {
-        this.actions[name] = () => {
-            this.store.dispatch(actionCreator.apply(this, arguments));
+        let me = this;
+        me.actions[name] = function () {
+            me.store.dispatch(actionCreator.apply(me, arguments));
         };
     }
 }

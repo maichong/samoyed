@@ -180,9 +180,10 @@ export class App {
   }
 
   addAction(name: string, actionCreator: Function): void {
+    let me = this;
     // @ts-ignore indexer
-    this.actions[name] = () => {
-      this.store.dispatch(actionCreator.apply(this, arguments));
+    me.actions[name] = function () {
+      me.store.dispatch(actionCreator.apply(me, arguments));
     };
   }
 }
