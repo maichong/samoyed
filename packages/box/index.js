@@ -9,6 +9,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const _ = require("lodash");
 const React = require("react");
 const classnames = require("classnames");
 const app_1 = require("@samoyed/app");
@@ -114,10 +115,18 @@ class Box extends React.Component {
         }
     }
     render() {
-        const _a = this.props, { children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation, previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement, onBodyScroll, reachBottomBorder, onReachBottom } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "elRef", "bodyRef", "flex", "scrollable", "layout", "activeItem", "animation", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "dock", "dockPlacement", "onBodyScroll", "reachBottomBorder", "onReachBottom"]);
+        let _a = this.props, { children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg, flex, scrollable, layout, activeItem, animation, previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement, onBodyScroll, reachBottomBorder, onReachBottom } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "style", "bodyStyle", "elRef", "bodyRef", "width", "height", "bg", "flex", "scrollable", "layout", "activeItem", "animation", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "dock", "dockPlacement", "onBodyScroll", "reachBottomBorder", "onReachBottom"]);
+        style = _.assign({}, style);
+        if (height || height === 0) {
+            style.height = height;
+        }
+        if (width || width === 0) {
+            style.width = width;
+        }
         const vertical = scrollable === 'both' || scrollable === 'vertical';
         let layoutProps = {
             ref: bodyRef,
+            style: bodyStyle,
             onScroll: (scrollable && onBodyScroll) || (vertical && onReachBottom) ? this.handleScroll : null,
         };
         let LayoutComponent = 'div';
@@ -133,7 +142,11 @@ class Box extends React.Component {
         if (['card', 'none'].indexOf(layout) > -1) {
             layoutClassName = '';
         }
-        layoutProps.className = classnames('s-box-body', bodyClassName, layoutClassName, { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' }, { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' });
+        layoutProps.className = classnames('s-box-body', bodyClassName, layoutClassName, {
+            's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal',
+            's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical',
+            [`bg-${bg}`]: bg
+        });
         let dockClassName = '';
         if (dock) {
             dockClassName = `s-dock s-dock-${dockPlacement || 'top'}`;
@@ -143,7 +156,7 @@ class Box extends React.Component {
                 's-previous': previous,
                 's-last': last,
                 's-active': active,
-            }) }, others),
+            }), style: style }, others),
             dock,
             React.createElement(LayoutComponent, Object.assign({}, layoutProps), children)));
         if (wrapper) {

@@ -15,7 +15,7 @@ interface State {
   reachEvent: string[];
 }
 
-export default class CheckboxPage extends React.Component<RouteComponentProps, State> {
+export default class BoxPage extends React.Component<RouteComponentProps, State> {
   constructor(props: RouteComponentProps) {
     super(props);
     this.state = {
@@ -44,6 +44,24 @@ export default class CheckboxPage extends React.Component<RouteComponentProps, S
             <Box className="bg-primary p-2" bodyClassName="bg-success">Box</Box>
           </div>
           <SyntaxHighlighter style={docco}>{'<Box className="bg-primary p-2" bodyClassName="bg-success"></Box>'}</SyntaxHighlighter>
+        </div>
+
+        <h2>style / bodyStyle</h2>
+        <div className="demo">
+          <div className="preview">
+            <Box style={{ background: '#985', padding: 10 }} bodyStyle={{ background: '#996' }}>Box</Box>
+          </div>
+          <SyntaxHighlighter style={docco}>{`
+<Box style={{ background: '#985', padding: 10 }} bodyStyle={{ background: '#996' }}>Box</Box>
+`}</SyntaxHighlighter>
+        </div>
+
+        <h2>height / width</h2>
+        <div className="demo">
+          <div className="preview">
+            <Box height={100} width="200px" bodyClassName="bg-success">Box</Box>
+          </div>
+          <SyntaxHighlighter style={docco}>{'<Box height={100} width="200px">Box</Box>'}</SyntaxHighlighter>
         </div>
 
         <h2>flex</h2>

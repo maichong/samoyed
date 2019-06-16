@@ -19,4 +19,16 @@ export default [{
   label: 'warning',
   value: 'warning',
   color: 'warning',
+}, {
+  label: 'info',
+  value: 'info',
+  color: 'info',
+}, {
+  label: 'light',
+  value: 'light',
+  color: 'light',
+}, {
+  label: 'dark',
+  value: 'dark',
+  color: 'dark',
 }];

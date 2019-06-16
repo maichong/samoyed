@@ -31,9 +31,22 @@ a:not([href]):not([tabindex]).s-link,
   text-decoration: $link-decoration;
   background-color: transparent;
   cursor: pointer;
-
   &:hover {
     color: $link-hover-color;
     text-decoration: $link-hover-decoration;
+  }
+}
+
+.s-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  text-align: center;
+}
+
+.s-hover {
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
   }
 }

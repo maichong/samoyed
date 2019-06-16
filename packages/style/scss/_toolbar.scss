@@ -1,24 +1,92 @@
 .s-toolbar {
   background: #fff;
-  border-bottom: solid 1px $s-toolbar-border-color;
+  .s-icon {
+    font-size: 1.2rem;
+  }
 }
 
 .s-toolbar-body {
   align-items: center;
-  padding: 0 $s-toolbar-padding;
-  min-height: $s-toolbar-height;
-
   .btn-group {
+    // TODO: alaska admin 中 btn 改为 s-tool
     .btn {
       margin-right: 0;
     }
   }
-
   .btn {
     margin-right: $s-toolbar-padding;
-
     &:last-child {
       margin-right: 0;
     }
   }
+}
+
+.s-toolbar-top,
+.s-toolbar-bottom {
+  .s-toolbar-body {
+    min-height: $s-toolbar-height;
+    padding: 0 $s-toolbar-padding;
+  }
+  .s-toolbar-title.s-has-icon {
+    .s-text {
+      margin-left: 0.5rem;
+    }
+  }
+  .s-tool {
+    margin-left: 0.3rem;
+  }
+}
+
+.s-toolbar-left,
+.s-toolbar-right {
+  .s-toolbar-body {
+    width: $s-toolbar-height;
+    padding: $s-toolbar-padding 0;
+  }
+  .s-toolbar-title {
+    writing-mode: vertical-lr;
+    line-height: $s-toolbar-height;
+  }
+  .s-toolbar-title.s-has-icon {
+    .s-text {
+      margin-top: 0.5rem;
+    }
+  }
+  .s-tool {
+    margin-top: 0.3rem;
+  }
+}
+
+.s-toolbar-top {
+  border-bottom: solid 1px $s-toolbar-border-color;
+}
+
+.s-toolbar-bottom {
+  border-top: solid 1px $s-toolbar-border-color;
+}
+
+.s-toolbar-left {
+  border-right: solid 1px $s-toolbar-border-color;
+}
+
+.s-toolbar-right {
+  border-left: solid 1px $s-toolbar-border-color;
+}
+
+.s-toolbar-primary,
+.s-toolbar-secondary,
+.s-toolbar-success,
+.s-toolbar-danger,
+.s-toolbar-warning,
+.s-toolbar-info,
+.s-toolbar-dark {
+  border: none;
+  color: #fff;
+}
+
+.s-toolbar-title {
+  white-space: nowrap;
+  word-break: keep-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

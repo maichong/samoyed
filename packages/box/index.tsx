@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import * as React from 'react';
 import * as classnames from 'classnames';
 import ResizeSensorType from 'css-element-queries/src/ResizeSensor';
@@ -122,16 +123,26 @@ export default class Box extends React.Component<BoxProps> {
   };
 
   render() {
-    const {
-      children, className, bodyClassName, elRef, bodyRef, flex, scrollable, layout, activeItem, animation,
+    let {
+      children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg,
+      flex, scrollable, layout, activeItem, animation,
       previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement,
       onBodyScroll, reachBottomBorder, onReachBottom, ...others
     } = this.props;
+
+    style = _.assign({}, style);
+    if (height || height === 0) {
+      style.height = height;
+    }
+    if (width || width === 0) {
+      style.width = width;
+    }
 
     const vertical = scrollable === 'both' || scrollable === 'vertical';
 
     let layoutProps: any = {
       ref: bodyRef,
+      style: bodyStyle,
       onScroll: (scrollable && onBodyScroll) || (vertical && onReachBottom) ? this.handleScroll : null,
     };
 
@@ -154,8 +165,11 @@ export default class Box extends React.Component<BoxProps> {
       's-box-body',
       bodyClassName,
       layoutClassName,
-      { 's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal' },
-      { 's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical' },
+      {
+        's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal',
+        's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical',
+        [`bg-${bg}`]: bg
+      }
     );
 
     let dockClassName = '';
@@ -178,6 +192,7 @@ export default class Box extends React.Component<BoxProps> {
             's-active': active,
           }
         )}
+        style={style}
         {...others}
       >
         {dock}

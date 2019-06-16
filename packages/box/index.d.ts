@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Layout, AnimationType, Animation, Placement } from '@samoyed/types';
+import { Layout, AnimationType, Animation, Placement, Colors } from '@samoyed/types';
 
 declare module '@samoyed/app' {
   export interface Components {
@@ -29,6 +29,22 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
    * Box内层样式类
    */
   bodyClassName?: string;
+  /**
+   * Box内层样式
+   */
+  bodyStyle?: React.CSSProperties;
+  /**
+   * 背景色
+   */
+  bg?: Colors;
+  /**
+   * Box高度
+   */
+  height?: number | string;
+  /**
+   * Box宽度
+   */
+  width?: number | string;
   /**
    * 外层div ref
    */

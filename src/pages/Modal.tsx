@@ -5,7 +5,6 @@ import Page from '@samoyed/page';
 import { RouteComponentProps } from '@samoyed/router';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
-import options from './options';
 
 interface State {
   value: string;

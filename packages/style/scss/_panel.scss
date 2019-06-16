@@ -1,0 +1,17 @@
+.s-panel {
+  background: #fff;
+}
+
+.s-panel-border {
+  border: solid 1px;
+}
+
+@each $color, $value in $theme-colors {
+  .s-panel-#{$color} {
+    border-color: $value;
+  }
+}
+
+.s-panel-light {
+  border-color: $light-border-color;
+}

@@ -1,8 +1,12 @@
+// 颜色
+$light-border-color: #eee !default;
+
+// Toolbar 边框颜色
+$s-toolbar-border-color: $light-border-color !default;
+
 // Toolbar 左右内间距、以及各个子元素间距
 $s-toolbar-padding:0.5rem !default;
 
 // Toolbar 高度
 $s-toolbar-height: 2.6rem !default;
 
-// Toolbar 边框颜色
-$s-toolbar-border-color: #eee !default;
