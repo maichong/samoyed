@@ -9,16 +9,18 @@ import Layout from './Layout';
 import Drawer from './Drawer';
 import Box from './Box';
 import Panel from './Panel';
+import Field from './Field';
 
 export default {
   Box,
   Layout,
-  Drawer,
   Panel,
+  Drawer,
   Checkbox,
   'Checkbox group': CheckboxGroup,
   Select,
   Switch,
+  Field,
   Modal,
   Toast,
   'Tooltip Wrapper': TooltipWrapper,

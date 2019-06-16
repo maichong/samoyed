@@ -1642,6 +1642,19 @@
   dependencies:
     "@samoyed/app" "^0.4.0"
 
+"@samoyed/field-number@file:packages/field-number":
+  version "0.4.0"
+  dependencies:
+    "@samoyed/number-input" "^0.4.0"
+    classnames "^2.2.6"
+    shallow-equal-without "^0.2.0"
+
+"@samoyed/field-text@file:packages/field-text":
+  version "0.4.0"
+  dependencies:
+    classnames "^2.2.6"
+    shallow-equal-without "^0.2.0"
+
 "@samoyed/icon@^0.4.0", "@samoyed/icon@file:packages/icon":
   version "0.4.0"
 
@@ -1653,6 +1666,11 @@
   dependencies:
     grackle "^0.2.0"
     string-random "^0.1.3"
+
+"@samoyed/number-input@^0.4.0", "@samoyed/number-input@file:packages/number-input":
+  version "0.4.0"
+  dependencies:
+    numeral "^2.0.6"
 
 "@samoyed/page@file:packages/page":
   version "0.4.0"
@@ -1703,6 +1721,8 @@
 
 "@samoyed/types@file:packages/types":
   version "0.4.3"
+  dependencies:
+    check-depends "^0.5.2"
 
 "@samoyed/utils@file:packages/utils":
   version "0.4.3"
@@ -2777,6 +2797,14 @@ chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
+
+check-depends@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/check-depends/-/check-depends-0.5.2.tgz#7e6caea312f9f1069c27fad8cf08c5e6db2425e1"
+  integrity sha512-2rrdzgzV7v1lRfBN5HVY9pmlVUs2KOajv/LDcNX+gnBqJQHVLZOxUSdLrzlZ92bJmDmUTzz0goisBvsCOZ4dKA==
+  dependencies:
+    ajv "^6.9.1"
+    lodash "^4.17.11"
 
 chokidar@^2.0.2:
   version "2.1.6"
@@ -6152,6 +6180,11 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
+numeral@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/numeral/-/numeral-2.0.6.tgz#4ad080936d443c2561aed9f2197efffe25f4e506"
+  integrity sha1-StCAk21EPCVhrtnyGX7//iX05QY=
+
 oauth-sign@~0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.9.0.tgz#47a7b016baa68b5fa0ecf3dee08a85c679ac6455"
@@ -7605,6 +7638,13 @@ shallow-clone@^1.0.0:
     is-extendable "^0.1.1"
     kind-of "^5.0.0"
     mixin-object "^2.0.1"
+
+shallow-equal-without@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/shallow-equal-without/-/shallow-equal-without-0.2.0.tgz#e4b44d13bbd4cba8f343bc21afce45ffecef6305"
+  integrity sha512-rx6FdizqUxU1QRYUZ61WdgBnjvjdQ2hR2SE1UNeuWwf5e/MrhqwPqUjy1MgoN+Tjo1wrvYuMyHjiQPCu7NkE/w==
+  dependencies:
+    lodash "^4.17.11"
 
 shebang-command@^1.2.0:
   version "1.2.0"

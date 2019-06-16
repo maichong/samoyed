@@ -1,21 +1,22 @@
 {
-  "name": "@samoyed/types",
-  "version": "0.4.3",
-  "description": "Samoyed general types definition",
+  "name": "@samoyed/number-input",
+  "version": "0.4.0",
+  "description": "React number input",
   "keywords": [
     "samoyed",
     "react",
     "bootstrap",
-    "typescript"
+    "number"
   ],
   "publishConfig": {
     "access": "public"
   },
+  "main": "index.js",
   "types": "index.d.ts",
   "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
-  "repository": "https://github.com/maichong/samoyed/tree/master/packages/types",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/number-input",
   "license": "MIT",
   "dependencies": {
-    "check-depends": "^0.5.2"
+    "numeral": "^2.0.6"
   }
 }
