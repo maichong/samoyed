@@ -7,7 +7,6 @@ export interface ListSelector {
   limit?: number;
 }
 
-
 export interface List {
   search?: string;
   sort?: string;
