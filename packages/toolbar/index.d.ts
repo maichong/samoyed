@@ -23,7 +23,7 @@ export interface Tool {
   /**
    * 禁用
    */
-  disabled?: boolean,
+  disabled?: boolean;
   /**
    * 回调函数
    */

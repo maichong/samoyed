@@ -6,24 +6,18 @@ import { CheckboxFieldProps } from '.';
 
 export default class CheckboxField extends React.Component<CheckboxFieldProps> {
   shouldComponentUpdate(props: CheckboxFieldProps) {
-    return !shallowEqualWithout(props, this.props, 'record', 'onChange', 'model');
+    return !shallowEqualWithout(props, this.props, 'record');
   }
-
-  handleChange = (checked: boolean) => {
-    if (this.props.onChange) {
-      this.props.onChange(checked);
-    }
-  };
 
   render() {
     let {
-      className, label, help, value, error, disabled, radio
+      className, label, help, value, error, disabled, multi, onChange
     } = this.props;
     let inputElement = (<Checkbox
-      radio={!!radio}
+      radio={!multi}
       label={label}
       value={value}
-      onChange={this.handleChange}
+      onChange={onChange}
       disabled={disabled}
     />);
     return (
