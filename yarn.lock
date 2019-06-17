@@ -1642,6 +1642,12 @@
   dependencies:
     "@samoyed/app" "^0.4.0"
 
+"@samoyed/field-checkbox@file:packages/field-checkbox":
+  version "0.4.0"
+  dependencies:
+    classnames "^2.2.6"
+    shallow-equal-without "^0.2.0"
+
 "@samoyed/field-number@file:packages/field-number":
   version "0.4.0"
   dependencies:

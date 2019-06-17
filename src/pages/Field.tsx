@@ -3,6 +3,7 @@ import * as React from 'react';
 import Page from '@samoyed/page';
 import TextField from '@samoyed/field-text';
 import NumberField from '@samoyed/field-number';
+import CheckboxField from '@samoyed/field-checkbox';
 import { RouteComponentProps } from '@samoyed/router';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
@@ -74,6 +75,29 @@ export default class BoxPage extends React.Component<RouteComponentProps, State>
   min={0}
   format="0,0.0000"
   onChange={(v) => this.setState({ balance: v })}
+/>
+          `.trim()}</SyntaxHighlighter>
+        </div>
+
+        <h2>checkbox</h2>
+        <div className="demo">
+          <div className="preview">
+            {/* <CheckboxField
+              label="Name:"
+              placeholder="Your name?"
+              help="Please input your name"
+              value={name}
+              radio={true}
+              onChange={(v) => this.setState({ name: v })}
+            /> */}
+          </div>
+          <SyntaxHighlighter style={docco}>{`
+<CheckboxField
+  label="Name:"
+  placeholder="Your name?"
+  help="Please input your name"
+  value={name}
+  onChange={(v) => this.setState({ name: v })}
 />
           `.trim()}</SyntaxHighlighter>
         </div>
