@@ -45,7 +45,7 @@ export default function Toolbar(props: ToolbarProps) {
         let colorCls = tool.color ? `text-${tool.color}` : '';
         let el = <div
           key={index}
-          onClick={!tool.disabled && tool.onClick}
+          onClick={tool.disabled ? null : tool.onClick}
           className={classnames('s-tool', colorCls, {
             's-has-icon': tool.icon,
             's-has-text': tool.text,
