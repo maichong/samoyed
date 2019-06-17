@@ -39,7 +39,7 @@ function Toolbar(props) {
             if (React.isValidElement(tool))
                 return tool;
             let colorCls = tool.color ? `text-${tool.color}` : '';
-            let el = React.createElement("div", { key: index, onClick: !tool.disabled && tool.onClick, className: classnames('s-tool', colorCls, {
+            let el = React.createElement("div", { key: index, onClick: tool.disabled ? null : tool.onClick, className: classnames('s-tool', colorCls, {
                     's-has-icon': tool.icon,
                     's-has-text': tool.text,
                     's-disabled': tool.disabled,
