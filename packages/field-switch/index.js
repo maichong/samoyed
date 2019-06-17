@@ -21,20 +21,21 @@ class SwitchField extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            _options: props.options,
             options: filter(props.options)
         };
     }
     static getDerivedStateFromProps(nextProps, prevState) {
-        let state = {
-            options: nextProps.options
-        };
-        if (nextProps.options !== prevState.options) {
-            state.options = filter(nextProps.options);
+        if (nextProps.options !== prevState._options) {
+            return {
+                _options: nextProps.options,
+                options: filter(nextProps.options)
+            };
         }
-        return state;
+        return null;
     }
     shouldComponentUpdate(props, state) {
-        return !shallowEqualWithout(props, this.props, 'record') || state !== this.state;
+        return !shallowEqualWithout(props, this.props, 'record') || !shallowEqualWithout(state, this.state);
     }
     render() {
         let { className, value, disabled, error, onChange, help, multi, label } = this.props;

@@ -8,6 +8,7 @@ import * as classnames from 'classnames';
 import { SwitchFieldProps } from '.';
 
 interface SwitchFieldState {
+  _options: SelectOption[];
   options: SelectOption[];
 }
 
@@ -27,22 +28,23 @@ export default class SwitchField extends React.Component<SwitchFieldProps, Switc
   constructor(props: SwitchFieldProps) {
     super(props);
     this.state = {
+      _options: props.options,
       options: filter(props.options)
     };
   }
 
   static getDerivedStateFromProps(nextProps: SwitchFieldProps, prevState: SwitchFieldState) {
-    let state: Partial<SwitchFieldState> = {
-      options: nextProps.options
-    };
-    if (nextProps.options !== prevState.options) {
-      state.options = filter(nextProps.options);
+    if (nextProps.options !== prevState._options) {
+      return {
+        _options: nextProps.options,
+        options: filter(nextProps.options)
+      };
     }
-    return state;
+    return null;
   }
 
   shouldComponentUpdate(props: SwitchFieldProps, state: SwitchFieldState) {
-    return !shallowEqualWithout(props, this.props, 'record') || state !== this.state;
+    return !shallowEqualWithout(props, this.props, 'record') || !shallowEqualWithout(state, this.state);
   }
 
   render() {
