@@ -1,0 +1,21 @@
+{
+  "name": "@samoyed/field-select",
+  "version": "0.4.0",
+  "description": "React select field",
+  "keywords": [
+    "samoyed",
+    "react"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "index.js",
+  "types": "index.d.ts",
+  "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/field-select",
+  "license": "MIT",
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "shallow-equal-without": "^0.2.0"
+  }
+}

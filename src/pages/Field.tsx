@@ -5,6 +5,7 @@ import TextField from '@samoyed/field-text';
 import NumberField from '@samoyed/field-number';
 import CheckboxField from '@samoyed/field-checkbox';
 import SwitchField from '@samoyed/field-switch';
+import SelectField from '@samoyed/field-select';
 import { RouteComponentProps } from '@samoyed/router';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
@@ -15,6 +16,7 @@ interface State {
   balance: number;
   checked: boolean;
   multi: string[];
+  selectMulti: string[];
 }
 
 export default class BoxPage extends React.Component<RouteComponentProps, State> {
@@ -24,7 +26,8 @@ export default class BoxPage extends React.Component<RouteComponentProps, State>
       name: '',
       balance: 3919675.56,
       checked: false,
-      multi: ['primary', 'success']
+      multi: ['primary', 'success'],
+      selectMulti: ['primary', 'success']
     };
   }
 
@@ -127,6 +130,30 @@ export default class BoxPage extends React.Component<RouteComponentProps, State>
   value={this.state.multi}
   options={options}
   onChange={(v: any) => this.setState({ multi: v })}
+/>
+          `.trim()}</SyntaxHighlighter>
+        </div>
+
+        <h2>select</h2>
+        <div className="demo">
+          <div className="preview">
+            <SelectField
+              label="Select:"
+              help="props: multi,options,help,label,value"
+              multi
+              value={this.state.selectMulti}
+              options={options}
+              onChange={(v: any) => this.setState({ selectMulti: v })}
+            />
+          </div>
+          <SyntaxHighlighter style={docco}>{`
+<SelectField
+  label="Select:"
+  help="props: multi,options,help,label,value"
+  multi
+  value={this.state.selectMulti}
+  options={options}
+  onChange={(v: any) => this.setState({ selectMulti: v })}
 />
           `.trim()}</SyntaxHighlighter>
         </div>

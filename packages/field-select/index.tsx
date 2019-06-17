@@ -1,13 +1,13 @@
 import * as React from 'react';
 import * as shallowEqualWithout from 'shallow-equal-without';
 import * as tr from 'grackle';
-import Switch from '@samoyed/switch';
+import Select from '@samoyed/select';
 import * as _ from 'lodash';
 import { SelectOption } from '@samoyed/types';
 import * as classnames from 'classnames';
-import { SwitchFieldProps } from '.';
+import { SelectFieldProps } from '.';
 
-interface SwitchFieldState {
+interface SelectFieldState {
   _options: SelectOption[];
   options: SelectOption[];
 }
@@ -24,8 +24,8 @@ function filter(options?: SelectOption[]): SelectOption[] {
   return res;
 }
 
-export default class SwitchField extends React.Component<SwitchFieldProps, SwitchFieldState> {
-  constructor(props: SwitchFieldProps) {
+export default class SelectField extends React.Component<SelectFieldProps, SelectFieldState> {
+  constructor(props: SelectFieldProps) {
     super(props);
     this.state = {
       _options: props.options,
@@ -33,7 +33,7 @@ export default class SwitchField extends React.Component<SwitchFieldProps, Switc
     };
   }
 
-  static getDerivedStateFromProps(nextProps: SwitchFieldProps, prevState: SwitchFieldState) {
+  static getDerivedStateFromProps(nextProps: SelectFieldProps, prevState: SelectFieldState) {
     if (nextProps.options !== prevState._options) {
       return {
         _options: nextProps.options,
@@ -43,7 +43,7 @@ export default class SwitchField extends React.Component<SwitchFieldProps, Switc
     return null;
   }
 
-  shouldComponentUpdate(props: SwitchFieldProps, state: SwitchFieldState) {
+  shouldComponentUpdate(props: SelectFieldProps, state: SelectFieldState) {
     return !shallowEqualWithout(props, this.props, 'record') || !shallowEqualWithout(state, this.state);
   }
 
@@ -59,9 +59,9 @@ export default class SwitchField extends React.Component<SwitchFieldProps, Switc
       value = _.filter(value, (v) => typeof v !== 'undefined' && v !== null);
     }
     return (
-      <div className={classnames('s-component s-field s-field-switch form-group', className, { 'is-invalid': error })}>
+      <div className={classnames('s-component s-field s-field-select form-group', className, { 'is-invalid': error })}>
         {label && <label>{label}</label>}
-        <Switch
+        <Select
           className={inputClassName}
           clearable={!disabled}
           value={value}

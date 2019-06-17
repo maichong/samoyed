@@ -1655,6 +1655,12 @@
     classnames "^2.2.6"
     shallow-equal-without "^0.2.0"
 
+"@samoyed/field-select@file:packages/field-select":
+  version "0.4.0"
+  dependencies:
+    classnames "^2.2.6"
+    shallow-equal-without "^0.2.0"
+
 "@samoyed/field-switch@file:packages/field-switch":
   version "0.4.0"
   dependencies:
