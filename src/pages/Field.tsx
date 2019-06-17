@@ -6,6 +6,7 @@ import NumberField from '@samoyed/field-number';
 import CheckboxField from '@samoyed/field-checkbox';
 import SwitchField from '@samoyed/field-switch';
 import SelectField from '@samoyed/field-select';
+import DateTimeField from '@samoyed/field-datetime';
 import { RouteComponentProps } from '@samoyed/router';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
@@ -17,6 +18,7 @@ interface State {
   checked: boolean;
   multi: string[];
   selectMulti: string[];
+  time: string;
 }
 
 export default class BoxPage extends React.Component<RouteComponentProps, State> {
@@ -27,7 +29,8 @@ export default class BoxPage extends React.Component<RouteComponentProps, State>
       balance: 3919675.56,
       checked: false,
       multi: ['primary', 'success'],
-      selectMulti: ['primary', 'success']
+      selectMulti: ['primary', 'success'],
+      time: (new Date()).toString()
     };
   }
 
@@ -157,6 +160,28 @@ export default class BoxPage extends React.Component<RouteComponentProps, State>
 />
           `.trim()}</SyntaxHighlighter>
         </div>
+        <h2>datetime</h2>
+        <div className="demo">
+          <div className="preview">
+            <DateTimeField
+              label="Date Time:"
+              help="props:value, disabled, help, label, format, dateFormat, timeFormat, locale"
+              value={this.state.time}
+              // format="YYYY/MM/DD HH:mm"
+              onChange={(v: string) => this.setState({ time: v })}
+            />
+          </div>
+          <SyntaxHighlighter style={docco}>{`
+<DateTimeField
+  label="Date Time:"
+  help="props:help,label,value"
+  value={this.state.time}
+  format="YYYY/MM/DD HH:mm"
+  onChange={(v: string) => this.setState({ time: v })}
+/>
+          `.trim()}</SyntaxHighlighter>
+        </div>
+
       </Page>
     );
   }
