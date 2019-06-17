@@ -50,3 +50,8 @@ a:not([href]):not([tabindex]).s-link,
     opacity: 0.7;
   }
 }
+
+.s-tool.s-disabled {
+  cursor: no-drop;
+  opacity: 0.5 !important;
+}

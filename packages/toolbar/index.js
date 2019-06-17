@@ -39,12 +39,14 @@ function Toolbar(props) {
             if (React.isValidElement(tool))
                 return tool;
             let colorCls = tool.color ? `text-${tool.color}` : '';
-            let el = React.createElement("div", { key: index, onClick: tool.onClick, className: classnames('s-tool', colorCls, {
+            let el = React.createElement("div", { key: index, onClick: !tool.disabled && tool.onClick, className: classnames('s-tool', colorCls, {
                     's-has-icon': tool.icon,
                     's-has-text': tool.text,
+                    's-disabled': tool.disabled,
+                    's-hover': !tool.disabled,
                 }) },
-                tool.icon && React.createElement("i", { className: `s-icon s-hover fa fa-${tool.icon}` }),
-                tool.text && React.isValidElement(tool.text) ? tool.text : React.createElement("span", { className: "s-text" }, tool.text));
+                tool.icon && React.createElement("i", { className: `s-icon fa fa-${tool.icon}` }),
+                tool.text && (React.isValidElement(tool.text) ? tool.text : React.createElement("span", { className: "s-text" }, tool.text)));
             if (tool.tooltip) {
                 el = React.createElement(tooltip_wrapper_1.default, { placement: "bottom", tooltip: tool.tooltip }, el);
             }

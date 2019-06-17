@@ -21,6 +21,10 @@ export interface Tool {
    */
   tooltip?: React.ReactNode;
   /**
+   * 禁用
+   */
+  disabled?: boolean,
+  /**
    * 回调函数
    */
   onClick?: () => any;
