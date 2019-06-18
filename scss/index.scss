@@ -1,10 +1,12 @@
 $fa-font-path: "//cdn.bootcss.com/font-awesome/4.7.0/fonts";
 @import "~bootstrap/scss/bootstrap.scss";
+@import "~react-datetime/css/react-datetime.css";
 @import "~font-awesome/scss/font-awesome.scss";
 @import "~animate.css/animate.css";
 @import "~@samoyed/style/scss/samoyed.scss";
 @import "~@samoyed/toast/style.scss";
 @import "~@samoyed/image/style.scss";
+
 #app {
   background: #f6f6f6;
 }
@@ -24,9 +26,11 @@ $fa-font-path: "//cdn.bootcss.com/font-awesome/4.7.0/fonts";
 .demo {
   background: #fff;
   margin: 1rem 0;
+
   .preview {
     padding: 1rem;
   }
+
   pre {
     margin-bottom: 0;
   }
@@ -43,9 +47,11 @@ h2 {
 
 .checkbox {
   margin-right: 1rem;
+
   .fa {
     margin-right: 0.3rem;
   }
+
   &.disabled {
     opacity: 0.5;
   }
@@ -54,6 +60,7 @@ h2 {
 .layout-box {
   border: solid 5px #aaa;
   height: 8rem;
+
   .item {
     color: #fff;
   }
