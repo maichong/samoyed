@@ -40,7 +40,8 @@ export const clearList = createAction<ClearListPayload>(CLEAR_LIST);
  * @param {string} options.search
  * @param {string} options.sort
  */
-export const loadList = createAction<LoadListPayload, LoadListPayload>(LOAD_LIST, (req: LoadListPayload) => _.assign(req, {
+export const loadList = createAction<LoadListPayload, LoadListPayload>(LOAD_LIST, (req: LoadListPayload) => ({
+  model: req.model,
   limit: req.limit || app.defaults.listLimit,
   search: req.search || '',
   sort: req.sort || '',
