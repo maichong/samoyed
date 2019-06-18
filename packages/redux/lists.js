@@ -13,7 +13,8 @@ const LOAD_MORE = 'LOAD_MORE';
 const APPLY_LIST = 'APPLY_LIST';
 const LOAD_LIST_FAILURE = 'LOAD_LIST_FAILURE';
 exports.clearList = redux_actions_1.createAction(CLEAR_LIST);
-exports.loadList = redux_actions_1.createAction(LOAD_LIST, (req) => _.assign(req, {
+exports.loadList = redux_actions_1.createAction(LOAD_LIST, (req) => ({
+    model: req.model,
     limit: req.limit || app_1.default.defaults.listLimit,
     search: req.search || '',
     sort: req.sort || '',
