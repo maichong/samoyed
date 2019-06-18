@@ -21,8 +21,8 @@ exports.loadList = redux_actions_1.createAction(LOAD_LIST, (req) => _.assign(req
     populations: !req.populations || _.isEmpty(req.populations) ? null : req.populations,
 }));
 exports.loadMore = redux_actions_1.createAction(LOAD_MORE);
-exports.applyList = redux_actions_1.createAction(APPLY_LIST, (model, res) => _.assign({ model }, res));
-exports.loadListFailure = redux_actions_1.createAction(LOAD_LIST_FAILURE, (model, error) => ({ model, error }));
+exports.applyList = redux_actions_1.createAction(APPLY_LIST);
+exports.loadListFailure = redux_actions_1.createAction(LOAD_LIST_FAILURE);
 app_1.default.addAction('clearList', exports.clearList);
 app_1.default.addAction('loadList', exports.loadList);
 app_1.default.addAction('loadMore', exports.loadMore);
@@ -64,11 +64,16 @@ function applyListData(lists, selector, data) {
     return lists;
 }
 function applyDetailsData(lists, data) {
-    return _.map(lists, (list) => {
+    if (!data.rev) {
+        data = immutable_1.default.set(data, 'rev', Date.now());
+    }
+    let matched = false;
+    let newLists = _.map(lists, (list) => {
         let found = false;
         let results = _.map(list.results, (record) => {
             if (record.id === data.id) {
                 found = true;
+                matched = true;
                 return immutable_1.default.merge(record, data);
             }
             return record;
@@ -79,6 +84,7 @@ function applyDetailsData(lists, data) {
         }
         return list;
     });
+    return matched ? newLists : lists;
 }
 exports.default = redux_actions_1.handleActions({
     REFRESH: () => INITIAL_STATE,
@@ -98,15 +104,24 @@ exports.default = redux_actions_1.handleActions({
         const payload = action.payload;
         let model = payload.model;
         let lists = state[payload.model] || EMPTY_LISTS;
-        let data = _.defaults({ error: null, fetching: false, loaded: true }, payload);
+        let rev = payload.rev || Date.now();
+        let data = _.defaults({ error: null, fetching: false, loaded: true, rev }, payload);
+        let newResults = _.map(data.results, (item) => {
+            if (item.rev)
+                return item;
+            return immutable_1.default.set(item, 'rev', rev);
+        });
         let matched = false;
         lists = _.map(lists, (list) => {
             if (!matched && select_list_1.matchList(list, payload)) {
                 matched = true;
                 let results = list.results || [];
                 list = immutable_1.default.merge(list, data);
-                if (payload.page !== 1) {
-                    results = results.concat(payload.results);
+                if (payload.page === 1) {
+                    results = newResults;
+                }
+                else {
+                    results = results.concat(newResults);
                 }
                 let map = _.keyBy(results, 'id');
                 list = immutable_1.default.merge(list, { results, map });
@@ -153,35 +168,48 @@ function generateListApiUrl(params) {
     return params.limit === -1 ? params.model : `${params.model}/paginate`;
 }
 function* listSaga({ payload }) {
+    let search = payload.search || '';
+    let sort = payload.sort || '';
+    let limit = payload.limit || 0;
+    let fn = app_1.default.defaults.generateListApiUrl || generateListApiUrl;
+    let url = fn({ model: payload.model, limit, filters: payload.filters });
+    let query = {};
+    if (search)
+        query._search = search;
+    if (sort)
+        query._sort = sort;
+    if (limit && limit !== -1)
+        query._limit = limit;
+    if (payload.page)
+        query.page = payload.page;
+    if (payload.populations)
+        query.populations = payload.populations;
+    _.assign(query, payload.filters);
     try {
-        let search = payload.search || '';
-        let sort = payload.sort || '';
-        let limit = payload.limit || 0;
-        let fn = app_1.default.defaults.generateListApiUrl || generateListApiUrl;
-        let url = fn({ model: payload.model, limit, filters: payload.filters });
-        let query = _.assign({
-            _search: search,
-            _sort: sort
-        }, payload.filters);
-        if (limit !== -1) {
-            query._limit = limit;
-            query._page = payload.page || 1;
-        }
         let res = yield akita_1.default.get(url, { query });
-        if (limit === -1) {
+        if (Array.isArray(res)) {
             res = {
                 results: res,
                 total: res.length,
             };
         }
+        res.model = payload.model;
         res.search = search;
         res.filters = payload.filters || null;
         res.sort = sort;
         res.limit = limit;
-        yield effects_1.put(exports.applyList(payload.model, res));
+        yield effects_1.put(exports.applyList(res));
     }
     catch (e) {
-        yield effects_1.put(exports.loadListFailure(payload.model, e));
+        yield effects_1.put(exports.loadListFailure({
+            model: payload.model,
+            error: e,
+            search,
+            filters: payload.filters,
+            sort,
+            limit,
+            populations: payload.populations
+        }));
     }
 }
 exports.listSaga = listSaga;
@@ -189,32 +217,45 @@ function* moreSaga({ payload }) {
     let list = payload.list;
     if (!list)
         return;
+    let search = list.search || '';
+    let sort = list.sort || '';
+    let limit = list.limit || 0;
+    let fn = app_1.default.defaults.generateListApiUrl || generateListApiUrl;
+    let url = fn({ model: payload.model, limit, filters: list.filters });
+    let query = {};
+    if (search)
+        query._search = search;
+    if (sort)
+        query._sort = sort;
+    if (limit && limit !== -1)
+        query._limit = limit;
+    if (list.populations)
+        query.populations = list.populations;
+    query.page = list.page + 1;
+    _.assign(query, list.filters);
     try {
-        let search = list.search || '';
-        let sort = list.sort || '';
-        let limit = list.limit || 0;
-        let fn = app_1.default.defaults.generateListApiUrl || generateListApiUrl;
-        let url = fn({ model: payload.model, limit, filters: list.filters });
-        let res = yield akita_1.default.get(url, {
-            query: _.assign({
-                _model: payload.model,
-                _search: search,
-                _limit: limit,
-                _page: list.page + 1,
-                _sort: sort
-            }, list.filters)
-        });
+        let res = yield akita_1.default.get(url, { query });
         _.forEach(res.results, (data) => {
             data.rev = Date.now();
         });
+        res.model = payload.model;
         res.search = search;
         res.filters = list.filters || null;
         res.sort = sort;
         res.limit = limit;
-        yield effects_1.put(exports.applyList(payload.model, res));
+        res.populations = list.populations;
+        yield effects_1.put(exports.applyList(res));
     }
     catch (e) {
-        yield effects_1.put(exports.loadListFailure(payload.model, e));
+        yield effects_1.put(exports.loadListFailure({
+            model: payload.model,
+            error: e,
+            search,
+            filters: list.filters,
+            sort,
+            limit,
+            populations: list.populations
+        }));
     }
 }
 exports.moreSaga = moreSaga;

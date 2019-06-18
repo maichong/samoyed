@@ -44,4 +44,4 @@ declare const reducer: ReduxCompatibleReducer<DetailsState, any>;
 
 export default reducer;
 
-export function detailsSaga(action: Action<LoadDetailPayload>): any;
+export function detailSaga(action: Action<LoadDetailPayload>): any;

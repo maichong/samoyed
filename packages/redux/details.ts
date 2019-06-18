@@ -107,18 +107,19 @@ export default handleActions({
     let payload: LoadDetailPayload = action.payload;
     let map = state[payload.model] || {};
     let record = map[payload.id] || _.clone(EMPTY_RECORD);
-    record = immutable.merge(record, { id: payload.id, fetching: true, error: null });
+    record = immutable.merge(record, { fetching: true, error: null });
     map = immutable.set(map, payload.id, record);
     return immutable.set(state, payload.model, map);
   },
   APPLY_DETAIL: (state: DetailsState, action) => {
     // @ts-ignore
     const payload: ApplyDetailPayload = action.payload;
-    let { model, data, rev } = payload;
+    let { model, data } = payload;
     let map: RecordMap = state[model] || {};
 
     let record: Record = map[data.id] || EMPTY_RECORD;
-    record = _.defaults({ fecting: false, error: data.error, loaded: !data.error, rev: rev || Date.now() }, data, record);
+    let rev = data.rev || Date.now();
+    record = _.defaults({ fecting: false, error: data.error, loaded: !data.error, rev }, data, record);
 
     map = immutable.set(map, data.id, record);
     return immutable.set(state, model, map);
@@ -126,11 +127,12 @@ export default handleActions({
   BATCH_APPLY_DETAILS: (state: DetailsState, action) => {
     // @ts-ignore
     const payload: ApplyDetailPayload[] = action.payload;
-    for (let { model, data, rev } of payload) {
+    for (let { model, data } of payload) {
       let map: RecordMap = state[model] || {};
 
       let record: Record = map[data.id] || EMPTY_RECORD;
-      record = _.defaults({ fecting: false, error: data.error, loaded: !data.error, rev: rev || Date.now() }, data, record);
+      let rev = data.rev || Date.now();
+      record = _.defaults({ fecting: false, error: data.error, loaded: !data.error, rev }, data, record);
 
       map = immutable.set(map, data.id, record);
       state = immutable.set(state, model, map);
@@ -148,7 +150,7 @@ function generateDetailApiUrl(params: GenerateDetailApiParams) {
   return `${params.model}/${params.id}`;
 }
 
-export function* detailsSaga({ payload }: Action<LoadDetailPayload>) {
+export function* detailSaga({ payload }: Action<LoadDetailPayload>) {
   let fn = app.defaults.generateDetailApiUrl || generateDetailApiUrl;
   let url = fn({ model: payload.model, id: payload.id });
   try {

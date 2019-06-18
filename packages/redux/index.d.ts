@@ -18,7 +18,7 @@ declare module '@samoyed/app' {
     // lists
     loadList?: (payload: LoadListPayload) => void;
     loadMore?: (payload: LoadMorePayload) => void;
-    applyList?: (model: string, payload: ApplyListPayload) => void;
+    applyList?: (payload: ApplyListPayload) => void;
     clearList?: (payload: ClearListPayload) => void;
     // details
     loadDetail?: (payload: LoadDetailPayload) => void;
@@ -46,6 +46,10 @@ export interface GenerateDetailApiParams {
 }
 
 export interface User {
+  id: string;
+  displayName: string;
+  username?: string;
+  avatar?: string;
 }
 
 export interface Client {
@@ -105,11 +109,11 @@ export interface DetailsState {
 }
 
 export interface Record {
-  id: string;
+  id?: string;
   error?: Error;
-  fetching: boolean;
+  fetching?: boolean;
   loaded?: boolean;
-  rev: number;
+  rev?: number;
   [path: string]: any;
 }
 
@@ -128,7 +132,6 @@ export interface LoadDetailPayload {
 export interface ApplyDetailPayload {
   model: string;
   data: any;
-  rev?: number;
 }
 
 // lists
@@ -165,6 +168,8 @@ export interface ApplyListPayload<T = any> {
   filters: any | null;
   populations: string[] | null;
 
+  rev?: number;
+
   // akita result
   limit: number;
   total: number;
@@ -178,6 +183,12 @@ export interface ApplyListPayload<T = any> {
 export interface LoadListFailurePayload {
   model: string;
   error: Error;
+
+  sort?: string;
+  search?: string;
+  filters: any | null;
+  populations?: string[] | null;
+  limit: number;
 }
 
 export interface RecordList<T extends Record = Record> {

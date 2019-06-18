@@ -2213,10 +2213,10 @@ ajv@^6.1.0, ajv@^6.5.5, ajv@^6.9.1:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-akita@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/akita/-/akita-0.8.0.tgz#643904d7fce8a278fb7b1798a730824db6d6908e"
-  integrity sha512-PybBjCMkKHqQ3q7bJ8CV5xJm+XwvZMy4Vdb4MfnlU2vKYjCY/sVWLrYA2gCfOZbVPGOjc1a4Xidy8BqFJiS8cQ==
+akita@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/akita/-/akita-0.8.1.tgz#7d7a5c6f25221bddf345bf3d5cd58cef5f094fa6"
+  integrity sha512-G6HQCc3WfcB5xa4YU4DdUBN+JxVvbOY7+LJB8eKZsxd3aU+6Nfbcmg+agCJK9PHSfExA72POteuPbJTnf36T8w==
   dependencies:
     debug "^4.1.1"
     form-data "^2.3.3"

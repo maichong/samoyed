@@ -15,6 +15,7 @@ import {
   LoadListPayload,
   LoadMorePayload,
   ApplyListPayload,
+  LoadListFailurePayload,
   GenerateListApiParams
 } from '.';
 
@@ -59,14 +60,14 @@ export const loadMore = createAction<LoadMorePayload>(LOAD_MORE);
  * @param {string} model
  * @param {Object} res
  */
-export const applyList = createAction<ApplyListPayload, string, ApplyListPayload>(APPLY_LIST, (model, res) => _.assign({ model }, res));
+export const applyList = createAction<ApplyListPayload>(APPLY_LIST);
 
 /**
  * 加载失败
  * @param {string} model
  * @param {Error} error
  */
-export const loadListFailure = createAction(LOAD_LIST_FAILURE, (model: string, error: Error) => ({ model, error }));
+export const loadListFailure = createAction<LoadListFailurePayload>(LOAD_LIST_FAILURE);
 
 app.addAction('clearList', clearList);
 app.addAction('loadList', loadList);
@@ -124,11 +125,16 @@ function applyListData(lists: RecordListArray, selector: ListSelector, data: any
 }
 
 function applyDetailsData(lists: RecordListArray, data: any): RecordListArray {
-  return _.map(lists, (list) => {
+  if (!data.rev) {
+    data = immutable.set(data, 'rev', Date.now());
+  }
+  let matched = false;
+  let newLists = _.map(lists, (list) => {
     let found = false;
     let results = _.map(list.results, (record) => {
       if (record.id === data.id) {
         found = true;
+        matched = true;
         return immutable.merge(record, data);
       }
       return record;
@@ -139,6 +145,7 @@ function applyDetailsData(lists: RecordListArray, data: any): RecordListArray {
     }
     return list;
   });
+  return matched ? newLists : lists;
 }
 
 export default handleActions({
@@ -172,7 +179,13 @@ export default handleActions({
     let model = payload.model;
     let lists: RecordListArray = state[payload.model] || EMPTY_LISTS;
 
-    let data = _.defaults({ error: null, fetching: false, loaded: true }, payload);
+    let rev = payload.rev || Date.now();
+    let data = _.defaults({ error: null, fetching: false, loaded: true, rev }, payload);
+    let newResults = _.map(data.results, (item) => {
+      if (item.rev) return item;
+      return immutable.set(item, 'rev', rev);
+    });
+
     let matched = false;
     lists = _.map(lists, (list) => {
       if (!matched && matchList(list, payload)) {
@@ -180,8 +193,10 @@ export default handleActions({
         matched = true;
         let results = list.results || [];
         list = immutable.merge(list, data);
-        if (payload.page !== 1) {
-          results = results.concat(payload.results);
+        if (payload.page === 1) {
+          results = newResults;
+        } else {
+          results = results.concat(newResults);
         }
         let map = _.keyBy(results, 'id');
         list = immutable.merge(list, { results, map });
@@ -238,74 +253,89 @@ function generateListApiUrl(params: GenerateListApiParams) {
 }
 
 export function* listSaga({ payload }: Action<LoadListPayload>) {
+  let search = payload.search || '';
+  let sort = payload.sort || '';
+  let limit = payload.limit || 0;
+  let fn = app.defaults.generateListApiUrl || generateListApiUrl;
+  let url = fn({ model: payload.model, limit, filters: payload.filters });
+
+  let query: any = {};
+  if (search) query._search = search;
+  if (sort) query._sort = sort;
+  if (limit && limit !== -1) query._limit = limit;
+  if (payload.page) query.page = payload.page;
+  if (payload.populations) query.populations = payload.populations;
+
+  _.assign(query, payload.filters);
+
   try {
-    let search = payload.search || '';
-    let sort = payload.sort || '';
-    let limit = payload.limit || 0;
-    let fn = app.defaults.generateListApiUrl || generateListApiUrl;
-    let url = fn({ model: payload.model, limit, filters: payload.filters });
-
-    let query = _.assign({
-      _search: search,
-      _sort: sort
-    }, payload.filters);
-
-    if (limit !== -1) {
-      query._limit = limit;
-      query._page = payload.page || 1;
-    }
-
     let res = yield api.get(url, { query });
-
-    if (limit === -1) {
+    if (Array.isArray(res)) {
       res = {
         results: res,
         total: res.length,
       };
     }
-
+    res.model = payload.model;
     res.search = search;
     res.filters = payload.filters || null;
     res.sort = sort;
     res.limit = limit;
-    yield put(applyList(payload.model, res));
+    yield put(applyList(res));
   } catch (e) {
-    yield put(loadListFailure(payload.model, e));
+    yield put(loadListFailure({
+      model: payload.model,
+      error: e,
+      search,
+      filters: payload.filters,
+      sort,
+      limit,
+      populations: payload.populations
+    }));
   }
 }
 
 export function* moreSaga({ payload }: Action<LoadMorePayload>) {
   let list: RecordList = payload.list;
   if (!list) return;
+
+  let search = list.search || '';
+  let sort = list.sort || '';
+  let limit = list.limit || 0;
+
+  let fn = app.defaults.generateListApiUrl || generateListApiUrl;
+  let url = fn({ model: payload.model, limit, filters: list.filters });
+
+  let query: any = {};
+  if (search) query._search = search;
+  if (sort) query._sort = sort;
+  if (limit && limit !== -1) query._limit = limit;
+  if (list.populations) query.populations = list.populations;
+  query.page = list.page + 1;
+
+  _.assign(query, list.filters);
+
   try {
-    let search = list.search || '';
-    let sort = list.sort || '';
-    let limit = list.limit || 0;
-
-    let fn = app.defaults.generateListApiUrl || generateListApiUrl;
-    let url = fn({ model: payload.model, limit, filters: list.filters });
-
-    let res = yield api.get(
-      url,
-      {
-        query: _.assign({
-          _model: payload.model,
-          _search: search,
-          _limit: limit,
-          _page: list.page + 1,
-          _sort: sort
-        }, list.filters)
-      }
-    );
+    let res = yield api.get(url, { query });
     _.forEach(res.results, (data) => {
       data.rev = Date.now();
     });
+    res.model = payload.model;
     res.search = search;
     res.filters = list.filters || null;
     res.sort = sort;
     res.limit = limit;
-    yield put(applyList(payload.model, res));
+    res.populations = list.populations;
+    yield put(applyList(res));
   } catch (e) {
-    yield put(loadListFailure(payload.model, e));
+    yield put(loadListFailure({
+      model: payload.model,
+      error: e,
+      search,
+      filters: list.filters,
+      sort,
+      limit,
+      populations: list.populations
+    }));
   }
 }
