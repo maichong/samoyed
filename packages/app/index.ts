@@ -13,6 +13,7 @@ export class App {
   _listeners: Function[];
 
   constructor() {
+    // @ts-ignore
     this.actions = {};
     this.components = {};
     this.wrappers = {};

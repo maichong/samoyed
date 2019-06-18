@@ -1,0 +1,25 @@
+{
+  "name": "@samoyed/redux",
+  "version": "0.4.0",
+  "description": "Samoyed redux",
+  "keywords": [
+    "samoyed",
+    "react",
+    "bootstrap",
+    "redux"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "index.js",
+  "types": "index.d.ts",
+  "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/redux",
+  "license": "MIT",
+  "dependencies": {
+    "redux": "^4.0.1",
+    "redux-actions": "^2.6.5",
+    "redux-logger": "^3.0.6",
+    "redux-saga": "^1.0.3"
+  }
+}

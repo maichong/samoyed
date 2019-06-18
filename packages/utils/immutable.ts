@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-function set(object: object | any[], key: string | number, value: any) {
+function set<T>(object: T, key: string | number, value: any): T {
   object = _.clone(object);
   // @ts-ignore indexer
   object[key] = value;
