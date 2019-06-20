@@ -129,24 +129,50 @@ function applyDetailsData(lists: RecordListArray, data: any): RecordListArray {
   if (!data.rev) {
     data = immutable.set(data, 'rev', Date.now());
   }
-  let matched = false;
+  let foundList = false;
   let newLists = _.map(lists, (list) => {
-    let found = false;
+    let changed = false;
+    let reSort = false;
+    let sorts: string[];
+    let orders: Array<'asc' | 'desc'>;
     let results = _.map(list.results, (record) => {
       if (record.id === data.id) {
-        found = true;
-        matched = true;
+        changed = true;
+        foundList = true;
+
+        if (!sorts) {
+          orders = [];
+          sorts = (list.sort || '').split(' ').map((field) => {
+            if (field[0] === '-') {
+              orders.push('desc');
+              return field.substr(1);
+            }
+            orders.push('asc');
+            return field;
+          });
+        }
+        if (!reSort) {
+          for (let field of sorts) {
+            if (_.has(data, field) && data[field] !== record[field]) {
+              reSort = true;
+              break;
+            }
+          }
+        }
         return immutable.merge(record, data);
       }
       return record;
     });
-    if (found) {
-      let map = immutable.set(list.map, data.id, data);
+    if (reSort) {
+      results = _.orderBy(results, sorts, orders);
+    }
+    if (changed) {
+      let map = _.keyBy(results, 'id');
       list = immutable.merge(list, { results, map });
     }
     return list;
   });
-  return matched ? newLists : lists;
+  return foundList ? newLists : lists;
 }
 
 export default handleActions({
