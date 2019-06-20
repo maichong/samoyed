@@ -257,7 +257,7 @@ function* moreSaga({ payload }) {
         query._limit = limit;
     if (list.populations)
         query.populations = list.populations;
-    query.page = list.page + 1;
+    query._page = list.page + 1;
     _.assign(query, list.filters);
     try {
         let res = yield akita_1.default.get(url, { query });

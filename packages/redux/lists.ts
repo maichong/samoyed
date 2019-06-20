@@ -338,7 +338,7 @@ export function* moreSaga({ payload }: Action<LoadMorePayload>) {
   if (sort) query._sort = sort;
   if (limit && limit !== -1) query._limit = limit;
   if (list.populations) query.populations = list.populations;
-  query.page = list.page + 1;
+  query._page = list.page + 1;
 
   _.assign(query, list.filters);
 
