@@ -125,14 +125,20 @@ export default class Box extends React.Component<BoxProps> {
   render() {
     let {
       children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg,
-      flex, scrollable, layout, activeItem, animation,
+      flex, scrollable, layout, activeItem, animation, addonAfter, addonBefore,
       previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement,
       onBodyScroll, reachBottomBorder, onReachBottom, ...others
     } = this.props;
 
     style = _.assign({}, style);
+    if (typeof height === 'string' && /^\d+$/.test(height)) {
+      height = parseInt(height);
+    }
     if (height || height === 0) {
       style.height = height;
+    }
+    if (typeof width === 'string' && /^\d+$/.test(width)) {
+      width = parseInt(width);
     }
     if (width || width === 0) {
       style.width = width;
@@ -195,10 +201,12 @@ export default class Box extends React.Component<BoxProps> {
         style={style}
         {...others}
       >
+        {addonBefore}
         {dock}
         <LayoutComponent {...layoutProps}>
           {children}
         </LayoutComponent>
+        {addonAfter}
       </div>
     );
 

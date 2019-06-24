@@ -115,10 +115,16 @@ class Box extends React.Component {
         }
     }
     render() {
-        let _a = this.props, { children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg, flex, scrollable, layout, activeItem, animation, previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement, onBodyScroll, reachBottomBorder, onReachBottom } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "style", "bodyStyle", "elRef", "bodyRef", "width", "height", "bg", "flex", "scrollable", "layout", "activeItem", "animation", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "dock", "dockPlacement", "onBodyScroll", "reachBottomBorder", "onReachBottom"]);
+        let _a = this.props, { children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg, flex, scrollable, layout, activeItem, animation, addonAfter, addonBefore, previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement, onBodyScroll, reachBottomBorder, onReachBottom } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "style", "bodyStyle", "elRef", "bodyRef", "width", "height", "bg", "flex", "scrollable", "layout", "activeItem", "animation", "addonAfter", "addonBefore", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "dock", "dockPlacement", "onBodyScroll", "reachBottomBorder", "onReachBottom"]);
         style = _.assign({}, style);
+        if (typeof height === 'string' && /^\d+$/.test(height)) {
+            height = parseInt(height);
+        }
         if (height || height === 0) {
             style.height = height;
+        }
+        if (typeof width === 'string' && /^\d+$/.test(width)) {
+            width = parseInt(width);
         }
         if (width || width === 0) {
             style.width = width;
@@ -157,8 +163,10 @@ class Box extends React.Component {
                 's-last': last,
                 's-active': active,
             }), style: style }, others),
+            addonBefore,
             dock,
-            React.createElement(LayoutComponent, Object.assign({}, layoutProps), children)));
+            React.createElement(LayoutComponent, Object.assign({}, layoutProps), children),
+            addonAfter));
         if (wrapper) {
             if (app_1.default._wrapperHooks.indexOf(wrapper) === -1) {
                 app_1.default._wrapperHooks.push(wrapper);

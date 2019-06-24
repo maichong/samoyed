@@ -62,6 +62,22 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
    */
   dockPlacement?: Placement;
   /**
+   * 前置插件
+   */
+  addonAfter?: React.ReactNode;
+  /**
+   * 后置插件
+   */
+  addonBefore?: React.ReactNode;
+  /**
+   * Box包裹层
+   */
+  wrapper?: string;
+  /**
+   * Box包裹层组件Props
+   */
+  wrapperProps?: any;
+  /**
    * Box 滚动
    */
   scrollable?: 'both' | 'horizontal' | 'vertical' | false;
@@ -93,14 +109,6 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
    * 是否为上一个激活Box，如果为true，则自动添加 s-last 样式类，用于过度动画
    */
   last?: boolean;
-  /**
-   * Box包裹层
-   */
-  wrapper?: string;
-  /**
-   * Box包裹层组件Props
-   */
-  wrapperProps?: any;
   /**
    * 监听div宽高变化
    */
