@@ -132,7 +132,7 @@ export interface FieldProps<T = any, E = Errors> {
   onChange: (v: T, error?: E | null) => any;
 
   // extends Field
-  label?: string;
+  label?: React.ReactNode;
   default?: any;
 
   /**
@@ -140,14 +140,14 @@ export interface FieldProps<T = any, E = Errors> {
    */
   disabled?: boolean;
 
-  help?: string;
+  help?: React.ReactNode;
 
   // fields
   placeholder?: string;
 
   multiLine?: boolean;
-  addonAfter?: string;
-  addonBefore?: string;
+  addonAfter?: React.ReactNode;
+  addonBefore?: React.ReactNode;
 
   // select
   options?: SelectOption[];
