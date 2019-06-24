@@ -16,6 +16,7 @@
   "repository": "https://github.com/maichong/samoyed/tree/master/packages/types",
   "license": "MIT",
   "dependencies": {
+    "@types/history": "^4.7.2",
     "check-depends": "^0.5.2"
   }
 }

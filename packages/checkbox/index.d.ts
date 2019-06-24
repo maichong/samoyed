@@ -20,7 +20,7 @@ export interface CheckboxProps {
   /**
    * 选择框标签文本
    */
-  label?: string;
+  label?: React.ReactNode;
   /**
    * 修改事件回调
    */

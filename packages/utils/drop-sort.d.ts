@@ -5,4 +5,4 @@ interface Params<T> {
   order: 'asc' | 'desc';
 }
 
-export default function dropSort<T>(params: Params<T>): number 
+export default function dropSort<T>(params: Params<T>): number;
