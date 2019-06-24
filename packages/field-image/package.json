@@ -1,0 +1,23 @@
+{
+  "name": "@samoyed/field-image",
+  "version": "0.4.0",
+  "description": "React image field",
+  "keywords": [
+    "samoyed",
+    "react",
+    "bootstrap",
+    "field"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "index.js",
+  "types": "index.d.ts",
+  "author": "Liang <liang@maichong.it> (https://github.com/liangxingchen)",
+  "repository": "https://github.com/maichong/samoyed/tree/master/packages/field-image",
+  "license": "MIT",
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "shallow-equal-without": "^0.2.0"
+  }
+}

@@ -7,6 +7,7 @@ import CheckboxField from '@samoyed/field-checkbox';
 import SwitchField from '@samoyed/field-switch';
 import SelectField from '@samoyed/field-select';
 import DateTimeField from '@samoyed/field-datetime';
+import ImageField from '@samoyed/field-image';
 import { RouteComponentProps } from '@samoyed/router';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
@@ -19,6 +20,7 @@ interface State {
   multi: string[];
   selectMulti: string[];
   time: string;
+  pics: Array<string>;
 }
 
 export default class BoxPage extends React.Component<RouteComponentProps, State> {
@@ -30,12 +32,13 @@ export default class BoxPage extends React.Component<RouteComponentProps, State>
       checked: false,
       multi: ['primary', 'success'],
       selectMulti: ['primary', 'success'],
-      time: (new Date()).toString()
+      time: (new Date()).toString(),
+      pics: []
     };
   }
 
   render() {
-    const { name, balance, checked } = this.state;
+    const { name, balance, checked, pics } = this.state;
     return (
       <Page
         className="field-page"
@@ -143,7 +146,7 @@ export default class BoxPage extends React.Component<RouteComponentProps, State>
             <SelectField
               label="Select:"
               help="props: multi,options,help,label,value"
-              multi
+              multi={true}
               value={this.state.selectMulti}
               options={options}
               onChange={(v: any) => this.setState({ selectMulti: v })}
@@ -167,7 +170,7 @@ export default class BoxPage extends React.Component<RouteComponentProps, State>
               label="Date Time:"
               help="props:value, disabled, help, label, format, dateFormat, timeFormat, locale"
               value={this.state.time}
-              // format="YYYY/MM/DD HH:mm"
+              format="YYYY/MM/DD"
               onChange={(v: string) => this.setState({ time: v })}
             />
           </div>
@@ -176,8 +179,32 @@ export default class BoxPage extends React.Component<RouteComponentProps, State>
   label="Date Time:"
   help="props:help,label,value"
   value={this.state.time}
-  format="YYYY/MM/DD HH:mm"
+  format="YYYY/MM/DD"
   onChange={(v: string) => this.setState({ time: v })}
+/>
+          `.trim()}</SyntaxHighlighter>
+        </div>
+
+        <h2>image</h2>
+        <div className="demo">
+          <div className="preview">
+            <ImageField
+              label="Pic:"
+              help="props:value, disabled, help, label, apiUrl, allowed, maxSize"
+              apiUrl="/api/image"
+              value={pics}
+              multi={true}
+              onChange={(v: any) => this.setState({ pics: v })}
+            />
+          </div>
+          <SyntaxHighlighter style={docco}>{`
+<ImageField
+  label="Pic:"
+  help="props:value, disabled, help, label, apiUrl, allowed, maxSize"
+  apiUrl="/api/image"
+  value={pics}
+  multi={true}
+  onChange={(v: any) => this.setState({ pics: v })}
 />
           `.trim()}</SyntaxHighlighter>
         </div>

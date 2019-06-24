@@ -39,6 +39,7 @@
     "@samoyed/field-switch": "file:packages/field-switch",
     "@samoyed/field-select": "file:packages/field-select",
     "@samoyed/field-datetime": "file:packages/field-datetime",
+    "@samoyed/field-image": "file:packages/field-image",
     "@samoyed/icon": "file:packages/icon",
     "@samoyed/image": "file:packages/image",
     "@samoyed/modal": "file:packages/modal",
@@ -77,6 +78,7 @@
     "@samoyed/drawer": "file:packages/drawer",
     "@samoyed/field-checkbox": "file:packages/field-checkbox",
     "@samoyed/field-datetime": "file:packages/field-datetime",
+    "@samoyed/field-image": "file:packages/field-image",
     "@samoyed/field-number": "file:packages/field-number",
     "@samoyed/field-select": "file:packages/field-select",
     "@samoyed/field-switch": "file:packages/field-switch",
@@ -114,6 +116,8 @@
     "@types/react-syntax-highlighter": "^10.2.0",
     "@types/react-toastr": "^3.0.4",
     "@types/redux": "^3.6.0",
+    "@types/redux-actions": "^2.6.1",
+    "@types/redux-logger": "^3.0.7",
     "@typescript-eslint/eslint-plugin": "^1.10.2",
     "@typescript-eslint/parser": "^1.10.2",
     "akita": "^0.8.1",
@@ -142,6 +146,7 @@
     "style-loader": "^0.23.1",
     "typescript": "^3.5.2",
     "webpack": "^4.34.0",
-    "webpack-cli": "^3.3.4"
+    "webpack-cli": "^3.3.4",
+    "del": "^4.1.1"
   }
 }
