@@ -126,6 +126,7 @@ export interface ClearDetailsPayload {
 export interface LoadDetailPayload {
   model: string;
   id: any;
+  callback?: (data: any) => any;
 }
 
 export interface ApplyDetailPayload {
@@ -153,11 +154,13 @@ export interface LoadListPayload {
   search?: string;
   sort?: string;
   populations?: string[] | null;
+  callback?: (list: RecordList) => any;
 }
 
 export interface LoadMorePayload {
   model: string;
   list: RecordList;
+  callback?: (list: RecordList) => any;
 }
 
 export interface ApplyListPayload<T = any> {

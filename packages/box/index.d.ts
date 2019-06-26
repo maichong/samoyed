@@ -135,7 +135,7 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
   /**
    * 下拉刷新的显示文本
    */
-  pullRefreshTexts?: React.ReactNode | PullRefreshTexts | PullRefreshTextsFunction;
+  pullRefreshTexts?: React.ReactNode | PullRefreshTexts | PullRefreshTextsFunction | React.FunctionComponent<{ status: PullRefreshStatus }> | React.ComponentClass<{ status: PullRefreshStatus }>;
   /**
    * 触发下拉刷新，只有 scrollable 为 vertical/both 才可用
    */

@@ -129,6 +129,16 @@ export default class Box extends React.Component<BoxProps, State> {
     }
   }
 
+  hideIndicator = () => {
+    if (this.xIndicatorStyle) {
+      this.xIndicatorStyle.opacity = '0';
+    }
+    if (this.yIndicatorStyle) {
+      this.yIndicatorStyle.opacity = '0';
+    }
+    this.updateStyles();
+  };
+
   init() {
     if (this.observer || this.sensor || !this.ref) return;
     if (!this.props.onResize) {
@@ -427,41 +437,43 @@ export default class Box extends React.Component<BoxProps, State> {
       if (onPullRefresh && this.pullRef && this.state.pullStatus === 'release') {
         final.y = this.pullRef.clientHeight;
         this.setState({ pullStatus: 'loading' });
-        onPullRefresh(() => {
-          if (this.pullRef) {
-            this.setState({ pullStatus: 'loaded' });
-            if (this.tweezer) {
-              this.tweezer.stop();
+        let called = false;
+        const callback = () => {
+          this.hideIndicator();
+          if (!this.pullRef) return;
+          this.setState({ pullStatus: 'loaded' });
+          if (this.tweezer) {
+            this.tweezer.stop();
+          }
+          this.tweezer = new Tweezer({
+            start: this.offset.y,
+            end: 0,
+            duration: 300
+          });
+          this.tweezer.on('tick', (value) => {
+            if (value !== this.offset.y) {
+              this.offset.y = value;
+              this.updateStyles();
             }
-            this.tweezer = new Tweezer({
-              start: this.offset.y,
-              end: 0,
-              duration: 300
-            });
-            this.tweezer.on('tick', (value) => {
-              if (value !== this.offset.y) {
-                this.offset.y = value;
-                this.updateStyles();
-              }
-            }).on('done', () => {
-              if (this.tweezer && this.state.pullStatus === 'loaded') {
-                this.setState({ pullStatus: null });
-              }
-            }).begin();
+          }).on('done', () => {
+            if (this.tweezer && this.state.pullStatus === 'loaded') {
+              this.setState({ pullStatus: null });
+            }
+          }).begin();
+        };
+        let start = Date.now();
+        onPullRefresh(() => {
+          if (called) return;
+          called = true;
+          let time = Date.now() - start;
+          if (time > 500) {
+            callback();
+          } else {
+            setTimeout(callback, 500 - time);
           }
         });
       }
     }
-
-    const hideIndicator = () => {
-      if (this.xIndicatorStyle) {
-        this.xIndicatorStyle.opacity = '0';
-      }
-      if (this.yIndicatorStyle) {
-        this.yIndicatorStyle.opacity = '0';
-      }
-      this.updateStyles();
-    };
 
     if (final.x !== offset.x || final.y !== offset.y) {
       let start = { x: offset.x, y: offset.y };
@@ -520,9 +532,9 @@ export default class Box extends React.Component<BoxProps, State> {
           clientWidth
         });
 
-      }).on('done', hideIndicator).begin();
+      }).on('done', this.hideIndicator).begin();
     } else {
-      setTimeout(hideIndicator, 300);
+      setTimeout(this.hideIndicator, 300);
     }
   };
 
@@ -607,7 +619,12 @@ export default class Box extends React.Component<BoxProps, State> {
       if (onPullRefresh && pullStatus) {
         pullRefreshTexts = pullRefreshTexts || 'Pull Refresh';
         if (typeof pullRefreshTexts === 'function') {
-          pullRefreshTexts = pullRefreshTexts(pullStatus);
+          if (Object.getPrototypeOf(pullRefreshTexts) === React.Component) {
+            // @ts-ignore
+            pullRefreshTexts = React.createElement(pullRefreshTexts, { status: pullStatus });
+          } else {
+            pullRefreshTexts = pullRefreshTexts(pullStatus);
+          }
           // @ts-ignore
         } else if (typeof pullRefreshTexts === 'object' && pullRefreshTexts.pull) {
           // @ts-ignore

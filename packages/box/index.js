@@ -34,6 +34,15 @@ function getPullRefreshTexts(pullRefreshTexts, status) {
 class Box extends React.Component {
     constructor(props) {
         super(props);
+        this.hideIndicator = () => {
+            if (this.xIndicatorStyle) {
+                this.xIndicatorStyle.opacity = '0';
+            }
+            if (this.yIndicatorStyle) {
+                this.yIndicatorStyle.opacity = '0';
+            }
+            this.updateStyles();
+        };
         this.handleResize = (entries) => {
             if (!this.props.onResize)
                 return;
@@ -263,40 +272,46 @@ class Box extends React.Component {
                 if (onPullRefresh && this.pullRef && this.state.pullStatus === 'release') {
                     final.y = this.pullRef.clientHeight;
                     this.setState({ pullStatus: 'loading' });
-                    onPullRefresh(() => {
-                        if (this.pullRef) {
-                            this.setState({ pullStatus: 'loaded' });
-                            if (this.tweezer) {
-                                this.tweezer.stop();
+                    let called = false;
+                    const callback = () => {
+                        this.hideIndicator();
+                        if (!this.pullRef)
+                            return;
+                        this.setState({ pullStatus: 'loaded' });
+                        if (this.tweezer) {
+                            this.tweezer.stop();
+                        }
+                        this.tweezer = new Tweezer({
+                            start: this.offset.y,
+                            end: 0,
+                            duration: 300
+                        });
+                        this.tweezer.on('tick', (value) => {
+                            if (value !== this.offset.y) {
+                                this.offset.y = value;
+                                this.updateStyles();
                             }
-                            this.tweezer = new Tweezer({
-                                start: this.offset.y,
-                                end: 0,
-                                duration: 300
-                            });
-                            this.tweezer.on('tick', (value) => {
-                                if (value !== this.offset.y) {
-                                    this.offset.y = value;
-                                    this.updateStyles();
-                                }
-                            }).on('done', () => {
-                                if (this.tweezer && this.state.pullStatus === 'loaded') {
-                                    this.setState({ pullStatus: null });
-                                }
-                            }).begin();
+                        }).on('done', () => {
+                            if (this.tweezer && this.state.pullStatus === 'loaded') {
+                                this.setState({ pullStatus: null });
+                            }
+                        }).begin();
+                    };
+                    let start = Date.now();
+                    onPullRefresh(() => {
+                        if (called)
+                            return;
+                        called = true;
+                        let time = Date.now() - start;
+                        if (time > 500) {
+                            callback();
+                        }
+                        else {
+                            setTimeout(callback, 500 - time);
                         }
                     });
                 }
             }
-            const hideIndicator = () => {
-                if (this.xIndicatorStyle) {
-                    this.xIndicatorStyle.opacity = '0';
-                }
-                if (this.yIndicatorStyle) {
-                    this.yIndicatorStyle.opacity = '0';
-                }
-                this.updateStyles();
-            };
             if (final.x !== offset.x || final.y !== offset.y) {
                 let start = { x: offset.x, y: offset.y };
                 let diff = { x: final.x - start.x, y: final.y - start.y };
@@ -342,10 +357,10 @@ class Box extends React.Component {
                         clientHeight,
                         clientWidth
                     });
-                }).on('done', hideIndicator).begin();
+                }).on('done', this.hideIndicator).begin();
             }
             else {
-                setTimeout(hideIndicator, 300);
+                setTimeout(this.hideIndicator, 300);
             }
         };
         this.state = { pullStatus: null };
@@ -497,7 +512,12 @@ class Box extends React.Component {
             if (onPullRefresh && pullStatus) {
                 pullRefreshTexts = pullRefreshTexts || 'Pull Refresh';
                 if (typeof pullRefreshTexts === 'function') {
-                    pullRefreshTexts = pullRefreshTexts(pullStatus);
+                    if (Object.getPrototypeOf(pullRefreshTexts) === React.Component) {
+                        pullRefreshTexts = React.createElement(pullRefreshTexts, { status: pullStatus });
+                    }
+                    else {
+                        pullRefreshTexts = pullRefreshTexts(pullStatus);
+                    }
                 }
                 else if (typeof pullRefreshTexts === 'object' && pullRefreshTexts.pull) {
                     pullRefreshTexts = getPullRefreshTexts(pullRefreshTexts, pullStatus);

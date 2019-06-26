@@ -99,21 +99,30 @@ function* detailSaga({ payload }) {
     let url = fn({ model: payload.model, id: payload.id });
     try {
         if (fetching[url]) {
+            if (payload.callback) {
+                fetching[url].push(payload.callback);
+            }
             return;
         }
-        fetching[url] = true;
+        fetching[url] = [];
+        if (payload.callback) {
+            fetching[url].push(payload.callback);
+        }
         let res = yield akita_1.default.get(url);
-        fetching[url] = false;
-        queue.push({ model: payload.model, data: res });
+        let callbacks = fetching[url];
+        delete fetching[url];
+        queue.push({ model: payload.model, data: res, callbacks });
     }
     catch (e) {
-        fetching[url] = false;
+        let callbacks = fetching[url];
+        delete fetching[url];
         queue.push({
             model: payload.model,
             data: {
                 id: payload.id,
                 error: e.message
-            }
+            },
+            callbacks
         });
     }
     if (!timer) {
@@ -121,9 +130,15 @@ function* detailSaga({ payload }) {
             timer = 0;
             let cur = queue;
             queue = [];
-            if (cur.length) {
+            if (cur.length === 1) {
+                app_1.default.store.dispatch(exports.applyDetail(cur[0]));
+            }
+            else if (cur.length) {
                 app_1.default.store.dispatch(exports.batchApplyDetails(cur));
             }
+            cur.forEach((item) => {
+                item.callbacks.forEach((cb) => cb(item.data));
+            });
         }, 50);
     }
 }

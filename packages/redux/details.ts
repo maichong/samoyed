@@ -142,8 +142,8 @@ export default handleActions({
   LOGOUT: () => INITIAL_STATE
 }, INITIAL_STATE);
 
-const fetching: ObjectMap<boolean> = {};
-let queue: ApplyDetailPayload[] = [];
+const fetching: ObjectMap<Function[]> = {};
+let queue: Array<ApplyDetailPayload & { callbacks: Function[] }> = [];
 let timer: number = 0;
 
 function generateDetailApiUrl(params: GenerateDetailApiParams) {
@@ -155,20 +155,29 @@ export function* detailSaga({ payload }: Action<LoadDetailPayload>) {
   let url = fn({ model: payload.model, id: payload.id });
   try {
     if (fetching[url]) {
+      if (payload.callback) {
+        fetching[url].push(payload.callback);
+      }
       return;
     }
-    fetching[url] = true;
+    fetching[url] = [];
+    if (payload.callback) {
+      fetching[url].push(payload.callback);
+    }
     let res = yield api.get(url);
-    fetching[url] = false;
-    queue.push({ model: payload.model, data: res });
+    let callbacks = fetching[url];
+    delete fetching[url];
+    queue.push({ model: payload.model, data: res, callbacks });
   } catch (e) {
-    fetching[url] = false;
+    let callbacks = fetching[url];
+    delete fetching[url];
     queue.push({
       model: payload.model,
       data: {
         id: payload.id,
         error: e.message
-      }
+      },
+      callbacks
     });
   }
   if (!timer) {
@@ -176,9 +185,14 @@ export function* detailSaga({ payload }: Action<LoadDetailPayload>) {
       timer = 0;
       let cur = queue;
       queue = [];
-      if (cur.length) {
+      if (cur.length === 1) {
+        app.store.dispatch(applyDetail(cur[0]));
+      } else if (cur.length) {
         app.store.dispatch(batchApplyDetails(cur));
       }
+      cur.forEach((item) => {
+        item.callbacks.forEach((cb) => cb(item.data));
+      });
     }, 50);
   }
 }

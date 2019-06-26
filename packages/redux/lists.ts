@@ -47,6 +47,7 @@ export const loadList = createAction<LoadListPayload, LoadListPayload>(LOAD_LIST
   sort: req.sort || '',
   filters: !req.filters || _.isEmpty(req.filters) ? null : req.filters,
   populations: !req.populations || _.isEmpty(req.populations) ? null : req.populations,
+  callback: req.callback,
 }));
 
 /**
@@ -295,8 +296,9 @@ export function* listSaga({ payload }: Action<LoadListPayload>) {
 
   Object.assign(query, payload.filters);
 
+  let res;
   try {
-    let res = yield api.get(url, { query });
+    res = yield api.get(url, { query });
     if (Array.isArray(res)) {
       res = {
         results: res,
@@ -310,7 +312,7 @@ export function* listSaga({ payload }: Action<LoadListPayload>) {
     res.limit = limit;
     yield put(applyList(res));
   } catch (e) {
-    yield put(loadListFailure({
+    res = {
       model: payload.model,
       error: e,
       search,
@@ -318,7 +320,11 @@ export function* listSaga({ payload }: Action<LoadListPayload>) {
       sort,
       limit,
       populations: payload.populations
-    }));
+    };
+    yield put(loadListFailure(res));
+  }
+  if (payload.callback) {
+    payload.callback(res);
   }
 }
 
@@ -342,8 +348,9 @@ export function* moreSaga({ payload }: Action<LoadMorePayload>) {
 
   Object.assign(query, list.filters);
 
+  let res;
   try {
-    let res = yield api.get(url, { query });
+    res = yield api.get(url, { query });
     _.forEach(res.results, (data) => {
       data.rev = Date.now();
     });
@@ -355,7 +362,7 @@ export function* moreSaga({ payload }: Action<LoadMorePayload>) {
     res.populations = list.populations;
     yield put(applyList(res));
   } catch (e) {
-    yield put(loadListFailure({
+    res = {
       model: payload.model,
       error: e,
       search,
@@ -363,6 +370,10 @@ export function* moreSaga({ payload }: Action<LoadMorePayload>) {
       sort,
       limit,
       populations: list.populations
-    }));
+    };
+    yield put(loadListFailure(res));
+  }
+  if (payload.callback) {
+    payload.callback(res);
   }
 }

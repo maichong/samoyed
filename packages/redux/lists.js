@@ -20,6 +20,7 @@ exports.loadList = redux_actions_1.createAction(LOAD_LIST, (req) => ({
     sort: req.sort || '',
     filters: !req.filters || _.isEmpty(req.filters) ? null : req.filters,
     populations: !req.populations || _.isEmpty(req.populations) ? null : req.populations,
+    callback: req.callback,
 }));
 exports.loadMore = redux_actions_1.createAction(LOAD_MORE);
 exports.applyList = redux_actions_1.createAction(APPLY_LIST);
@@ -211,8 +212,9 @@ function* listSaga({ payload }) {
     if (payload.populations)
         query.populations = payload.populations;
     Object.assign(query, payload.filters);
+    let res;
     try {
-        let res = yield akita_1.default.get(url, { query });
+        res = yield akita_1.default.get(url, { query });
         if (Array.isArray(res)) {
             res = {
                 results: res,
@@ -227,7 +229,7 @@ function* listSaga({ payload }) {
         yield effects_1.put(exports.applyList(res));
     }
     catch (e) {
-        yield effects_1.put(exports.loadListFailure({
+        res = {
             model: payload.model,
             error: e,
             search,
@@ -235,7 +237,11 @@ function* listSaga({ payload }) {
             sort,
             limit,
             populations: payload.populations
-        }));
+        };
+        yield effects_1.put(exports.loadListFailure(res));
+    }
+    if (payload.callback) {
+        payload.callback(res);
     }
 }
 exports.listSaga = listSaga;
@@ -259,8 +265,9 @@ function* moreSaga({ payload }) {
         query.populations = list.populations;
     query._page = list.page + 1;
     Object.assign(query, list.filters);
+    let res;
     try {
-        let res = yield akita_1.default.get(url, { query });
+        res = yield akita_1.default.get(url, { query });
         _.forEach(res.results, (data) => {
             data.rev = Date.now();
         });
@@ -273,7 +280,7 @@ function* moreSaga({ payload }) {
         yield effects_1.put(exports.applyList(res));
     }
     catch (e) {
-        yield effects_1.put(exports.loadListFailure({
+        res = {
             model: payload.model,
             error: e,
             search,
@@ -281,7 +288,11 @@ function* moreSaga({ payload }) {
             sort,
             limit,
             populations: list.populations
-        }));
+        };
+        yield effects_1.put(exports.loadListFailure(res));
+    }
+    if (payload.callback) {
+        payload.callback(res);
     }
 }
 exports.moreSaga = moreSaga;
