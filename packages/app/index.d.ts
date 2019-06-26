@@ -9,6 +9,7 @@ export interface Defaults {
   switchAnimationDuration: number;
   animationDuration: number;
   listLimit: number;
+  nativeScroll: boolean | null;
 }
 
 export interface Environments {
@@ -42,6 +43,10 @@ export interface Environments {
   md?: boolean;
   lg?: boolean;
   xl?: boolean;
+  gtXs?: boolean;
+  gtSm?: boolean;
+  gtMd?: boolean;
+  gtLg?: boolean;
 }
 
 export interface InitOptions {

@@ -116,7 +116,7 @@ exports.default = redux_actions_1.handleActions({
     REFRESH: () => INITIAL_STATE,
     LOAD_LIST: (state, action) => {
         const payload = action.payload;
-        return immutable_1.default.set(state, payload.model, applyListData(state[payload.model], payload, _.defaults({ fetching: true }, payload)));
+        return immutable_1.default.set(state, payload.model, applyListData(state[payload.model], payload, Object.assign({}, payload, { fetching: true })));
     },
     LOAD_MORE: (state, action) => {
         const payload = action.payload;
@@ -131,7 +131,7 @@ exports.default = redux_actions_1.handleActions({
         let model = payload.model;
         let lists = state[payload.model] || EMPTY_LISTS;
         let rev = payload.rev || Date.now();
-        let data = _.defaults({ error: null, fetching: false, loaded: true, rev }, payload);
+        let data = Object.assign({}, payload, { error: null, fetching: false, loaded: true, rev });
         let newResults = _.map(data.results, (item) => {
             if (item.rev)
                 return item;
@@ -210,7 +210,7 @@ function* listSaga({ payload }) {
         query.page = payload.page;
     if (payload.populations)
         query.populations = payload.populations;
-    _.assign(query, payload.filters);
+    Object.assign(query, payload.filters);
     try {
         let res = yield akita_1.default.get(url, { query });
         if (Array.isArray(res)) {
@@ -258,7 +258,7 @@ function* moreSaga({ payload }) {
     if (list.populations)
         query.populations = list.populations;
     query._page = list.page + 1;
-    _.assign(query, list.filters);
+    Object.assign(query, list.filters);
     try {
         let res = yield akita_1.default.get(url, { query });
         _.forEach(res.results, (data) => {

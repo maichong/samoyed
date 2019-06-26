@@ -9,7 +9,6 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const _ = require("lodash");
 const React = require("react");
 const classnames = require("classnames");
 const box_1 = require("@samoyed/box");
@@ -21,7 +20,7 @@ function Panel(props) {
     }
     let colorCls = color ? `s-panel-${color}` : '';
     if (bodyPadding !== false && bodyPadding !== 0) {
-        bodyStyle = _.clone(bodyStyle || {});
+        bodyStyle = bodyStyle ? Object.assign({}, bodyStyle) : {};
         bodyStyle.padding = bodyPadding || '0.5rem';
     }
     return (React.createElement(box_1.default, Object.assign({ className: classnames('s-panel', colorCls, className, { 's-panel-border': border }), bodyClassName: classnames('s-panel-body', bodyClassName) }, others, { bodyStyle: bodyStyle, dock: header, dockPlacement: headerPlacement }), children));

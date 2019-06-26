@@ -1664,6 +1664,7 @@
     "@samoyed/app" "^0.4.0"
     css-element-queries "^1.2.0"
     lodash "^4.17.11"
+    tweezer.js "^1.5.0"
 
 "@samoyed/card-layout@file:packages/card-layout":
   version "0.4.0"
@@ -1806,6 +1807,7 @@
 "@samoyed/types@file:packages/types":
   version "0.4.3"
   dependencies:
+    "@types/history" "^4.7.2"
     check-depends "^0.5.2"
 
 "@samoyed/utils@file:packages/utils":
@@ -1842,7 +1844,7 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/history@*":
+"@types/history@*", "@types/history@^4.7.2":
   version "4.7.2"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.2.tgz#0e670ea254d559241b6eeb3894f8754991e73220"
   integrity sha512-ui3WwXmjTaY73fOQ3/m3nnajU/Orhi6cEu5rzX+BrAAJxa3eITXZ5ch9suPqtM03OWhAHhPSyBGCN4UKoxO20Q==
@@ -1987,6 +1989,11 @@
   integrity sha1-8evh5UEVGAcuT9/KXHbhbnTBOZo=
   dependencies:
     redux "*"
+
+"@types/tweezer.js@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@types/tweezer.js/-/tweezer.js-1.4.1.tgz#599cf2cb6041c3c163cf3d0ae7c2be1262a717d5"
+  integrity sha1-WZzyy2BBw8Fjzz0K58K+EmKnF9U=
 
 "@typescript-eslint/eslint-plugin@^1.10.2":
   version "1.10.2"
@@ -8657,6 +8664,11 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
+
+tweezer.js@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/tweezer.js/-/tweezer.js-1.5.0.tgz#ca50ac5215022203fd3be4d28617e8e2305f5c0c"
+  integrity sha512-aSiJz7rGWNAQq7hjMK9ZYDuEawXupcCWgl3woQQSoDP2Oh8O4srWb/uO1PzzHIsrPEOqrjJ2sUb9FERfzuBabQ==
 
 type-check@~0.3.2:
   version "0.3.2"

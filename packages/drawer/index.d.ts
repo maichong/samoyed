@@ -30,6 +30,10 @@ export interface DrawerProps extends BoxProps {
    */
   mode?: Mode;
   /**
+   * 是否不显示mask层
+   */
+  noMask?: boolean;
+  /**
    * 当前是否可见
    */
   show?: boolean;

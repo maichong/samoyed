@@ -19,7 +19,7 @@ function dropSort(params) {
     let oldIndex = oldList.indexOf(dragging);
     let newIndex = newList.indexOf(dragging);
     if (oldIndex === newIndex)
-        dragging.sort;
+        return dragging.sort;
     let value = dragging.sort || 0;
     if (newIndex === oldList.length - 1) {
         let last = oldList[newIndex];

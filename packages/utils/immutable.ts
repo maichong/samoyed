@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 
 function set<T>(object: T, key: string | number, value: any): T {
-  object = _.clone(object);
+  object = Object.assign({}, object);
   // @ts-ignore indexer
   object[key] = value;
   return object;
@@ -27,14 +27,14 @@ function setIn(object: any, paths: Array<string | number>, value: any) {
 function without<T extends object>(object: T, key: string | string[]): T {
   // @ts-ignore
   if (_.isArray(key)) return _.omit(object, key);
-  object = _.clone(object);
+  object = Object.assign({}, object);
   // @ts-ignore indexer
   delete object[key];
   return object;
 }
 
 function merge<T extends object>(object: T, data: any): T {
-  return _.assign({}, object, data);
+  return Object.assign({}, object, data);
 }
 
 export default {

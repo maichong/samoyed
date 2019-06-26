@@ -17,7 +17,7 @@ export default function Panel(props: PanelProps) {
 
   let colorCls = color ? `s-panel-${color}` : '';
   if (bodyPadding !== false && bodyPadding !== 0) {
-    bodyStyle = _.clone(bodyStyle || {});
+    bodyStyle = bodyStyle ? Object.assign({}, bodyStyle) : {};
     // @ts-ignore
     bodyStyle.padding = bodyPadding || '0.5rem';
   }

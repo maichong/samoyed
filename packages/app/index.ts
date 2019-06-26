@@ -1,6 +1,10 @@
 import { Store } from 'redux';
 import { Defaults, Environments, InitOptions, Components, Wrappers, Actions } from '.';
 
+function toClassName(str: string): string {
+  return str.replace(/[A-Z]/, (w) => `-${w.toLowerCase()}`);
+}
+
 export class App {
   store: Store;
   is: Environments;
@@ -20,7 +24,8 @@ export class App {
     this.defaults = {
       animationDuration: 300,
       switchAnimationDuration: 300,
-      listLimit: 10
+      listLimit: 10,
+      nativeScroll: null,
     };
     this.is = {
       ssr: typeof window === 'undefined'
@@ -71,7 +76,11 @@ export class App {
       sm: width >= 576 && width < 768,
       md: width >= 768 && width < 992,
       lg: width >= 992 && width < 1200,
-      xl: width >= 1200
+      xl: width >= 1200,
+      gtXs: width >= 576,
+      gtSm: width >= 768,
+      gtMd: width >= 992,
+      gtLg: width >= 1200,
     };
 
     is.ipad = !is.ie && /iPad/i.test(ua);
@@ -127,6 +136,22 @@ export class App {
       }
       return true;
     };
+
+    const toggleSizeCondition = (name: string, width: number) => {
+      let bool = window.innerWidth >= width;
+      // @ts-ignore indexer
+      if (this.is[name] === bool) return;
+      // @ts-ignore indexer
+      this.is[name] = bool;
+      let className = `s-${toClassName(name)}`;
+      let classList = window.document.body.classList;
+      if (bool) {
+        classList.add(className);
+      } else {
+        classList.remove(className);
+      }
+    };
+
     let w = window.innerWidth;
     window.addEventListener('resize', () => {
       let changed = false;
@@ -136,8 +161,14 @@ export class App {
         changed = toggleSize('md', 768, 992) || changed;
         changed = toggleSize('lg', 992, 1200) || changed;
         changed = toggleSize('xl', 1200, Infinity) || changed;
+
+        toggleSizeCondition('gtXs', 576);
+        toggleSizeCondition('gtSm', 768);
+        toggleSizeCondition('gtMd', 992);
+        toggleSizeCondition('gtLg', 1200);
       }
       w = window.innerWidth;
+
       let landscape = window.innerWidth >= window.innerHeight;
       if (landscape !== this.is.landscape) {
         this.is.landscape = landscape;
@@ -163,7 +194,7 @@ export class App {
     for (let key in this.is) {
       // @ts-ignore indexer
       if (this.is[key]) {
-        classNames.push(`s-${key}`);
+        classNames.push(`s-${toClassName(key)}`);
       }
     }
 

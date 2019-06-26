@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+function toClassName(str) {
+    return str.replace(/[A-Z]/, (w) => `-${w.toLowerCase()}`);
+}
 class App {
     constructor() {
         this.actions = {};
@@ -8,7 +11,8 @@ class App {
         this.defaults = {
             animationDuration: 300,
             switchAnimationDuration: 300,
-            listLimit: 10
+            listLimit: 10,
+            nativeScroll: null,
         };
         this.is = {
             ssr: typeof window === 'undefined'
@@ -55,7 +59,11 @@ class App {
             sm: width >= 576 && width < 768,
             md: width >= 768 && width < 992,
             lg: width >= 992 && width < 1200,
-            xl: width >= 1200
+            xl: width >= 1200,
+            gtXs: width >= 576,
+            gtSm: width >= 768,
+            gtMd: width >= 992,
+            gtLg: width >= 1200,
         };
         is.ipad = !is.ie && /iPad/i.test(ua);
         is.iphone = !is.ie && /iPhone/i.test(ua);
@@ -108,6 +116,20 @@ class App {
             }
             return true;
         };
+        const toggleSizeCondition = (name, width) => {
+            let bool = window.innerWidth >= width;
+            if (this.is[name] === bool)
+                return;
+            this.is[name] = bool;
+            let className = `s-${toClassName(name)}`;
+            let classList = window.document.body.classList;
+            if (bool) {
+                classList.add(className);
+            }
+            else {
+                classList.remove(className);
+            }
+        };
         let w = window.innerWidth;
         window.addEventListener('resize', () => {
             let changed = false;
@@ -117,6 +139,10 @@ class App {
                 changed = toggleSize('md', 768, 992) || changed;
                 changed = toggleSize('lg', 992, 1200) || changed;
                 changed = toggleSize('xl', 1200, Infinity) || changed;
+                toggleSizeCondition('gtXs', 576);
+                toggleSizeCondition('gtSm', 768);
+                toggleSizeCondition('gtMd', 992);
+                toggleSizeCondition('gtLg', 1200);
             }
             w = window.innerWidth;
             let landscape = window.innerWidth >= window.innerHeight;
@@ -142,7 +168,7 @@ class App {
         let classNames = ['powered-by-samoyed', 'maichong-software', 'https://maichong.it', 's-samoyed'];
         for (let key in this.is) {
             if (this.is[key]) {
-                classNames.push(`s-${key}`);
+                classNames.push(`s-${toClassName(key)}`);
             }
         }
         return classNames;

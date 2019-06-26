@@ -18,6 +18,7 @@
   "dependencies": {
     "@samoyed/app": "^0.4.0",
     "css-element-queries": "^1.2.0",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "tweezer.js": "^1.5.0"
   }
 }

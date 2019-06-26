@@ -4,22 +4,31 @@ import * as _ from 'lodash';
 import { Router, Switch, Route, Redirect, NavLink } from '@samoyed/router';
 import app from '@samoyed/app';
 import Box from '@samoyed/box';
+import Drawer from '@samoyed/drawer';
 import Viewport from '@samoyed/viewport';
 import pages from './pages';
 import RouterPage from './pages/Router';
 
-interface Props {
-}
-
-interface State {
-}
-
-export default class App extends React.Component<Props, State> {
-  render() {
-    return (
-      <Viewport className="" layout="horizontal">
-        <Router history={app.history}>
-          <Box className="list-group menu">
+export default function App() {
+  let [show, setShow] = React.useState(!app.is.xs);
+  let forceUpdate = React.useState(1)[1];
+  React.useEffect(() => {
+    app.on('layout-change', () => {
+      forceUpdate(Math.random());
+    });
+  }, [1]);
+  return (
+    <Router history={app.history}>
+      <Viewport className="" layout="fit">
+        <Drawer
+          show={show || !app.is.xs}
+          draggable
+          placement="left"
+          mode={app.is.xs ? 'cover' : 'slide'}
+          noMask={!app.is.xs}
+          onShow={() => setShow(true)}
+          onHide={() => setShow(false)}
+          drawer={<Box className="list-group menu">
             {
               _.map(pages, (C, key) => (<NavLink
                 key={key}
@@ -31,27 +40,27 @@ export default class App extends React.Component<Props, State> {
               to="/Router"
               className="list-group-item list-group-item-action"
             >Router</NavLink>
-          </Box>
-          <Box flex layout="fit">
-            <Switch animation={{ type: 'slide' }}>
-              {
-                _.map(pages, (C, key) => (<Route
-                  key={key}
-                  path={`/${key.replace(' ', '-')}`}
-                  historyLimit={2}
-                  component={C}
-                  exact
-                />))
-              }
-              <Route
-                path="/Router"
-                component={RouterPage}
-              />
-              <Redirect to="/Box" />
-            </Switch>
-          </Box>
-        </Router>
+          </Box>}
+        >
+          <Switch animation={{ type: 'slide' }}>
+            {
+              _.map(pages, (C, key) => (<Route
+                key={key}
+                path={`/${key.replace(' ', '-')}`}
+                historyLimit={2}
+                component={C}
+                exact
+              />))
+            }
+            <Route
+              path="/Router"
+              component={RouterPage}
+            />
+            <Redirect to="/Box" />
+          </Switch>
+        </Drawer>
+
       </Viewport>
-    );
-  }
+    </Router>
+  );
 }

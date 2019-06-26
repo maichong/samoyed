@@ -349,7 +349,7 @@ export default class Drawer extends React.Component<DrawerProps> {
   render() {
     let {
       drawer, children, className, bodyClassName, containerProps = {}, drawerProps = {},
-      placement, draggable, mode, show, onShow, onHide, directionLockThreshold, dragBorderSize,
+      placement, draggable, mode, show, onShow, onHide, directionLockThreshold, dragBorderSize, noMask,
       ...others
     } = this.props;
 
@@ -382,6 +382,7 @@ export default class Drawer extends React.Component<DrawerProps> {
           `s-drawer-${placement}`,
           `s-drawer-${mode}`,
           {
+            's-no-mask': noMask,
             's-draggable': draggable,
             's-show': show
           },
@@ -404,7 +405,7 @@ export default class Drawer extends React.Component<DrawerProps> {
         >
           {drawer}
         </Box>
-        <div className="s-drawer-mask" onClick={show ? onHide : null} ref={this.handleMaskRef} />
+        {!noMask && <div className="s-drawer-mask" onClick={show ? onHide : null} ref={this.handleMaskRef} />}
         <Box
           layout="fit"
           {...containerProps}

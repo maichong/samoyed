@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
 function set(object, key, value) {
-    object = _.clone(object);
+    object = Object.assign({}, object);
     object[key] = value;
     return object;
 }
@@ -24,12 +24,12 @@ function setIn(object, paths, value) {
 function without(object, key) {
     if (_.isArray(key))
         return _.omit(object, key);
-    object = _.clone(object);
+    object = Object.assign({}, object);
     delete object[key];
     return object;
 }
 function merge(object, data) {
-    return _.assign({}, object, data);
+    return Object.assign({}, object, data);
 }
 exports.default = {
     set,

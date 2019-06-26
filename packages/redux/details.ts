@@ -106,7 +106,7 @@ export default handleActions({
     // @ts-ignore
     let payload: LoadDetailPayload = action.payload;
     let map = state[payload.model] || {};
-    let record = map[payload.id] || _.clone(EMPTY_RECORD);
+    let record = map[payload.id] || Object.assign({}, EMPTY_RECORD);
     record = immutable.merge(record, { fetching: true, error: null });
     map = immutable.set(map, payload.id, record);
     return immutable.set(state, payload.model, map);
@@ -119,7 +119,7 @@ export default handleActions({
 
     let record: Record = map[data.id] || EMPTY_RECORD;
     let rev = data.rev || Date.now();
-    record = _.defaults({ fecting: false, error: data.error, loaded: !data.error, rev }, data, record);
+    record = Object.assign({}, record, data, { fecting: false, error: data.error, loaded: !data.error, rev });
 
     map = immutable.set(map, data.id, record);
     return immutable.set(state, model, map);
@@ -132,7 +132,7 @@ export default handleActions({
 
       let record: Record = map[data.id] || EMPTY_RECORD;
       let rev = data.rev || Date.now();
-      record = _.defaults({ fecting: false, error: data.error, loaded: !data.error, rev }, data, record);
+      record = Object.assign({}, record, data, { fecting: false, error: data.error, loaded: !data.error, rev });
 
       map = immutable.set(map, data.id, record);
       state = immutable.set(state, model, map);

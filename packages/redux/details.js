@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const _ = require("lodash");
 const redux_actions_1 = require("redux-actions");
 const akita_1 = require("akita");
 const app_1 = require("@samoyed/app");
@@ -60,7 +59,7 @@ exports.default = redux_actions_1.handleActions({
     LOAD_DETAIL: (state, action) => {
         let payload = action.payload;
         let map = state[payload.model] || {};
-        let record = map[payload.id] || _.clone(EMPTY_RECORD);
+        let record = map[payload.id] || Object.assign({}, EMPTY_RECORD);
         record = immutable_1.default.merge(record, { fetching: true, error: null });
         map = immutable_1.default.set(map, payload.id, record);
         return immutable_1.default.set(state, payload.model, map);
@@ -71,7 +70,7 @@ exports.default = redux_actions_1.handleActions({
         let map = state[model] || {};
         let record = map[data.id] || EMPTY_RECORD;
         let rev = data.rev || Date.now();
-        record = _.defaults({ fecting: false, error: data.error, loaded: !data.error, rev }, data, record);
+        record = Object.assign({}, record, data, { fecting: false, error: data.error, loaded: !data.error, rev });
         map = immutable_1.default.set(map, data.id, record);
         return immutable_1.default.set(state, model, map);
     },
@@ -81,7 +80,7 @@ exports.default = redux_actions_1.handleActions({
             let map = state[model] || {};
             let record = map[data.id] || EMPTY_RECORD;
             let rev = data.rev || Date.now();
-            record = _.defaults({ fecting: false, error: data.error, loaded: !data.error, rev }, data, record);
+            record = Object.assign({}, record, data, { fecting: false, error: data.error, loaded: !data.error, rev });
             map = immutable_1.default.set(map, data.id, record);
             state = immutable_1.default.set(state, model, map);
         }

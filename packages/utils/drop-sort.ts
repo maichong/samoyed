@@ -26,7 +26,7 @@ export default function dropSort<T extends { sort: number }>(params: Params<T>):
   const { oldList, newList, dragging, order } = params;
   let oldIndex = oldList.indexOf(dragging);
   let newIndex = newList.indexOf(dragging);
-  if (oldIndex === newIndex) dragging.sort;
+  if (oldIndex === newIndex) return dragging.sort;
 
   let value = dragging.sort || 0;
 

@@ -216,6 +216,6 @@ export default class Select extends React.Component<SelectProps, SelectState> {
     } else {
       View = ReactSelect;
     }
-    return React.createElement(View, _.assign(others, props));
+    return React.createElement(View, Object.assign(others, props));
   }
 }

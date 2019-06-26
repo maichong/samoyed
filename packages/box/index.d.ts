@@ -16,6 +16,17 @@ export interface ScrollData {
   clientWidth: number;
 }
 
+export interface PullRefreshTexts {
+  pull: React.ReactNode;
+  release?: React.ReactNode;
+  loading?: React.ReactNode;
+  loaded?: React.ReactNode;
+}
+
+export type PullRefreshStatus = 'pull' | 'release' | 'loading' | 'loaded';
+
+export type PullRefreshTextsFunction = (status: PullRefreshStatus) => React.ReactNode;
+
 export interface BoxProps extends React.HTMLAttributes<Element> {
   /**
    * 子节点
@@ -80,7 +91,11 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
   /**
    * Box 滚动
    */
-  scrollable?: 'both' | 'horizontal' | 'vertical' | false;
+  scrollable?: 'both' | 'horizontal' | 'vertical' | false | null;
+  /**
+   * 是否使用原生滚动，null为自动判断
+   */
+  nativeScroll?: boolean | null;
   /**
    * 是否自动伸缩，如果为true，则自动添加 s-flex 样式类
    */
@@ -117,6 +132,14 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
    * Box内容滚动事件
    */
   onBodyScroll?: (data: ScrollData) => any;
+  /**
+   * 下拉刷新的显示文本
+   */
+  pullRefreshTexts?: React.ReactNode | PullRefreshTexts | PullRefreshTextsFunction;
+  /**
+   * 触发下拉刷新，只有 scrollable 为 vertical/both 才可用
+   */
+  onPullRefresh?: (cb: Function) => any;
   /**
    * Box内容滚动触底，只有 scrollable 为 vertical/both 才可用
    */

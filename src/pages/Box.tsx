@@ -15,6 +15,8 @@ interface State {
   reachEvent: string[];
 }
 
+const style = { height: 100 };
+
 export default class BoxPage extends React.Component<RouteComponentProps, State> {
   constructor(props: RouteComponentProps) {
     super(props);
@@ -26,6 +28,10 @@ export default class BoxPage extends React.Component<RouteComponentProps, State>
     };
   }
 
+  handleScroll = (data: ScrollData) => {
+    this.setState({ scroll: data });
+  };
+
   render() {
     const { rect, scroll } = this.state;
     return (
@@ -35,6 +41,16 @@ export default class BoxPage extends React.Component<RouteComponentProps, State>
         previous={this.props.previous}
         last={this.props.last}
         active={this.props.active}
+        onPullRefresh={(cb: Function) => {
+          console.log('onPullRefresh');
+          setTimeout(cb, 3000);
+        }}
+        pullRefreshTexts={{
+          pull: 'pull',
+          release: 'release',
+          loading: 'loading',
+          loaded: 'loaded'
+        }}
       >
         <h1>Box</h1>
 
@@ -128,17 +144,17 @@ export default class BoxPage extends React.Component<RouteComponentProps, State>
         <h2>onBodyScroll</h2>
         <div className="demo">
           <div className="preview">
-            <Box onBodyScroll={(data) => this.setState({ scroll: data })} scrollable="vertical" style={{ height: 100 }}>
+            <Box onBodyScroll={this.handleScroll} scrollable="vertical" style={style}>
               <div className="bg-light">
-                <div className="p-2">Box</div>
-                <div className="p-2">Box</div>
-                <div className="p-2">Box</div>
-                <div className="p-2">Box</div>
-                <div className="p-2">Box</div>
-                <div className="p-2">Box</div>
-                <div className="p-2">Box</div>
-                <div className="p-2">Box</div>
-                <div className="p-2">Box</div>
+                <div className="p-2">Box 1</div>
+                <div className="p-2">Box 2</div>
+                <div className="p-2">Box 3</div>
+                <div className="p-2">Box 4</div>
+                <div className="p-2">Box 5</div>
+                <div className="p-2">Box 6</div>
+                <div className="p-2">Box 7</div>
+                <div className="p-2">Box 8</div>
+                <div className="p-2">Box 9</div>
               </div>
             </Box>
             <div>clientHeight: {scroll.clientHeight}</div>

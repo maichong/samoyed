@@ -183,7 +183,7 @@ export default handleActions({
     return immutable.set(state, payload.model, applyListData(
       state[payload.model],
       payload,
-      _.defaults({ fetching: true }, payload)
+      Object.assign({}, payload, { fetching: true })
     ));
   },
   LOAD_MORE: (state, action) => {
@@ -207,7 +207,7 @@ export default handleActions({
     let lists: RecordListArray = state[payload.model] || EMPTY_LISTS;
 
     let rev = payload.rev || Date.now();
-    let data = _.defaults({ error: null, fetching: false, loaded: true, rev }, payload);
+    let data = Object.assign({}, payload, { error: null, fetching: false, loaded: true, rev });
     let newResults = _.map(data.results, (item) => {
       if (item.rev) return item;
       return immutable.set(item, 'rev', rev);
@@ -293,7 +293,7 @@ export function* listSaga({ payload }: Action<LoadListPayload>) {
   if (payload.page) query.page = payload.page;
   if (payload.populations) query.populations = payload.populations;
 
-  _.assign(query, payload.filters);
+  Object.assign(query, payload.filters);
 
   try {
     let res = yield api.get(url, { query });
@@ -340,7 +340,7 @@ export function* moreSaga({ payload }: Action<LoadMorePayload>) {
   if (list.populations) query.populations = list.populations;
   query._page = list.page + 1;
 
-  _.assign(query, list.filters);
+  Object.assign(query, list.filters);
 
   try {
     let res = yield api.get(url, { query });

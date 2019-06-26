@@ -15,6 +15,16 @@ export default class CheckboxPage extends React.Component<RouteComponentProps> {
         previous={this.props.previous}
         last={this.props.last}
         active={this.props.active}
+        onPullRefresh={(cb: Function) => {
+          console.log('onPullRefresh');
+          setTimeout(cb, 3000);
+        }}
+        pullRefreshTexts={{
+          pull: 'pull',
+          release: 'release',
+          loading: 'loading',
+          loaded: 'loaded'
+        }}
       >
         <h1>Checkbox</h1>
 
@@ -32,7 +42,7 @@ export default class CheckboxPage extends React.Component<RouteComponentProps> {
           <SyntaxHighlighter style={docco}>{'<Checkbox value={true} />'}</SyntaxHighlighter>
         </div>
 
-        <h2>radio</h2>
+        {/* <h2>radio</h2>
         <div className="demo">
           <div className="preview">
             <Checkbox radio value={false} />
@@ -52,7 +62,7 @@ export default class CheckboxPage extends React.Component<RouteComponentProps> {
             <Checkbox value={true} label="Checkbox label" />
           </div>
           <SyntaxHighlighter style={docco}>{'<Checkbox value={true} label="Checkbox label"/>'}</SyntaxHighlighter>
-        </div>
+        </div> */}
       </Page>
     );
   }

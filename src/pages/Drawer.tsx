@@ -14,7 +14,7 @@ interface State {
   mode: Mode;
 }
 
-export default class CheckboxPage extends React.Component<RouteComponentProps, State> {
+export default class DrawerPage extends React.Component<RouteComponentProps, State> {
   constructor(props: RouteComponentProps) {
     super(props);
     this.state = {

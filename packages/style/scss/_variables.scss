@@ -1,6 +1,9 @@
 // 颜色
 $light-border-color: #eee !default;
 
+// 下拉刷新背景色
+$s-scroll-body-bg:#eee !default;
+
 // Toolbar 边框颜色
 $s-toolbar-border-color: $light-border-color !default;
 
@@ -9,4 +12,3 @@ $s-toolbar-padding:0.5rem !default;
 
 // Toolbar 高度
 $s-toolbar-height: 2.6rem !default;
-

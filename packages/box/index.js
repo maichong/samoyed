@@ -9,16 +9,31 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const _ = require("lodash");
 const React = require("react");
 const classnames = require("classnames");
 const app_1 = require("@samoyed/app");
+const Tweezer = require('tweezer.js');
 const ResizeSensor = require('css-element-queries/src/ResizeSensor');
 const ResizeObserver = window.ResizeObserver;
+function checkNativeScroll(nativeScroll) {
+    if (typeof nativeScroll === 'undefined') {
+        nativeScroll = app_1.default.defaults.nativeScroll;
+    }
+    if (nativeScroll === null) {
+        nativeScroll = !app_1.default.is.touch;
+    }
+    return nativeScroll;
+}
+function getPullRefreshTexts(pullRefreshTexts, status) {
+    let text = pullRefreshTexts[status];
+    if (!text && status === 'loaded') {
+        text = pullRefreshTexts.loading;
+    }
+    return text;
+}
 class Box extends React.Component {
-    constructor() {
-        super(...arguments);
-        this.lastScrollTop = 0;
+    constructor(props) {
+        super(props);
         this.handleResize = (entries) => {
             if (!this.props.onResize)
                 return;
@@ -49,36 +64,293 @@ class Box extends React.Component {
             this.ref = r;
             this.init();
         };
+        this.handleBodyRef = (r) => {
+            let { bodyRef } = this.props;
+            if (bodyRef) {
+                bodyRef(r);
+            }
+            this.bodyRef = r;
+        };
+        this.handlePullRef = (r) => {
+            this.pullRef = r;
+        };
         this.handleScroll = (event) => {
             const currentTarget = event.currentTarget;
             const { scrollHeight, clientHeight, scrollTop, scrollLeft } = currentTarget;
-            const { scrollable, onBodyScroll, onReachBottom, reachBottomBorder = 0 } = this.props;
-            const vertical = scrollable === 'both' || scrollable === 'vertical';
-            if (onBodyScroll) {
-                onBodyScroll({
-                    scrollTop,
-                    scrollLeft,
+            this._scroll({
+                scrollTop,
+                scrollLeft,
+                scrollHeight,
+                scrollWidth: currentTarget.scrollWidth,
+                clientHeight,
+                clientWidth: currentTarget.clientWidth
+            });
+        };
+        this.handleStart = (e) => {
+            if (e.touches.length > 1 || !this.bodyRef)
+                return;
+            const { scrollable } = this.props;
+            let { clientX: x, clientY: y } = e.touches[0];
+            let pos = { x, y };
+            this.startPos = pos;
+            this.lastPos = pos;
+            this.flickStartPos = pos;
+            this.flickStartTime = Date.now();
+            this.direction = { x: true, y: true };
+            this.dragging = true;
+            this.axisEnabled = {
+                x: scrollable === 'horizontal' || scrollable === 'both',
+                y: scrollable === 'vertical' || scrollable === 'both'
+            };
+            if (this.tweezer) {
+                this.tweezer.stop();
+                delete this.tweezer;
+            }
+        };
+        this.handleMove = (e) => {
+            if (!this.dragging)
+                return;
+            let { clientX: x, clientY: y } = e.touches[0];
+            let { onPullRefresh } = this.props;
+            let pos = { x, y };
+            let lastPos = this.lastPos;
+            let offset = this.offset;
+            let direction = { x: true, y: true };
+            let clientWidth = this.bodyRef.parentElement.clientWidth;
+            let clientHeight = this.bodyRef.parentElement.clientHeight;
+            let scrollWidth = this.bodyRef.scrollWidth;
+            let scrollHeight = this.bodyRef.scrollHeight;
+            if (this.axisEnabled.x) {
+                let diffX = pos.x - lastPos.x;
+                offset.x += diffX;
+                direction.x = diffX > 0;
+                if (offset.x > 0) {
+                    offset.x = 0;
+                }
+                else {
+                    let min = clientWidth - scrollWidth;
+                    if (min > 0) {
+                        offset.x = 0;
+                    }
+                    else if (offset.x < min) {
+                        offset.x = min;
+                    }
+                }
+            }
+            if (this.axisEnabled.y) {
+                let diffY = pos.y - lastPos.y;
+                offset.y += diffY;
+                direction.y = diffY > 0;
+                let max = 0;
+                if (onPullRefresh) {
+                    if (this.pullRef) {
+                        max = this.pullRef.clientHeight * 2;
+                    }
+                    if (max < 50) {
+                        max = 50;
+                    }
+                }
+                if (offset.y > max) {
+                    offset.y = max;
+                }
+                let min = clientHeight - scrollHeight;
+                if (min > 0) {
+                    if (offset.y < 0 || !onPullRefresh) {
+                        offset.y = 0;
+                    }
+                }
+                else if (offset.y < min) {
+                    offset.y = min;
+                }
+                if (onPullRefresh && [null, 'pull', 'release'].includes(this.state.pullStatus)) {
+                    let pullRefreshHeight = 50;
+                    if (this.pullRef) {
+                        pullRefreshHeight = this.pullRef.clientHeight || 50;
+                    }
+                    let pullStatus = 'pull';
+                    if (offset.y > pullRefreshHeight) {
+                        pullStatus = 'release';
+                    }
+                    else if (offset.y <= 0) {
+                        pullStatus = null;
+                    }
+                    if (pullStatus !== this.state.pullStatus) {
+                        this.setState({ pullStatus });
+                    }
+                }
+            }
+            if (direction.x !== this.direction.x || direction.y !== this.direction.y) {
+                this.flickStartPos = pos;
+                this.flickStartTime = Date.now();
+                this.direction = direction;
+            }
+            if (this.lastPos.x !== pos.x || this.lastPos.y !== pos.y) {
+                this.lastPos = pos;
+                if (this.axisEnabled.x) {
+                    let style = {
+                        opacity: '0.3',
+                        size: parseInt(clientWidth / scrollWidth * clientWidth),
+                    };
+                    if (style.size > clientWidth) {
+                        style.size = clientWidth;
+                    }
+                    style.offset = parseInt((-offset.x) / scrollWidth * clientWidth);
+                    this.xIndicatorStyle = style;
+                }
+                if (this.axisEnabled.y) {
+                    let style = {
+                        opacity: '0.3',
+                        size: parseInt(clientHeight / scrollHeight * clientHeight),
+                    };
+                    if (style.size > clientHeight) {
+                        style.size = clientHeight;
+                    }
+                    style.offset = parseInt((-offset.y) / scrollHeight * clientHeight);
+                    this.yIndicatorStyle = style;
+                }
+                this.updateStyles();
+                this._scroll({
+                    scrollTop: parseInt(-offset.y),
+                    scrollLeft: parseInt(-offset.x),
                     scrollHeight,
-                    scrollWidth: currentTarget.scrollWidth,
+                    scrollWidth,
                     clientHeight,
-                    clientWidth: currentTarget.clientWidth
+                    clientWidth
                 });
             }
-            let bottom = scrollHeight - clientHeight - scrollTop;
-            if (this.reachedBottom) {
-                if (scrollTop < this.lastScrollTop
-                    || bottom > reachBottomBorder) {
-                    this.reachedBottom = false;
-                }
-            }
-            else if (vertical && onReachBottom && scrollTop > this.lastScrollTop) {
-                if (bottom <= reachBottomBorder) {
-                    this.reachedBottom = true;
-                    onReachBottom();
-                }
-            }
-            this.lastScrollTop = scrollTop;
         };
+        this.handleEnd = (e) => {
+            if (!this.dragging)
+                return;
+            this.dragging = false;
+            let { offset, lastPos, bodyRef, axisEnabled } = this;
+            const { onPullRefresh } = this.props;
+            let final = Object.assign({}, offset);
+            let clientWidth = bodyRef.parentElement.clientWidth;
+            let clientHeight = bodyRef.parentElement.clientHeight;
+            let scrollWidth = bodyRef.scrollWidth;
+            let scrollHeight = bodyRef.scrollHeight;
+            if (axisEnabled.x) {
+                let xSpeed = (lastPos.x - this.flickStartPos.x) / (Date.now() - this.flickStartTime);
+                final.x += xSpeed * 500;
+                if (final.x > 0) {
+                    final.x = 0;
+                }
+                let min = clientWidth - scrollWidth;
+                if (min > 0) {
+                    final.x = 0;
+                }
+                else if (final.x < min) {
+                    final.x = min;
+                }
+            }
+            if (axisEnabled.y) {
+                let ySpeed = (lastPos.y - this.flickStartPos.y) / (Date.now() - this.flickStartTime);
+                final.y += ySpeed * 500;
+                if (onPullRefresh && this.pullRef && this.state.pullStatus === 'loading' && final.y > this.pullRef.clientHeight) {
+                    final.y = this.pullRef.clientHeight;
+                }
+                else if (final.y > 0) {
+                    final.y = 0;
+                }
+                let min = clientHeight - scrollHeight;
+                if (min > 0) {
+                    final.y = 0;
+                }
+                else if (final.y < min) {
+                    final.y = min;
+                }
+                if (onPullRefresh && this.pullRef && this.state.pullStatus === 'release') {
+                    final.y = this.pullRef.clientHeight;
+                    this.setState({ pullStatus: 'loading' });
+                    onPullRefresh(() => {
+                        if (this.pullRef) {
+                            this.setState({ pullStatus: 'loaded' });
+                            if (this.tweezer) {
+                                this.tweezer.stop();
+                            }
+                            this.tweezer = new Tweezer({
+                                start: this.offset.y,
+                                end: 0,
+                                duration: 300
+                            });
+                            this.tweezer.on('tick', (value) => {
+                                if (value !== this.offset.y) {
+                                    this.offset.y = value;
+                                    this.updateStyles();
+                                }
+                            }).on('done', () => {
+                                if (this.tweezer && this.state.pullStatus === 'loaded') {
+                                    this.setState({ pullStatus: null });
+                                }
+                            }).begin();
+                        }
+                    });
+                }
+            }
+            if (final.x !== offset.x || final.y !== offset.y) {
+                let start = { x: offset.x, y: offset.y };
+                let diff = { x: final.x - start.x, y: final.y - start.y };
+                this.tweezer = new Tweezer({
+                    start: 0,
+                    end: 100,
+                    duration: 800,
+                    easing(t, b, c, d) {
+                        return c * ((t = t / d - 1) * t * t + 1) + b;
+                    }
+                });
+                this.tweezer.on('tick', (value) => {
+                    if (axisEnabled.x) {
+                        this.offset.x = start.x + value * diff.x / 100;
+                        let style = {
+                            opacity: '0.3',
+                            size: parseInt(clientWidth / scrollWidth * clientWidth),
+                        };
+                        if (style.size > clientWidth) {
+                            style.size = clientWidth;
+                        }
+                        style.offset = parseInt((-offset.x) / scrollWidth * clientWidth);
+                        this.xIndicatorStyle = style;
+                    }
+                    if (axisEnabled.y) {
+                        this.offset.y = start.y + value * diff.y / 100;
+                        let style = {
+                            opacity: '0.3',
+                            size: parseInt(clientHeight / scrollHeight * clientHeight),
+                        };
+                        if (style.size > clientHeight) {
+                            style.size = clientHeight;
+                        }
+                        style.offset = parseInt((-offset.y) / scrollHeight * clientHeight);
+                        this.yIndicatorStyle = style;
+                    }
+                    this.updateStyles();
+                    this._scroll({
+                        scrollTop: parseInt(-this.offset.y),
+                        scrollLeft: parseInt(-this.offset.x),
+                        scrollHeight,
+                        scrollWidth,
+                        clientHeight,
+                        clientWidth
+                    });
+                }).on('done', () => {
+                    if (this.xIndicatorStyle) {
+                        this.xIndicatorStyle.opacity = '0';
+                    }
+                    if (this.yIndicatorStyle) {
+                        this.yIndicatorStyle.opacity = '0';
+                    }
+                    this.updateStyles();
+                }).begin();
+            }
+        };
+        this.state = { pullStatus: null };
+        this.offset = { x: 0, y: 0 };
+        this.lastScrollTop = 0;
+        this.dragging = false;
+        this.pullRefreshHeight = 50;
+        this.xIndicatorStyle = {};
+        this.yIndicatorStyle = {};
     }
     componentDidMount() {
         this.init();
@@ -89,6 +361,34 @@ class Box extends React.Component {
     componentWillUnmount() {
         this.disconnect();
         this.ref = null;
+        this.bodyRef = null;
+        this.pullRef = null;
+        this.xIndicator = null;
+        this.yIndicator = null;
+        if (this.tweezer) {
+            this.tweezer.stop();
+            this.tweezer = null;
+        }
+    }
+    updateStyles() {
+        let { offset, bodyRef, pullRef } = this;
+        bodyRef.style.transform = `translate(${offset.x}px, ${offset.y}px)`;
+        if (offset.y > 0 && pullRef) {
+            let y = offset.y - pullRef.clientHeight;
+            if (y > 0) {
+                y = y / 2;
+            }
+            pullRef.style.transform = `translate(0px, ${y}px)`;
+        }
+        if (this.yIndicator && this.axisEnabled.y && this.yIndicatorStyle) {
+            this.yIndicator.style.opacity = this.yIndicatorStyle.opacity;
+            let size = `${this.yIndicatorStyle.size}px`;
+            if (size !== this.yIndicator.style.height) {
+                this.yIndicator.style.height = size;
+            }
+            let y = this.yIndicatorStyle.offset;
+            this.yIndicator.style.transform = `translate(0px, ${y}px)`;
+        }
     }
     init() {
         if (this.observer || this.sensor || !this.ref)
@@ -114,9 +414,30 @@ class Box extends React.Component {
             this.sensor = null;
         }
     }
+    _scroll(data) {
+        const { scrollable, onBodyScroll, onReachBottom, reachBottomBorder = 0 } = this.props;
+        if (onBodyScroll)
+            onBodyScroll(data);
+        let bottom = data.scrollHeight - data.clientHeight - data.scrollTop;
+        const vertical = scrollable === 'both' || scrollable === 'vertical';
+        if (this.reachedBottom) {
+            if (data.scrollTop < this.lastScrollTop
+                || bottom > reachBottomBorder) {
+                this.reachedBottom = false;
+            }
+        }
+        else if (vertical && onReachBottom && data.scrollTop > this.lastScrollTop) {
+            if (bottom <= reachBottomBorder) {
+                this.reachedBottom = true;
+                onReachBottom();
+            }
+        }
+        this.lastScrollTop = data.scrollTop;
+    }
     render() {
-        let _a = this.props, { children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg, flex, scrollable, layout, activeItem, animation, addonAfter, addonBefore, previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement, onBodyScroll, reachBottomBorder, onReachBottom } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "style", "bodyStyle", "elRef", "bodyRef", "width", "height", "bg", "flex", "scrollable", "layout", "activeItem", "animation", "addonAfter", "addonBefore", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "dock", "dockPlacement", "onBodyScroll", "reachBottomBorder", "onReachBottom"]);
-        style = _.assign({}, style);
+        let _a = this.props, { children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg, flex, scrollable, layout, activeItem, animation, addonAfter, addonBefore, previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement, nativeScroll, onPullRefresh, pullRefreshTexts, onBodyScroll, reachBottomBorder, onReachBottom } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "style", "bodyStyle", "elRef", "bodyRef", "width", "height", "bg", "flex", "scrollable", "layout", "activeItem", "animation", "addonAfter", "addonBefore", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "dock", "dockPlacement", "nativeScroll", "onPullRefresh", "pullRefreshTexts", "onBodyScroll", "reachBottomBorder", "onReachBottom"]);
+        let { pullStatus } = this.state;
+        style = style ? Object.assign({}, style) : {};
         if (typeof height === 'string' && /^\d+$/.test(height)) {
             height = parseInt(height);
         }
@@ -129,15 +450,22 @@ class Box extends React.Component {
         if (width || width === 0) {
             style.width = width;
         }
+        nativeScroll = checkNativeScroll(nativeScroll);
+        let jsScroll = scrollable && !nativeScroll;
         const vertical = scrollable === 'both' || scrollable === 'vertical';
         let layoutProps = {
-            ref: bodyRef,
+            ref: (jsScroll || bodyRef) ? this.handleBodyRef : null,
             style: bodyStyle,
             onScroll: (scrollable && onBodyScroll) || (vertical && onReachBottom) ? this.handleScroll : null,
+            onTouchStart: jsScroll ? this.handleStart : null,
+            onTouchMove: jsScroll ? this.handleMove : null,
+            onTouchEnd: jsScroll ? this.handleEnd : null
         };
         let LayoutComponent = 'div';
         let layoutClassName = `s-layout-${layout || 'auto'}`;
         if (layout === 'card') {
+            jsScroll = false;
+            nativeScroll = true;
             LayoutComponent = app_1.default.components.CardLayout;
             if (!LayoutComponent) {
                 throw new Error('@samoyed/card-layout must be required!');
@@ -149,13 +477,42 @@ class Box extends React.Component {
             layoutClassName = '';
         }
         layoutProps.className = classnames('s-box-body', bodyClassName, layoutClassName, {
-            's-scrollable-horizontal': scrollable === 'both' || scrollable === 'horizontal',
-            's-scrollable-vertical': scrollable === 'both' || scrollable === 'vertical',
-            [`bg-${bg}`]: bg
+            's-scroll-native': scrollable && nativeScroll,
+            's-scroll-horizontal': scrollable === 'both' || scrollable === 'horizontal',
+            's-scroll-vertical': scrollable === 'both' || scrollable === 'vertical'
         });
+        if (bg) {
+            layoutProps.className += ` bg-${bg}`;
+        }
         let dockClassName = '';
         if (dock) {
             dockClassName = `s-dock s-dock-${dockPlacement || 'top'}`;
+        }
+        let body = React.createElement(LayoutComponent, layoutProps, children);
+        if (jsScroll) {
+            if (onPullRefresh && pullStatus) {
+                pullRefreshTexts = pullRefreshTexts || 'Pull Refresh';
+                if (typeof pullRefreshTexts === 'function') {
+                    pullRefreshTexts = pullRefreshTexts(pullStatus);
+                }
+                else if (typeof pullRefreshTexts === 'object' && pullRefreshTexts.pull) {
+                    pullRefreshTexts = getPullRefreshTexts(pullRefreshTexts, pullStatus);
+                }
+                if (typeof pullRefreshTexts === 'string') {
+                    pullRefreshTexts = React.createElement("div", { className: "s-text" }, pullRefreshTexts);
+                }
+            }
+            else {
+                pullRefreshTexts = null;
+            }
+            body = React.createElement("div", { className: classnames('s-scroll-body', {
+                    's-scroll-horizontal': scrollable === 'both' || scrollable === 'horizontal',
+                    's-scroll-vertical': scrollable === 'both' || scrollable === 'vertical'
+                }) },
+                onPullRefresh && React.createElement("div", { className: "s-pull-refresh", ref: this.handlePullRef }, pullRefreshTexts),
+                body,
+                React.createElement("div", { ref: (r) => { this.xIndicator = r; }, className: "s-scroll-indicator s-horizontal" }),
+                React.createElement("div", { ref: (r) => { this.yIndicator = r; }, className: "s-scroll-indicator s-vertical" }));
         }
         let el = (React.createElement("div", Object.assign({ ref: this.handleRef, className: classnames('s-component', 's-box', className, dockClassName, {
                 's-flex': !!flex,
@@ -165,7 +522,7 @@ class Box extends React.Component {
             }), style: style }, others),
             addonBefore,
             dock,
-            React.createElement(LayoutComponent, Object.assign({}, layoutProps), children),
+            body,
             addonAfter));
         if (wrapper) {
             if (app_1.default._wrapperHooks.indexOf(wrapper) === -1) {
