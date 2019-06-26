@@ -288,6 +288,15 @@ class Box extends React.Component {
                     });
                 }
             }
+            const hideIndicator = () => {
+                if (this.xIndicatorStyle) {
+                    this.xIndicatorStyle.opacity = '0';
+                }
+                if (this.yIndicatorStyle) {
+                    this.yIndicatorStyle.opacity = '0';
+                }
+                this.updateStyles();
+            };
             if (final.x !== offset.x || final.y !== offset.y) {
                 let start = { x: offset.x, y: offset.y };
                 let diff = { x: final.x - start.x, y: final.y - start.y };
@@ -333,15 +342,10 @@ class Box extends React.Component {
                         clientHeight,
                         clientWidth
                     });
-                }).on('done', () => {
-                    if (this.xIndicatorStyle) {
-                        this.xIndicatorStyle.opacity = '0';
-                    }
-                    if (this.yIndicatorStyle) {
-                        this.yIndicatorStyle.opacity = '0';
-                    }
-                    this.updateStyles();
-                }).begin();
+                }).on('done', hideIndicator).begin();
+            }
+            else {
+                setTimeout(hideIndicator, 300);
             }
         };
         this.state = { pullStatus: null };
