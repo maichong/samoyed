@@ -1,7 +1,8 @@
 import * as _ from 'lodash';
 
 function set<T>(object: T, key: string | number, value: any): T {
-  object = Object.assign({}, object);
+  // 此处必须用 克隆，不能用 Object.assign
+  object = _.clone(object);
   // @ts-ignore indexer
   object[key] = value;
   return object;

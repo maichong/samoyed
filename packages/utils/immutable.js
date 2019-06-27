@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
 function set(object, key, value) {
-    object = Object.assign({}, object);
+    object = _.clone(object);
     object[key] = value;
     return object;
 }
