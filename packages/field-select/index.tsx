@@ -1,55 +1,18 @@
 import * as React from 'react';
 import * as shallowEqualWithout from 'shallow-equal-without';
-import * as tr from 'grackle';
-import Select from '@samoyed/select';
 import * as _ from 'lodash';
-import { SelectOption } from '@samoyed/types';
 import * as classnames from 'classnames';
+import Select from '@samoyed/select';
 import { SelectFieldProps } from '.';
 
-interface SelectFieldState {
-  _options: SelectOption[];
-  options: SelectOption[];
-}
-
-function filter(options?: SelectOption[]): SelectOption[] {
-  if (!options || !options.length) {
-    return [];
-  }
-  let res: SelectOption[] = [];
-  _.forEach(options, (opt: SelectOption) => {
-    opt.label = tr(opt.label);
-    res.push(opt);
-  });
-  return res;
-}
-
-export default class SelectField extends React.Component<SelectFieldProps, SelectFieldState> {
-  constructor(props: SelectFieldProps) {
-    super(props);
-    this.state = {
-      _options: props.options,
-      options: filter(props.options)
-    };
-  }
-
-  static getDerivedStateFromProps(nextProps: SelectFieldProps, prevState: SelectFieldState) {
-    if (nextProps.options !== prevState._options) {
-      return {
-        _options: nextProps.options,
-        options: filter(nextProps.options)
-      };
-    }
-    return null;
-  }
-
-  shouldComponentUpdate(props: SelectFieldProps, state: SelectFieldState) {
-    return !shallowEqualWithout(props, this.props, 'record') || !shallowEqualWithout(state, this.state);
+export default class SelectField extends React.Component<SelectFieldProps> {
+  shouldComponentUpdate(props: SelectFieldProps) {
+    return !shallowEqualWithout(props, this.props, 'record');
   }
 
   render() {
     let {
-      className, value, disabled, error, onChange, help, multi, label
+      className, value, disabled, error, onChange, help, multi, label, options
     } = this.props;
     let inputClassName = classnames('', { 'is-invalid': error });
     if (multi) {
@@ -67,7 +30,7 @@ export default class SelectField extends React.Component<SelectFieldProps, Selec
           value={value}
           multi={multi}
           disabled={disabled}
-          options={this.state.options}
+          options={options}
           onChange={onChange}
         />
         {error && <small className="form-text invalid-feedback">{error}</small>}
