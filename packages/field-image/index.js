@@ -2,15 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const _ = require("lodash");
-const akita_1 = require("akita");
 const classnames = require("classnames");
 const shallowEqualWithout = require("shallow-equal-without");
+const akita_1 = require("akita");
 let client = akita_1.default.create({});
 class ImageField extends React.Component {
     constructor(props) {
         super(props);
         this.handleAddImage = () => {
-            let { multi, value, allowed, maxSize } = this.props;
+            let { multi, value, allowed, maxSize, max } = this.props;
             let newValue = value;
             if (value) {
                 if (!multi) {
@@ -23,8 +23,9 @@ class ImageField extends React.Component {
             let nextState = {
                 error: ''
             };
+            max = multi ? (max || 1000) : 1;
             _.forEach(this.imageInput.files, (file) => {
-                if (newValue.length >= this.state.max || !file)
+                if (newValue.length >= max || !file)
                     return;
                 let matchs = file.name.match(/\.(\w+)$/);
                 if (!matchs) {
@@ -32,7 +33,7 @@ class ImageField extends React.Component {
                     return;
                 }
                 let ext = matchs[1].replace('jpeg', 'jpg').toLowerCase();
-                if ((allowed || ['jpg', 'png']).indexOf(ext) < 0) {
+                if ((allowed || ['png', 'jpg', 'svg', 'webp']).indexOf(ext) < 0) {
                     nextState.error = 'Invalid image format';
                     return;
                 }
@@ -47,17 +48,15 @@ class ImageField extends React.Component {
                 this.upload();
         };
         this.state = {
-            max: props.multi ? (props.max || 1000) : 1,
             error: '',
         };
         this.uploadQueue = [];
     }
     shouldComponentUpdate(props, state) {
-        return !shallowEqualWithout(props, this.props, 'record')
-            || !shallowEqualWithout(state, this.state);
+        return !shallowEqualWithout(props, this.props, 'record') || state.error !== this.state.error;
     }
     async upload() {
-        const { apiUrl, multi } = this.props;
+        const { apiUrl, multi, mode } = this.props;
         let file = this.uploadQueue.shift();
         if (!file)
             return;
@@ -68,7 +67,7 @@ class ImageField extends React.Component {
                     file
                 }
             });
-            let item = image.url;
+            let item = mode === 'link' ? image.url : image;
             let { value, onChange } = this.props;
             if (multi) {
                 value = (value || []).concat(item);
@@ -101,8 +100,8 @@ class ImageField extends React.Component {
         }
     }
     render() {
-        let { className, value, multi, help, label, disabled, error: errorText } = this.props;
-        let { error, max } = this.state;
+        let { className, value, multi, help, label, disabled, error, max } = this.props;
+        max = multi ? (max || 1000) : 1;
         let newValue = value;
         if (!multi) {
             newValue = value ? [value] : [];
@@ -110,6 +109,9 @@ class ImageField extends React.Component {
         let items = [];
         let readonly = disabled;
         _.forEach(newValue, (url, index) => {
+            if (url && typeof url === 'object') {
+                url = url.thumbUrl || url.url;
+            }
             items.push((React.createElement("div", { key: index, className: "image-field-item" },
                 React.createElement("img", { alt: "", src: url }),
                 readonly ? null : (React.createElement("div", { className: "image-field-del", onClick: () => this.handleRemoveItem(index) }, "X")))));
@@ -120,14 +122,14 @@ class ImageField extends React.Component {
                     React.createElement("i", { className: "fa fa-plus-square-o" }),
                     React.createElement("input", { ref: (r) => {
                             this.imageInput = r;
-                        }, multiple: multi, accept: "image/png;image/jpg;", type: "file", onChange: this.handleAddImage }))));
+                        }, multiple: multi || false, accept: "image/png;image/jpg;", type: "file", onChange: this.handleAddImage }))));
             }
         }
         if (!items.length && readonly) {
             items.push((React.createElement("div", { className: "image-field-item image-field-add", key: "add" },
                 React.createElement("i", { className: "fa fa-picture-o" }))));
         }
-        error = error || errorText;
+        error = error || this.state.error;
         return (React.createElement("div", { className: classnames('s-component s-field s-field-image form-group', className, { 'is-invalid': error }) },
             label && React.createElement("label", null, label),
             React.createElement("div", null, items),

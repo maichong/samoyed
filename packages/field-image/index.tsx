@@ -1,19 +1,17 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import akita, { Client } from 'akita';
 import * as classnames from 'classnames';
 import * as shallowEqualWithout from 'shallow-equal-without';
+import akita, { Client } from 'akita';
 import { ImageFieldProps } from '.';
 
 let client: Client = akita.create({});
 
 interface ImageFieldState {
-  max: number;
   error: string;
 }
 
 export default class ImageField extends React.Component<ImageFieldProps, ImageFieldState> {
-
   static defaultProps = {
     apiUrl: '/api/image'
   };
@@ -25,19 +23,17 @@ export default class ImageField extends React.Component<ImageFieldProps, ImageFi
   constructor(props: ImageFieldProps) {
     super(props);
     this.state = {
-      max: props.multi ? (props.max || 1000) : 1,
       error: '',
     };
     this.uploadQueue = [];
   }
 
   shouldComponentUpdate(props: ImageFieldProps, state: ImageFieldState): boolean {
-    return !shallowEqualWithout(props, this.props, 'record')
-      || !shallowEqualWithout(state, this.state);
+    return !shallowEqualWithout(props, this.props, 'record') || state.error !== this.state.error;
   }
 
   async upload() {
-    const { apiUrl, multi } = this.props;
+    const { apiUrl, multi, mode } = this.props;
     let file = this.uploadQueue.shift();
     if (!file) return;
     this.currentTask = file;
@@ -47,7 +43,7 @@ export default class ImageField extends React.Component<ImageFieldProps, ImageFi
           file
         }
       });
-      let item = image.url;
+      let item = mode === 'link' ? image.url : image;
       let { value, onChange } = this.props;
       if (multi) {
         value = (value || []).concat(item);
@@ -65,7 +61,7 @@ export default class ImageField extends React.Component<ImageFieldProps, ImageFi
   }
 
   handleAddImage = () => {
-    let { multi, value, allowed, maxSize } = this.props;
+    let { multi, value, allowed, maxSize, max } = this.props;
     let newValue: any = value;
     if (value) {
       if (!multi) {
@@ -79,15 +75,17 @@ export default class ImageField extends React.Component<ImageFieldProps, ImageFi
       error: ''
     };
 
+    max = multi ? (max || 1000) : 1;
+
     _.forEach(this.imageInput.files, (file: File) => {
-      if (newValue.length >= this.state.max || !file) return;
+      if (newValue.length >= max || !file) return;
       let matchs = file.name.match(/\.(\w+)$/);
       if (!matchs) {
         nextState.error = 'Invalid image format';
         return;
       }
       let ext = matchs[1].replace('jpeg', 'jpg').toLowerCase();
-      if ((allowed || ['jpg', 'png']).indexOf(ext) < 0) {
+      if ((allowed || ['png', 'jpg', 'svg', 'webp']).indexOf(ext) < 0) {
         nextState.error = 'Invalid image format';
         return;
       }
@@ -107,7 +105,7 @@ export default class ImageField extends React.Component<ImageFieldProps, ImageFi
     let value: any = null;
     if (this.props.multi) {
       value = [];
-      _.map(this.props.value, (url: string, i: number) => {
+      _.map(this.props.value, (url: any, i: number) => {
         if (i !== index) {
           value.push(url);
         }
@@ -120,16 +118,19 @@ export default class ImageField extends React.Component<ImageFieldProps, ImageFi
 
   render() {
     let {
-      className, value, multi, help, label, disabled, error: errorText
+      className, value, multi, help, label, disabled, error, max
     } = this.props;
-    let { error, max } = this.state;
+    max = multi ? (max || 1000) : 1;
     let newValue: any = value;
     if (!multi) {
       newValue = value ? [value] : [];
     }
     let items: React.ReactNode[] = [];
     let readonly = disabled;
-    _.forEach(newValue, (url: string, index: number) => {
+    _.forEach(newValue, (url: any, index: number) => {
+      if (url && typeof url === 'object') {
+        url = url.thumbUrl || url.url;
+      }
       items.push((
         <div key={index} className="image-field-item">
           <img alt="" src={url} />
@@ -154,7 +155,7 @@ export default class ImageField extends React.Component<ImageFieldProps, ImageFi
               ref={(r) => {
                 this.imageInput = r;
               }}
-              multiple={multi}
+              multiple={multi || false}
               accept="image/png;image/jpg;"
               type="file"
               onChange={this.handleAddImage}
@@ -172,7 +173,7 @@ export default class ImageField extends React.Component<ImageFieldProps, ImageFi
       ));
     }
 
-    error = error || errorText as string;
+    error = error || this.state.error as string;
     return (
       <div className={classnames('s-component s-field s-field-image form-group', className, { 'is-invalid': error })}>
         {label && <label>{label}</label>}
