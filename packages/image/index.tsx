@@ -31,7 +31,7 @@ export default function Image(props: ImageProps) {
         div.style.height = `${height.toFixed(2)}px`;
       }
     };
-  }, [props.url]);
+  }, [props.url, props.height, props.width]);
 
   let { className = '', mode } = props;
   className = `s-image ${className}`;

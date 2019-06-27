@@ -6,7 +6,7 @@
   transition: opacity .2s linear;
   max-width: 100%;
 
-  .s-image-contain {
+  &.s-image-contain {
     background-size: contain;
   }
 }
