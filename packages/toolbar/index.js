@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const classnames = require("classnames");
 const box_1 = require("@samoyed/box");
+const icon_1 = require("@samoyed/icon");
 const tooltip_wrapper_1 = require("@samoyed/tooltip-wrapper");
 const PLACEMENT_LAYOUT = {
     top: 'horizontal',
@@ -27,30 +28,37 @@ function Toolbar(props) {
                 's-has-icon': icon,
                 's-has-text': title,
             }) },
-            icon && React.createElement("i", { className: `s-icon fa fa-${icon}` }),
+            icon && React.createElement(icon_1.default, { name: icon }),
             title && React.isValidElement(title) ? title : React.createElement("span", { className: "s-text" }, title));
     }
+    let leftTools = [];
+    let rightTools = [];
+    tools && tools.forEach((tool, index) => {
+        if (React.isValidElement(tool)) {
+            rightTools.push(tool);
+            return;
+        }
+        let list = tool.placement === 'left' ? leftTools : rightTools;
+        let colorCls = tool.color ? `text-${tool.color}` : '';
+        let el = React.createElement("div", { key: list.length, onClick: tool.disabled ? null : tool.onClick, className: classnames('s-tool', colorCls, {
+                's-has-icon': tool.icon,
+                's-has-text': tool.text,
+                's-disabled': tool.disabled,
+                's-hover': !tool.disabled,
+            }) },
+            tool.icon && React.createElement(icon_1.default, { name: tool.icon }),
+            tool.text && (React.isValidElement(tool.text) ? tool.text : React.createElement("span", { className: "s-text" }, tool.text)));
+        if (tool.tooltip) {
+            el = React.createElement(tooltip_wrapper_1.default, { placement: "bottom", tooltip: tool.tooltip }, el);
+        }
+        list.push(el);
+    });
     return (React.createElement(box_1.default, Object.assign({ className: classnames(`s-toolbar s-toolbar-${placement}`, className, {
             [`s-toolbar-${color}`]: color
         }), bodyClassName: classnames('s-toolbar-body', bodyClassName), bg: color, layout: PLACEMENT_LAYOUT[placement] }, others),
+        React.createElement("div", { className: "s-toolbar-start" }, leftTools),
         content,
         children,
-        tools && tools.length && tools.map((tool, index) => {
-            if (React.isValidElement(tool))
-                return tool;
-            let colorCls = tool.color ? `text-${tool.color}` : '';
-            let el = React.createElement("div", { key: index, onClick: tool.disabled ? null : tool.onClick, className: classnames('s-tool', colorCls, {
-                    's-has-icon': tool.icon,
-                    's-has-text': tool.text,
-                    's-disabled': tool.disabled,
-                    's-hover': !tool.disabled,
-                }) },
-                tool.icon && React.createElement("i", { className: `s-icon fa fa-${tool.icon}` }),
-                tool.text && (React.isValidElement(tool.text) ? tool.text : React.createElement("span", { className: "s-text" }, tool.text)));
-            if (tool.tooltip) {
-                el = React.createElement(tooltip_wrapper_1.default, { placement: "bottom", tooltip: tool.tooltip }, el);
-            }
-            return el;
-        })));
+        React.createElement("div", { className: "s-toolbar-end" }, rightTools)));
 }
 exports.default = Toolbar;

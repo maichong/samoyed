@@ -13,6 +13,8 @@ class App {
             switchAnimationDuration: 300,
             listLimit: 10,
             nativeScroll: null,
+            iconFontFamily: 'iconfont',
+            iconNamePrefix: 'icon-'
         };
         this.is = {
             ssr: typeof window === 'undefined'

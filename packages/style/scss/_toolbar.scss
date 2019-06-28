@@ -1,5 +1,6 @@
 .s-toolbar {
   background: #fff;
+
   .s-icon {
     font-size: 1.2rem;
   }
@@ -7,14 +8,18 @@
 
 .s-toolbar-body {
   align-items: center;
+
   .btn-group {
+
     // TODO: alaska admin 中 btn 改为 s-tool
     .btn {
       margin-right: 0;
     }
   }
+
   .btn {
     margin-right: $s-toolbar-padding;
+
     &:last-child {
       margin-right: 0;
     }
@@ -27,13 +32,23 @@
     min-height: $s-toolbar-height;
     padding: 0 $s-toolbar-padding;
   }
+
   .s-toolbar-title.s-has-icon {
     .s-text {
       margin-left: 0.5rem;
     }
   }
-  .s-tool {
-    margin-left: 0.3rem;
+
+  .s-toolbar-start {
+    .s-tool {
+      margin-right: 0.3rem;
+    }
+  }
+
+  .s-toolbar-end {
+    .s-tool {
+      margin-left: 0.3rem;
+    }
   }
 }
 
@@ -43,15 +58,18 @@
     width: $s-toolbar-height;
     padding: $s-toolbar-padding 0;
   }
+
   .s-toolbar-title {
     writing-mode: vertical-lr;
     line-height: $s-toolbar-height;
   }
+
   .s-toolbar-title.s-has-icon {
     .s-text {
       margin-top: 0.5rem;
     }
   }
+
   .s-tool {
     margin-top: 0.3rem;
   }

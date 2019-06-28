@@ -10,6 +10,8 @@ export interface Defaults {
   animationDuration: number;
   listLimit: number;
   nativeScroll: boolean | null;
+  iconFontFamily: string;
+  iconNamePrefix: string;
 }
 
 export interface Environments {

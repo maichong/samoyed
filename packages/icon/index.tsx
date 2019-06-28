@@ -1,13 +1,14 @@
 import * as React from 'react';
+import app from '@samoyed/app';
 import { IconProps } from '.';
 
-export default class Icon extends React.Component<IconProps> {
-  render() {
-    const { className, name } = this.props;
-    let cls = `s-icon fa fa-${name}`;
-    if (className) {
-      cls += ` ${className}`;
-    }
-    return <i className={cls} />;
+export default function Icon(props: IconProps) {
+  const { className, name } = props;
+  let fontFamily = props.fontFamily || app.defaults.iconFontFamily;
+  let namePrefix = props.namePrefix || app.defaults.iconNamePrefix;
+  let cls = `s-icon ${fontFamily} ${namePrefix}${name}`;
+  if (className) {
+    cls += ` ${className}`;
   }
-}
+  return <i className={cls} />;
+};

@@ -25,6 +25,10 @@ export interface Tool {
    */
   disabled?: boolean;
   /**
+   * 位置，默认在右侧
+   */
+  placement?: 'right' | 'left';
+  /**
    * 回调函数
    */
   onClick?: () => any;
