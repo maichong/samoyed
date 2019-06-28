@@ -17,6 +17,12 @@
   "license": "MIT",
   "dependencies": {
     "@samoyed/app": "^0.4.0",
-    "@samoyed/page": "^0.4.0"
+    "@samoyed/redux": "^0.4.0",
+    "@samoyed/page": "^0.4.0",
+    "@samoyed/utils": "^0.4.0",
+    "events": "^3.0.0",
+    "react-redux": "^7.1.0",
+    "qs": "^6.7.0",
+    "shallow-equal-without": "^0.2.0"
   }
 }

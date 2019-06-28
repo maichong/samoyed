@@ -58,9 +58,45 @@ export interface Site {
 }
 
 export interface Page {
+  id: string;
+  title: string;
+  route: string;
+  type: 'normal' | 'list' | 'detail';
+  component: string;
+  layout: string;
+  source: string;
+  tabName: string;
+  tabIcon: string;
+  tabActiveIcon: string;
+  content: string;
 }
 
 export interface Layout {
+  id: string;
+  application: string;
+  items: LayoutItem[];
+  style?: LayoutItemPropMap;
+  navBar: string;
+}
+
+export interface LayoutItem {
+  id: string;
+  component: string;
+  dependsSite?: string;
+  dependsUser?: string;
+  position?: 'normal' | 'dock-top' | 'dock-bottom';
+  props: LayoutItemPropMap;
+  style?: LayoutItemPropMap;
+}
+
+export interface LayoutItemPropMap {
+  [key: string]: LayoutItemProp;
+}
+
+export interface LayoutItemProp {
+  type?: 'value' | 'ref';
+  value?: any;
+  ref?: any;
 }
 
 export interface Store extends ReduxStore<StoreState, any> {

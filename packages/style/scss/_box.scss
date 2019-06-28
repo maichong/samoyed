@@ -40,7 +40,6 @@
   position: relative;
   overflow: hidden;
 
-
   &.s-scroll-horizontal>.s-scroll-indicator.s-horizontal {
     display: block;
   }
@@ -62,6 +61,10 @@
   position: absolute;
   width: 100%;
   top: 0;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: .1s;
+  transition-timing-function: linear;
 
   .s-text {
     padding: 1rem;

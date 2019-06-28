@@ -157,7 +157,9 @@ export interface SwitchProps {
 export class Switch extends React.Component<SwitchProps> {
 }
 
-export interface RouterContext extends React.Context<RouterChildContext> { }
+declare const RouterContext: React.Context<RouterChildContext>;
+
+export { RouterContext };
 
 export function matchPath<Params extends { [K in keyof Params]?: string }>(pathname: string, props: string | RouteProps, parent?: Match<Params> | null): Match<Params> | null;
 

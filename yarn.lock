@@ -1687,6 +1687,12 @@
   dependencies:
     "@samoyed/app" "^0.4.0"
 
+"@samoyed/dynamic-page@file:packages/dynamic-page":
+  version "0.4.0"
+  dependencies:
+    "@samoyed/app" "^0.4.0"
+    "@samoyed/page" "^0.4.0"
+
 "@samoyed/field-checkbox@file:packages/field-checkbox":
   version "0.4.0"
   dependencies:
@@ -1749,7 +1755,7 @@
   dependencies:
     numeral "^2.0.6"
 
-"@samoyed/page@file:packages/page":
+"@samoyed/page@^0.4.0", "@samoyed/page@file:packages/page":
   version "0.4.0"
   dependencies:
     "@samoyed/box" "^0.4.0"

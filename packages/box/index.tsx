@@ -110,13 +110,20 @@ export default class Box extends React.Component<BoxProps, State> {
 
   updateStyles() {
     let { offset, bodyRef, pullRef } = this;
-    bodyRef.style.transform = `translate(${offset.x}px, ${offset.y}px)`;
-    if (offset.y > 0 && pullRef) {
-      let y = offset.y - pullRef.clientHeight;
+    if (!bodyRef) return;
+    let yOffset = offset.y;
+    if (yOffset > 0) {
+      yOffset /= 2;
+    }
+    bodyRef.style.transform = `translate(${offset.x}px, ${yOffset}px)`;
+    if (yOffset > 0 && pullRef) {
+      let y = yOffset - pullRef.clientHeight;
       if (y > 0) {
         y = y / 2;
       }
+      let opacity = Math.abs(-pullRef.clientHeight - y) / pullRef.clientHeight;
       pullRef.style.transform = `translate(0px, ${y}px)`;
+      pullRef.style.opacity = Math.min(1, opacity).toFixed(2);
     }
     if (this.yIndicator && this.axisEnabled.y && this.yIndicatorStyle) {
       this.yIndicator.style.opacity = this.yIndicatorStyle.opacity;
@@ -304,7 +311,7 @@ export default class Box extends React.Component<BoxProps, State> {
       let max = 0;
       if (onPullRefresh) {
         if (this.pullRef) {
-          max = this.pullRef.clientHeight * 2;
+          max = this.pullRef.clientHeight * 4;
         }
         if (max < 50) {
           max = 50;
@@ -329,7 +336,7 @@ export default class Box extends React.Component<BoxProps, State> {
           pullRefreshHeight = this.pullRef.clientHeight || 50;
         }
         let pullStatus: PullRefreshStatus = 'pull';
-        if (offset.y > pullRefreshHeight) {
+        if (offset.y > pullRefreshHeight * 2) {
           pullStatus = 'release';
         } else if (offset.y <= 0) {
           pullStatus = null;
@@ -404,9 +411,14 @@ export default class Box extends React.Component<BoxProps, State> {
     let scrollWidth = bodyRef.scrollWidth;
     let scrollHeight = bodyRef.scrollHeight;
 
+    const time = Date.now() - this.flickStartTime;
+
     if (axisEnabled.x) {
-      let xSpeed = (lastPos.x - this.flickStartPos.x) / (Date.now() - this.flickStartTime);
-      final.x += xSpeed * 500;
+      let xDistance = lastPos.x - this.flickStartPos.x;
+      let xVelocity = xDistance / time;
+      if (Math.abs(xDistance) > 5 && Math.abs(xVelocity) > 0.01) {
+        final.x += xVelocity * 800;
+      }
       if (final.x > 0) {
         final.x = 0;
       }
@@ -418,8 +430,11 @@ export default class Box extends React.Component<BoxProps, State> {
       }
     }
     if (axisEnabled.y) {
-      let ySpeed = (lastPos.y - this.flickStartPos.y) / (Date.now() - this.flickStartTime);
-      final.y += ySpeed * 500;
+      let yDistance = lastPos.y - this.flickStartPos.y;
+      let yVelocity = yDistance / time;
+      if (Math.abs(yDistance) > 5 && Math.abs(yVelocity) > 0.01) {
+        final.y += yVelocity * 800;
+      }
 
       if (onPullRefresh && this.pullRef && this.state.pullStatus === 'loading' && final.y > this.pullRef.clientHeight) {
         final.y = this.pullRef.clientHeight;
@@ -465,11 +480,11 @@ export default class Box extends React.Component<BoxProps, State> {
         onPullRefresh(() => {
           if (called) return;
           called = true;
-          let time = Date.now() - start;
-          if (time > 500) {
+          let t = Date.now() - start;
+          if (t > 500) {
             callback();
           } else {
-            setTimeout(callback, 500 - time);
+            setTimeout(callback, 500 - t);
           }
         });
       }
@@ -478,18 +493,24 @@ export default class Box extends React.Component<BoxProps, State> {
     if (final.x !== offset.x || final.y !== offset.y) {
       let start = { x: offset.x, y: offset.y };
       let diff = { x: final.x - start.x, y: final.y - start.y };
+      let duration = 1500;
+      if (final.y === 0 && start.y > 0) {
+        // 下拉刷新取消
+        duration = 500;
+      }
       this.tweezer = new Tweezer({
         start: 0,
-        end: 100,
-        duration: 800,
+        end: 1000,
+        duration,
         easing(t, b, c, d) {
+          // easeOutQuad
           // eslint-disable-next-line no-return-assign
-          return c * ((t = t / d - 1) * t * t + 1) + b;
+          return -c * (t /= d) * (t - 2) + b;
         }
       });
       this.tweezer.on('tick', (value) => {
         if (axisEnabled.x) {
-          this.offset.x = start.x + value * diff.x / 100;
+          this.offset.x = start.x + value * diff.x / 1000;
 
           let style: IndicatorStyle = {
             opacity: '0.3',
@@ -504,7 +525,7 @@ export default class Box extends React.Component<BoxProps, State> {
           this.xIndicatorStyle = style;
         }
         if (axisEnabled.y) {
-          this.offset.y = start.y + value * diff.y / 100;
+          this.offset.y = start.y + value * diff.y / 1000;
 
           let style: IndicatorStyle = {
             opacity: '0.3',
