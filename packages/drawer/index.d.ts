@@ -10,7 +10,7 @@ declare module '@samoyed/app' {
 
 type RenderFunction = () => React.ReactNode;
 
-export type Mode = 'cover' | 'slide';
+export type Mode = 'cover' | 'slide' | 'none';
 
 export interface DrawerProps extends BoxProps {
   /**

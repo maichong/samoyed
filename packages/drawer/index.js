@@ -312,26 +312,31 @@ class Drawer extends React.Component {
     render() {
         let _a = this.props, { drawer, children, className, bodyClassName, containerProps = {}, drawerProps = {}, placement, draggable, mode, show, onShow, onHide, directionLockThreshold, dragBorderSize, noMask } = _a, others = __rest(_a, ["drawer", "children", "className", "bodyClassName", "containerProps", "drawerProps", "placement", "draggable", "mode", "show", "onShow", "onHide", "directionLockThreshold", "dragBorderSize", "noMask"]);
         mode = mode || 'cover';
+        if (mode === 'none') {
+            noMask = true;
+        }
         if (typeof drawer === 'function') {
             drawer = drawer();
         }
         draggable = typeof draggable === 'undefined' ? app_1.default.is.touch : draggable;
-        let lastMaskDisplay = this.styles ? this.styles.mask.display : 'none';
-        this.styles = this.getStyles();
-        if (!show && !this.dragging && this.maskRef && lastMaskDisplay !== this.styles.mask.display) {
-            this.styles.mask.display = lastMaskDisplay;
-            setTimeout(() => {
-                this.styles = this.getStyles();
-                this.updateStyles();
-            }, 300);
+        if (mode !== 'none') {
+            let lastMaskDisplay = this.styles ? this.styles.mask.display : 'none';
+            this.styles = this.getStyles();
+            if (!show && !this.dragging && this.maskRef && lastMaskDisplay !== this.styles.mask.display) {
+                this.styles.mask.display = lastMaskDisplay;
+                setTimeout(() => {
+                    this.styles = this.getStyles();
+                    this.updateStyles();
+                }, 300);
+            }
+            this.updateStyles();
         }
-        this.updateStyles();
         return (React.createElement(box_1.default, Object.assign({ className: classnames('s-drawer', `s-drawer-${placement}`, `s-drawer-${mode}`, {
                 's-no-mask': noMask,
                 's-draggable': draggable,
                 's-show': show
             }, className), bodyClassName: classnames('s-drawer-body', bodyClassName) }, others, { bodyRef: this.handleBodyRef, onTouchStart: draggable ? this.handleStart : null, onTouchMove: draggable ? this.handleMove : null, onTouchEnd: draggable ? this.handleEnd : null, layout: "none" }),
-            React.createElement(box_1.default, Object.assign({ layout: "none" }, drawerProps, { elRef: this.handleDrawerRef, className: classnames('s-drawer-drawer', drawerProps.className), onResize: this.handelDrawerResize }), drawer),
+            React.createElement(box_1.default, Object.assign({ layout: "none" }, drawerProps, { elRef: this.handleDrawerRef, className: classnames('s-drawer-drawer', drawerProps.className), onResize: mode === 'none' ? null : this.handelDrawerResize }), drawer),
             !noMask && React.createElement("div", { className: "s-drawer-mask", onClick: show ? onHide : null, ref: this.handleMaskRef }),
             React.createElement(box_1.default, Object.assign({ layout: "fit" }, containerProps, { elRef: this.handleContainerRef, className: classnames('s-drawer-contianer', containerProps.className) }), children)));
     }

@@ -65,6 +65,7 @@ export default class DrawerPage extends React.Component<RouteComponentProps, Sta
                 options={[
                   { label: 'Cover', value: 'cover' },
                   { label: 'Slide', value: 'slide' },
+                  { label: 'None', value: 'none' },
                 ]}
                 value={this.state.mode}
                 onChange={(v) => this.setState({ mode: v })}

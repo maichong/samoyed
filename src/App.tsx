@@ -10,7 +10,7 @@ import pages from './pages';
 import RouterPage from './pages/Router';
 
 export default function App() {
-  let [show, setShow] = React.useState(!app.is.xs);
+  let [show, setShow] = React.useState(false);
   let forceUpdate = React.useState(1)[1];
   React.useEffect(() => {
     app.on('layout-change', () => {
@@ -21,11 +21,9 @@ export default function App() {
     <Router history={app.history}>
       <Viewport className="" layout="fit">
         <Drawer
-          show={show || !app.is.xs}
-          draggable
+          show={show}
           placement="left"
-          mode={app.is.xs ? 'cover' : 'slide'}
-          noMask={!app.is.xs}
+          mode={app.is.xs ? 'cover' : 'none'}
           onShow={() => setShow(true)}
           onHide={() => setShow(false)}
           drawer={<Box className="list-group menu">

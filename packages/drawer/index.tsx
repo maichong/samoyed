@@ -355,6 +355,10 @@ export default class Drawer extends React.Component<DrawerProps> {
 
     mode = mode || 'cover';
 
+    if (mode === 'none') {
+      noMask = true;
+    }
+
     if (typeof drawer === 'function') {
       // @ts-ignore
       drawer = drawer();
@@ -362,18 +366,20 @@ export default class Drawer extends React.Component<DrawerProps> {
 
     draggable = typeof draggable === 'undefined' ? app.is.touch : draggable;
 
-    // fix 消失动画 mask 会突然消失
-    let lastMaskDisplay = this.styles ? this.styles.mask.display : 'none';
-    this.styles = this.getStyles();
-    if (!show && !this.dragging && this.maskRef && lastMaskDisplay !== this.styles.mask.display) {
-      this.styles.mask.display = lastMaskDisplay;
-      setTimeout(() => {
-        // 延迟更新 display 属性
-        this.styles = this.getStyles();
-        this.updateStyles();
-      }, 300);
+    if (mode !== 'none') {
+      // fix 消失动画 mask 会突然消失
+      let lastMaskDisplay = this.styles ? this.styles.mask.display : 'none';
+      this.styles = this.getStyles();
+      if (!show && !this.dragging && this.maskRef && lastMaskDisplay !== this.styles.mask.display) {
+        this.styles.mask.display = lastMaskDisplay;
+        setTimeout(() => {
+          // 延迟更新 display 属性
+          this.styles = this.getStyles();
+          this.updateStyles();
+        }, 300);
+      }
+      this.updateStyles();
     }
-    this.updateStyles();
 
     return (
       <Box
@@ -401,7 +407,7 @@ export default class Drawer extends React.Component<DrawerProps> {
           {...drawerProps}
           elRef={this.handleDrawerRef}
           className={classnames('s-drawer-drawer', drawerProps.className)}
-          onResize={this.handelDrawerResize}
+          onResize={mode === 'none' ? null : this.handelDrawerResize}
         >
           {drawer}
         </Box>

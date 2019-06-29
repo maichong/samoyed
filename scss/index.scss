@@ -65,26 +65,28 @@ h2 {
   }
 }
 
-.drawer-content {
-  background: #fff;
-  padding: 50px;
-  text-align: center;
-  line-height: 100px;
-}
-
-.s-drawer-top,
-.s-drawer-bottom {
+.drawer-page {
   .drawer-content {
-    height: 200px;
-    width: 100%;
+    background: #fff;
+    padding: 50px;
+    text-align: center;
+    line-height: 100px;
   }
-}
 
-.s-drawer-left,
-.s-drawer-right {
-  .drawer-content {
-    height: 100%;
-    width: 200px;
+  .s-drawer-top,
+  .s-drawer-bottom {
+    .drawer-content {
+      height: 200px;
+      width: 100%;
+    }
+  }
+
+  .s-drawer-left,
+  .s-drawer-right {
+    .drawer-content {
+      height: 100%;
+      width: 200px;
+    }
   }
 }
 

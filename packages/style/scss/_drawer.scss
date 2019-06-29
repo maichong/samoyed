@@ -87,3 +87,45 @@
     transform: translate(0, 0);
   }
 }
+
+// 直接显示
+.s-drawer.s-drawer-none {
+  >.s-drawer-body>.s-drawer-drawer {
+    transform: translate(0, 0) !important;
+    position: relative;
+  }
+
+  >.s-drawer-body {
+    display: flex;
+
+    >.s-drawer-contianer {
+      transform: translate(0, 0) !important;
+      position: relative;
+      flex: 1;
+    }
+  }
+
+  &.s-drawer-left {
+    >.s-drawer-body {
+      flex-direction: row;
+    }
+  }
+
+  &.s-drawer-right {
+    >.s-drawer-body {
+      flex-direction: row-reverse;
+    }
+  }
+
+  &.s-drawer-top {
+    >.s-drawer-body {
+      flex-direction: column;
+    }
+  }
+
+  &.s-drawer-bottom {
+    >.s-drawer-body {
+      flex-direction: column-reverse;
+    }
+  }
+}
