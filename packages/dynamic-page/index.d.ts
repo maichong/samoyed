@@ -13,6 +13,8 @@ declare module '@samoyed/app' {
 
 export interface PageContextValue {
   scrollEvents: EventEmitter;
+  pageTitle: string;
+  setPageTitle: (title: string) => any;
 }
 
 declare const context: React.Context<PageContextValue>;

@@ -42,7 +42,16 @@ export class OriginalDynamicPage extends React.Component<OriginalDynamicPageProp
       sort: '',
       query: null,
       contextValue: {
-        scrollEvents: this.scrollEvents
+        scrollEvents: this.scrollEvents,
+        pageTitle: '',
+        setPageTitle: (title: string) => {
+          let c = this.state.contextValue;
+          if (title === c.pageTitle) return;
+          this.setState({
+            contextValue: Object.assign({}, c, { pageTitle: title })
+          });
+          document.title = title;
+        }
       }
     };
   }
@@ -86,13 +95,19 @@ export class OriginalDynamicPage extends React.Component<OriginalDynamicPageProp
       }
     }
 
-    if (details && details.layout) {
+    let detail = nextState.detail;
+    if (detail && detail.layout) {
       // @ts-ignore
-      nextState.layoutRecord = layouts.map[details.layout];
+      nextState.layoutRecord = layouts.map[detail.layout];
     }
     if (!nextState.layoutRecord && pageRecord.layout) {
       nextState.layoutRecord = layouts.map[pageRecord.layout];
     }
+
+    if (detail && detail !== preState.detail && preState.contextValue.pageTitle) {
+      nextState.contextValue = Object.assign({}, preState.contextValue, { pageTitle: '' });
+    }
+
     return nextState;
   }
 
@@ -148,13 +163,27 @@ export class OriginalDynamicPage extends React.Component<OriginalDynamicPageProp
   }
 
   render() {
-    const { pageRecord, router } = this.props;
+    const { pageRecord, router, active } = this.props;
     const { layoutRecord, detail, list, id, query, contextValue } = this.state;
     if (pageRecord.type === 'detail' && !id) return '路由中不存在id参数';
     if (pageRecord.type === 'detail' && !detail) return this.renderLoading();
     if (pageRecord.type === 'list' && !list) return this.renderLoading();
 
     if (!layoutRecord) return 'Missing layout!';
+    if (active) {
+      let pageTitle = contextValue.pageTitle;
+      if (detail) {
+        pageTitle = detail.title;
+      }
+      if (!pageTitle) {
+        pageTitle = pageRecord.title;
+      }
+      console.log('active', active);
+      console.log('pageTitle', pageTitle);
+      if (document.title !== pageTitle) {
+        document.title = pageTitle;
+      }
+    }
 
     const components = this.props.components || app.components;
     const refs = Object.assign({}, this.props, this.state);
@@ -264,6 +293,7 @@ export class OriginalDynamicPage extends React.Component<OriginalDynamicPageProp
     if (NavBar && !query._noNavBar) {
       dockTop.unshift(<NavBar
         key="navbar"
+        title={contextValue.pageTitle}
         list={list}
         detail={detail}
         layoutRecord={layoutRecord}

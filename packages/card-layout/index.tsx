@@ -6,6 +6,7 @@ import { CardLayoutProps } from '.';
 
 interface State {
   _activeItem: number;
+  lastActiveItem: number;
   active?: React.ReactElement;
   last?: React.ReactElement;
   animation?: Animation;
@@ -22,6 +23,7 @@ class CardLayout extends React.Component<CardLayoutProps, State> {
     super(props);
     this.state = {
       _activeItem: -1,
+      lastActiveItem: -1,
       animationAction: 'forward'
     };
   }
@@ -38,6 +40,7 @@ class CardLayout extends React.Component<CardLayoutProps, State> {
 
     let state: Partial<State> = {
       _activeItem: activeItem,
+      lastActiveItem: prevState._activeItem,
       active
     };
     if (state._activeItem < prevState._activeItem) {
@@ -90,14 +93,14 @@ class CardLayout extends React.Component<CardLayoutProps, State> {
   };
 
   render() {
-    const { className } = this.props;
-    const { active, last, animation, animationAction } = this.state;
+    const { className, activeItem } = this.props;
+    const { active, last, animation, animationAction, lastActiveItem } = this.state;
 
     let children: React.ReactElement[] = [];
 
     if (active) {
       children.push(React.cloneElement(active, {
-        key: 'active',
+        key: activeItem,
         active: true
       }));
     }
@@ -108,7 +111,7 @@ class CardLayout extends React.Component<CardLayoutProps, State> {
     if (last && animation && animation.type) {
       animationType = animation.type;
       children.push(React.cloneElement(last, {
-        key: 'last',
+        key: lastActiveItem,
         last: true
       }));
       duration = animation.duration || app.defaults.animationDuration;

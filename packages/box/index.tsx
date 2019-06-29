@@ -47,7 +47,10 @@ interface IndicatorStyle {
   offset?: number;
 }
 
+let boxCount = 0;
+
 export default class Box extends React.Component<BoxProps, State> {
+  id: string;
   ref: HTMLElement;
   bodyRef: HTMLElement;
   pullRef: HTMLElement;
@@ -85,6 +88,8 @@ export default class Box extends React.Component<BoxProps, State> {
     this.pullRefreshHeight = 50;
     this.xIndicatorStyle = {};
     this.yIndicatorStyle = {};
+    boxCount += 1;
+    this.id = `box-${boxCount}`;
   }
 
   componentDidMount() {
@@ -561,7 +566,7 @@ export default class Box extends React.Component<BoxProps, State> {
 
   render() {
     let {
-      children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg,
+      id, children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg,
       flex, scrollable, layout, activeItem, animation, addonAfter, addonBefore,
       previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement,
       nativeScroll, onPullRefresh, pullRefreshTexts,
@@ -676,6 +681,7 @@ export default class Box extends React.Component<BoxProps, State> {
 
     let el = (
       <div
+        id={id || this.id}
         ref={this.handleRef}
         className={classnames(
           's-component',

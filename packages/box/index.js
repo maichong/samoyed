@@ -31,6 +31,7 @@ function getPullRefreshTexts(pullRefreshTexts, status) {
     }
     return text;
 }
+let boxCount = 0;
 class Box extends React.Component {
     constructor(props) {
         super(props);
@@ -381,6 +382,8 @@ class Box extends React.Component {
         this.pullRefreshHeight = 50;
         this.xIndicatorStyle = {};
         this.yIndicatorStyle = {};
+        boxCount += 1;
+        this.id = `box-${boxCount}`;
     }
     componentDidMount() {
         this.init();
@@ -473,7 +476,7 @@ class Box extends React.Component {
         this.lastScrollTop = data.scrollTop;
     }
     render() {
-        let _a = this.props, { children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg, flex, scrollable, layout, activeItem, animation, addonAfter, addonBefore, previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement, nativeScroll, onPullRefresh, pullRefreshTexts, onBodyScroll, reachBottomBorder, onReachBottom } = _a, others = __rest(_a, ["children", "className", "bodyClassName", "style", "bodyStyle", "elRef", "bodyRef", "width", "height", "bg", "flex", "scrollable", "layout", "activeItem", "animation", "addonAfter", "addonBefore", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "dock", "dockPlacement", "nativeScroll", "onPullRefresh", "pullRefreshTexts", "onBodyScroll", "reachBottomBorder", "onReachBottom"]);
+        let _a = this.props, { id, children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg, flex, scrollable, layout, activeItem, animation, addonAfter, addonBefore, previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement, nativeScroll, onPullRefresh, pullRefreshTexts, onBodyScroll, reachBottomBorder, onReachBottom } = _a, others = __rest(_a, ["id", "children", "className", "bodyClassName", "style", "bodyStyle", "elRef", "bodyRef", "width", "height", "bg", "flex", "scrollable", "layout", "activeItem", "animation", "addonAfter", "addonBefore", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "dock", "dockPlacement", "nativeScroll", "onPullRefresh", "pullRefreshTexts", "onBodyScroll", "reachBottomBorder", "onReachBottom"]);
         let { pullStatus } = this.state;
         style = style ? Object.assign({}, style) : {};
         if (typeof height === 'string' && /^\d+$/.test(height)) {
@@ -557,7 +560,7 @@ class Box extends React.Component {
                 React.createElement("div", { ref: (r) => { this.xIndicator = r; }, className: "s-scroll-indicator s-horizontal" }),
                 React.createElement("div", { ref: (r) => { this.yIndicator = r; }, className: "s-scroll-indicator s-vertical" }));
         }
-        let el = (React.createElement("div", Object.assign({ ref: this.handleRef, className: classnames('s-component', 's-box', className, dockClassName, {
+        let el = (React.createElement("div", Object.assign({ id: id || this.id, ref: this.handleRef, className: classnames('s-component', 's-box', className, dockClassName, {
                 's-flex': !!flex,
                 's-previous': previous,
                 's-last': last,
