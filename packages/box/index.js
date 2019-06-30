@@ -15,15 +15,6 @@ const app_1 = require("@samoyed/app");
 const Tweezer = require('tweezer.js');
 const ResizeSensor = require('css-element-queries/src/ResizeSensor');
 const ResizeObserver = window.ResizeObserver;
-function checkNativeScroll(nativeScroll) {
-    if (typeof nativeScroll === 'undefined') {
-        nativeScroll = app_1.default.defaults.nativeScroll;
-    }
-    if (nativeScroll === null) {
-        nativeScroll = !app_1.default.is.touch;
-    }
-    return nativeScroll;
-}
 function getPullRefreshTexts(pullRefreshTexts, status) {
     let text = pullRefreshTexts[status];
     if (!text && status === 'loaded') {
@@ -491,7 +482,9 @@ class Box extends React.Component {
         if (width || width === 0) {
             style.width = width;
         }
-        nativeScroll = checkNativeScroll(nativeScroll);
+        nativeScroll = typeof nativeScroll === 'boolean' ? nativeScroll : app_1.default.defaults.nativeScroll;
+        if (typeof nativeScroll !== 'boolean')
+            nativeScroll = !app_1.default.is.xs;
         let jsScroll = scrollable && !nativeScroll;
         const vertical = scrollable === 'both' || scrollable === 'vertical';
         let layoutProps = {

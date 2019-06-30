@@ -108,7 +108,7 @@ class Switch extends React.Component {
             }
             if (route) {
                 children.push(React.cloneElement(item.route, {
-                    key: 'active',
+                    key: item.entry.key,
                     active: true,
                     location: item.entry,
                     entries: (routesWithEntries[item.routeIndex]).entries.map((e) => e.entry),
@@ -119,7 +119,7 @@ class Switch extends React.Component {
                 const last = context.last;
                 if (previousEntryRoute && previousEntryRoute.route) {
                     children.push(React.cloneElement(previousEntryRoute.route, {
-                        key: 'previous',
+                        key: previousEntryRoute.entry.key,
                         previous: true,
                         last: last && last.key === previousEntryRoute.entry.key,
                         location: previousEntryRoute.entry,
@@ -135,7 +135,7 @@ class Switch extends React.Component {
                         if (lastEntryRoute.route) {
                             this.last = lastEntryRoute.entry;
                             children.push(React.cloneElement(lastEntryRoute.route, {
-                                key: 'last',
+                                key: lastEntryRoute.entry.key,
                                 last: true,
                                 location: lastEntryRoute.entry,
                                 entries: (routesWithEntries[lastEntryRoute.routeIndex]).entries.map((e) => e.entry),

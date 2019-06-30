@@ -1,9 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
-class Prompt extends React.Component {
-    render() {
-        return 'Prompt';
-    }
+function Prompt(props) {
+    return 'Prompt todo...';
 }
 exports.default = Prompt;

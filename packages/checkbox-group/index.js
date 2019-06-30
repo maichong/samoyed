@@ -4,19 +4,9 @@ const React = require("react");
 const classnames = require("classnames");
 const checkbox_1 = require("@samoyed/checkbox");
 const utils_1 = require("./utils");
-class CheckboxGroup extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            options: props.options
-        };
-    }
-    static getDerivedStateFromProps(nextProps) {
-        return { options: nextProps.options };
-    }
-    handleCheck(opt) {
-        const { value, multi, onChange, clearable } = this.props;
-        const { options } = this.state;
+function CheckboxGroup(props) {
+    const { className, multi, value, disabled, options, clearable, onChange } = props;
+    function handleChange(opt) {
         let optionsMap = {};
         options.forEach((o) => {
             optionsMap[utils_1.getOptionValue(o)] = o;
@@ -68,25 +58,21 @@ class CheckboxGroup extends React.Component {
         }
         onChange(res);
     }
-    render() {
-        const { className, multi, value, disabled } = this.props;
-        const { options } = this.state;
-        let valueMap = {};
-        if (multi) {
-            if (Array.isArray(value)) {
-                value.forEach((v) => {
-                    valueMap[String(v)] = true;
-                });
-            }
+    let valueMap = {};
+    if (multi) {
+        if (Array.isArray(value)) {
+            value.forEach((v) => {
+                valueMap[String(v)] = true;
+            });
         }
-        else {
-            let valueString = String(value);
-            valueMap[valueString] = true;
-        }
-        return (React.createElement("div", { className: classnames('checkbox-group', className) }, options.map((opt) => {
-            let vid = utils_1.getOptionValue(opt);
-            return (React.createElement(checkbox_1.default, { key: vid, className: opt.color ? `text-${opt.color}` : '', disabled: disabled, radio: !multi, label: opt.label, value: valueMap[vid] === true, onChange: () => this.handleCheck(vid) }));
-        })));
     }
+    else {
+        let valueString = String(value);
+        valueMap[valueString] = true;
+    }
+    return (React.createElement("div", { className: classnames('checkbox-group', className) }, options.map((opt) => {
+        let vid = utils_1.getOptionValue(opt);
+        return (React.createElement(checkbox_1.default, { key: vid, className: opt.color ? `text-${opt.color}` : '', disabled: disabled, radio: !multi, label: opt.label, value: valueMap[vid] === true, onChange: () => handleChange(vid) }));
+    })));
 }
 exports.default = CheckboxGroup;

@@ -15,30 +15,27 @@ const RouterContext_1 = require("./RouterContext");
 function isModifiedEvent(event) {
     return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 }
-class Link extends React.Component {
-    handleClick(event, history) {
-        if (this.props.onClick)
-            this.props.onClick(event);
+function Link(props) {
+    const { innerRef, replace, to, onClick } = props, rest = __rest(props, ["innerRef", "replace", "to", "onClick"]);
+    let context = React.useContext(RouterContext_1.default);
+    if (!context || !context.history)
+        throw new Error('You should not use <Link> outside a <Router>');
+    const location = typeof to === 'string'
+        ? H.createLocation(to, null, null, context.location)
+        : to;
+    const href = location ? context.history.createHref(location) : '';
+    const handleClick = (event) => {
+        if (onClick)
+            onClick(event);
         if (!event.defaultPrevented &&
             event.button === 0 &&
-            (!this.props.target || this.props.target === '_self') &&
+            (!props.target || props.target === '_self') &&
             !isModifiedEvent(event)) {
             event.preventDefault();
-            const method = this.props.replace ? history.replace : history.push;
-            method(this.props.to);
+            const method = replace ? context.history.replace : context.history.push;
+            method(to);
         }
-    }
-    render() {
-        const _a = this.props, { innerRef, replace, to } = _a, rest = __rest(_a, ["innerRef", "replace", "to"]);
-        return (React.createElement(RouterContext_1.default.Consumer, null, (context) => {
-            if (!context || !context.history)
-                throw new Error('You should not use <Link> outside a <Router>');
-            const location = typeof to === 'string'
-                ? H.createLocation(to, null, null, context.location)
-                : to;
-            const href = location ? context.history.createHref(location) : '';
-            return (React.createElement("a", Object.assign({}, rest, { onClick: (event) => this.handleClick(event, context.history), href: href, ref: innerRef })));
-        }));
-    }
+    };
+    return (React.createElement("a", Object.assign({}, rest, { onClick: handleClick, href: href, ref: innerRef })));
 }
 exports.default = Link;

@@ -2,42 +2,37 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const icon_1 = require("@samoyed/icon");
-class Checkbox extends React.Component {
-    constructor() {
-        super(...arguments);
-        this.handleChange = () => {
-            const { onChange, value } = this.props;
-            if (onChange) {
-                onChange(!value);
-            }
-        };
+function Checkbox(props) {
+    let { className = '', radio, value, disabled, label, onChange } = props;
+    className = `checkbox ${className}`;
+    if (disabled) {
+        className += ' disabled';
     }
-    render() {
-        let { className = '', radio, value, disabled, label } = this.props;
-        className = `checkbox ${className}`;
-        if (disabled) {
-            className += ' disabled';
-        }
+    if (value) {
+        className += ' checked';
+    }
+    let icon = 'square-o';
+    if (radio) {
         if (value) {
-            className += ' checked';
-        }
-        let icon = 'square-o';
-        if (radio) {
-            if (value) {
-                icon = 'check-circle';
-            }
-            else {
-                icon = 'circle-o';
-            }
-        }
-        else if (value) {
-            icon = 'check-square';
+            icon = 'checkbox-square';
         }
         else {
+            icon = 'checkbox-square-blank';
         }
-        return (React.createElement("label", { className: className, onClick: disabled ? null : this.handleChange },
-            React.createElement(icon_1.default, { name: icon }),
-            label));
     }
+    else {
+        if (value) {
+            icon = 'checkbox';
+        }
+        else {
+            icon = 'checkbox-blank';
+        }
+    }
+    function handleChange() {
+        onChange(!value);
+    }
+    return (React.createElement("label", { className: className, onClick: (disabled || !onChange) ? null : handleChange },
+        React.createElement(icon_1.default, { name: icon }),
+        label));
 }
 exports.default = Checkbox;

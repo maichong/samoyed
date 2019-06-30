@@ -14,16 +14,6 @@ const ResizeSensor: typeof ResizeSensorType = require('css-element-queries/src/R
 // @ts-ignore
 const ResizeObserver = window.ResizeObserver;
 
-function checkNativeScroll(nativeScroll: boolean | null | void) {
-  if (typeof nativeScroll === 'undefined') {
-    nativeScroll = app.defaults.nativeScroll;
-  }
-  if (nativeScroll === null) {
-    nativeScroll = !app.is.touch;
-  }
-  return nativeScroll;
-}
-
 function getPullRefreshTexts(pullRefreshTexts: PullRefreshTexts, status: PullRefreshStatus): React.ReactNode {
   let text = pullRefreshTexts[status];
   if (!text && status === 'loaded') {
@@ -589,7 +579,9 @@ export default class Box extends React.Component<BoxProps, State> {
       style.width = width;
     }
 
-    nativeScroll = checkNativeScroll(nativeScroll);
+    nativeScroll = typeof nativeScroll === 'boolean' ? nativeScroll : app.defaults.nativeScroll;
+    if (typeof nativeScroll !== 'boolean') nativeScroll = !app.is.xs;
+
     let jsScroll = scrollable && !nativeScroll;
     const vertical = scrollable === 'both' || scrollable === 'vertical';
 

@@ -154,7 +154,7 @@ export default class Switch extends React.Component<SwitchProps> {
           if (route) {
             // console.warn('active', item);
             children.push(React.cloneElement(item.route, {
-              key: 'active',
+              key: item.entry.key,
               active: true,
               location: item.entry,
               entries: (routesWithEntries[item.routeIndex]).entries.map((e) => e.entry),
@@ -167,7 +167,7 @@ export default class Switch extends React.Component<SwitchProps> {
             if (previousEntryRoute && previousEntryRoute.route) {
               // console.warn('previous', previousEntryRoute);
               children.push(React.cloneElement(previousEntryRoute.route, {
-                key: 'previous',
+                key: previousEntryRoute.entry.key,
                 previous: true,
                 last: last && last.key === previousEntryRoute.entry.key,
                 location: previousEntryRoute.entry,
@@ -187,7 +187,7 @@ export default class Switch extends React.Component<SwitchProps> {
                   this.last = lastEntryRoute.entry;
                   // console.warn('last', lastEntryRoute);
                   children.push(React.cloneElement(lastEntryRoute.route, {
-                    key: 'last',
+                    key: lastEntryRoute.entry.key,
                     last: true,
                     location: lastEntryRoute.entry,
                     entries: (routesWithEntries[lastEntryRoute.routeIndex]).entries.map((e) => e.entry),

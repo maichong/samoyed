@@ -2,46 +2,47 @@ import * as React from 'react';
 import Icon from '@samoyed/icon';
 import { CheckboxProps } from '.';
 
-export default class Checkbox extends React.Component<CheckboxProps> {
-  handleChange = () => {
-    const { onChange, value } = this.props;
-    if (onChange) {
-      onChange(!value);
-    }
-  };
+export default function Checkbox(props: CheckboxProps) {
+  let {
+    className = '',
+    radio,
+    value,
+    disabled,
+    label,
+    onChange
+  } = props;
+  className = `checkbox ${className}`;
 
-  render() {
-    let {
-      className = '',
-      radio,
-      value,
-      disabled,
-      label
-    } = this.props;
-    className = `checkbox ${className}`;
-    if (disabled) {
-      className += ' disabled';
-    }
-    if (value) {
-      className += ' checked';
-    }
-    let icon = 'square-o';
-    if (radio) {
-      if (value) {
-        icon = 'check-circle';
-      } else {
-        icon = 'circle-o';
-      }
-    } else if (value) {
-      icon = 'check-square';
-    } else {
-      // icon = 'square-o';
-    }
-    return (
-      <label className={className} onClick={disabled ? null : this.handleChange}>
-        <Icon name={icon} />
-        {label}
-      </label>
-    );
+  if (disabled) {
+    className += ' disabled';
   }
+  if (value) {
+    className += ' checked';
+  }
+
+  let icon = 'square-o';
+  if (radio) {
+    if (value) {
+      icon = 'checkbox-square';
+    } else {
+      icon = 'checkbox-square-blank';
+    }
+  } else {
+    if (value) {
+      icon = 'checkbox';
+    } else {
+      icon = 'checkbox-blank';
+    }
+  }
+
+  function handleChange() {
+    onChange(!value);
+  }
+
+  return (
+    <label className={className} onClick={(disabled || !onChange) ? null : handleChange}>
+      <Icon name={icon} />
+      {label}
+    </label>
+  );
 }
