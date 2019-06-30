@@ -22,6 +22,8 @@ interface State {
   sort?: string;
   query?: any;
   contextValue?: PageContextValue;
+  active?: boolean;
+  last?: boolean;
 }
 
 export const context = React.createContext({});
@@ -59,7 +61,9 @@ export class OriginalDynamicPage extends React.Component<OriginalDynamicPageProp
   static getDerivedStateFromProps(nextProps: OriginalDynamicPageProps, preState: State): State {
     const { pageRecord, details, lists, layouts, match } = nextProps;
     let nextState: State = {
-      id: match.params.id
+      id: match.params.id,
+      active: nextProps.active,
+      last: nextProps.last,
     };
 
     let query = qs.parse(location.search.substr(1));

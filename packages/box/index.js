@@ -467,7 +467,7 @@ class Box extends React.Component {
         this.lastScrollTop = data.scrollTop;
     }
     render() {
-        let _a = this.props, { id, children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg, flex, scrollable, layout, activeItem, animation, addonAfter, addonBefore, previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement, nativeScroll, onPullRefresh, pullRefreshTexts, onBodyScroll, reachBottomBorder, onReachBottom } = _a, others = __rest(_a, ["id", "children", "className", "bodyClassName", "style", "bodyStyle", "elRef", "bodyRef", "width", "height", "bg", "flex", "scrollable", "layout", "activeItem", "animation", "addonAfter", "addonBefore", "previous", "last", "active", "wrapper", "wrapperProps", "onResize", "dock", "dockPlacement", "nativeScroll", "onPullRefresh", "pullRefreshTexts", "onBodyScroll", "reachBottomBorder", "onReachBottom"]);
+        let _a = this.props, { id, children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg, flex, scrollable, layout, activeItem, animation, addonAfter, addonBefore, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement, nativeScroll, onPullRefresh, pullRefreshTexts, onBodyScroll, reachBottomBorder, onReachBottom } = _a, others = __rest(_a, ["id", "children", "className", "bodyClassName", "style", "bodyStyle", "elRef", "bodyRef", "width", "height", "bg", "flex", "scrollable", "layout", "activeItem", "animation", "addonAfter", "addonBefore", "last", "active", "wrapper", "wrapperProps", "onResize", "dock", "dockPlacement", "nativeScroll", "onPullRefresh", "pullRefreshTexts", "onBodyScroll", "reachBottomBorder", "onReachBottom"]);
         let { pullStatus } = this.state;
         style = style ? Object.assign({}, style) : {};
         if (typeof height === 'string' && /^\d+$/.test(height)) {
@@ -555,7 +555,6 @@ class Box extends React.Component {
         }
         let el = (React.createElement("div", Object.assign({ id: id || this.id, ref: this.handleRef, className: classnames('s-component', 's-box', className, dockClassName, {
                 's-flex': !!flex,
-                's-previous': previous,
                 's-last': last,
                 's-active': active,
             }), style: style }, others),

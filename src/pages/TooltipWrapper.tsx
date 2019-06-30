@@ -12,7 +12,6 @@ export default class TooltipWrapperPage extends React.Component<RouteComponentPr
       <Page
         className="tooltip-page"
         scrollable="vertical"
-        previous={this.props.previous}
         last={this.props.last}
         active={this.props.active}
       >

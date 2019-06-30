@@ -8,56 +8,94 @@ function random() {
 function computeRootMatch(pathname) {
     return { path: '/', url: '/', params: {}, isExact: pathname === '/' };
 }
+function isLocationEq(a, b) {
+    return a.pathname === b.pathname && a.search === b.search && a.hash === b.hash;
+}
 class Router extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = (location, action) => {
-            const { history } = this.props;
             if (!location.key) {
                 location.key = random();
             }
-            if (this._isMounted) {
-                let entries = this.state.entries;
-                let type = 'PUSH';
-                if (action === 'REPLACE') {
-                    type = 'REPLACE';
-                }
-                else if (entries.length > 1 && action === 'POP') {
-                    if (history.length < 50) {
-                        if (history.length === this.state.length) {
-                            type = 'POP';
-                        }
-                    }
-                    else if (entries[entries.length - 2].pathname === location.pathname) {
-                        type = 'POP';
-                    }
-                }
-                if (type === 'POP') {
-                    entries.pop();
-                }
-                else if (type === 'PUSH') {
-                    entries = entries.concat(location);
-                }
-                else {
-                    entries[entries.length - 1] = location;
-                }
-                this.setState({
-                    action: type,
-                    length: history.length,
-                    entries,
-                    location,
-                    last: this.state.location
-                });
+            if (!this._isMounted) {
+                this._pendingLocation = location;
+                return;
+            }
+            const { history } = this.props;
+            let locationStack = this.state.locationStack;
+            let { allLocationList, index, location: lastLocation } = this.state;
+            let direction;
+            if (action === 'REPLACE') {
+                direction = 'replace';
+                allLocationList[index] = location;
+                allLocationList.splice(index, 1000, location);
+            }
+            else if (action === 'PUSH') {
+                direction = 'forward';
+                allLocationList.push(location);
+                index = allLocationList.length - 1;
+                locationStack = locationStack.concat(location);
             }
             else {
-                this._pendingLocation = location;
+                let previous = locationStack[locationStack.length - 2];
+                if (previous && isLocationEq(previous, location)) {
+                    direction = 'backward';
+                    index -= 1;
+                    locationStack.pop();
+                    location = locationStack[locationStack.length - 1];
+                    history.location = location;
+                }
+                let next = allLocationList[index + 1];
+                if (!direction && next && isLocationEq(next, location)) {
+                    direction = 'forward';
+                    index += 1;
+                    locationStack.push(next);
+                    location = next;
+                    history.location = location;
+                }
+                if (!direction && index >= 1) {
+                    for (let i = index - 1; i >= 0; i -= 1) {
+                        let loc = allLocationList[i];
+                        if (isLocationEq(loc, location)) {
+                            direction = 'backward';
+                            index = i;
+                            let stackIndex = locationStack.indexOf(loc);
+                            if (stackIndex > -1) {
+                                locationStack.splice(stackIndex + 1);
+                            }
+                            else {
+                                if (locationStack.length > 1) {
+                                    locationStack.pop();
+                                    location = locationStack[locationStack.length - 1];
+                                    history.location = location;
+                                }
+                                else {
+                                    return;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+                if (!direction) {
+                    direction = 'forward';
+                    locationStack.splice(index + 1, 1000, location);
+                    locationStack = locationStack.concat(location);
+                }
             }
+            this.setState({
+                direction,
+                index,
+                locationStack,
+                location,
+                lastLocation
+            });
         };
-        this.freeEntries = (list) => {
-            let { entries } = this.state;
-            let keys = list.map((entry) => (typeof entry === 'string' ? entry : entry.key));
-            entries = entries.filter((entry) => keys.indexOf(entry.key) === -1);
-            this.setState({ entries });
+        this.freeLocations = (keys) => {
+            let { locationStack } = this.state;
+            locationStack = locationStack.filter((loc) => keys.indexOf(loc.key) === -1);
+            this.setState({ locationStack });
         };
         let history = props.history;
         let location = history.location;
@@ -65,11 +103,12 @@ class Router extends React.Component {
             location.key = random();
         }
         this.state = {
-            action: 'PUSH',
-            length: history.length,
+            direction: 'replace',
+            index: 0,
+            allLocationList: [location],
             location,
-            entries: [location],
-            last: null
+            locationStack: [location],
+            lastLocation: null
         };
         this._isMounted = false;
         this._pendingLocation = null;
@@ -80,7 +119,11 @@ class Router extends React.Component {
     componentDidMount() {
         this._isMounted = true;
         if (this._pendingLocation) {
-            this.setState({ location: this._pendingLocation, entries: [this._pendingLocation] });
+            this.setState({
+                location: this._pendingLocation,
+                locationStack: [this._pendingLocation],
+                allLocationList: [this._pendingLocation],
+            });
         }
     }
     componentWillUnmount() {
@@ -89,15 +132,15 @@ class Router extends React.Component {
     }
     render() {
         return (React.createElement(RouterContext_1.default.Provider, { value: {
-                action: this.state.action,
-                freeEntries: this.freeEntries,
+                direction: this.state.direction,
+                freeLocations: this.freeLocations,
                 history: this.props.history,
-                globalEntries: this.state.entries,
-                globalLast: this.state.last,
+                globalLocationStack: this.state.locationStack,
+                globalLastLocation: this.state.lastLocation,
                 globalLocation: this.state.location,
-                entries: this.state.entries,
-                last: this.state.last,
+                locationStack: this.state.locationStack,
                 location: this.state.location,
+                lastLocation: this.state.lastLocation,
                 match: computeRootMatch(this.state.location.pathname)
             } }, this.props.children || null));
     }

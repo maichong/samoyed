@@ -11,16 +11,48 @@ export interface Match<Params extends { [K in keyof Params]?: string } = {}> {
   url: string;
 }
 
+export type RouterDirection = 'replace' | 'backward' | 'forward';
+
 export interface RouterChildContext<Params extends { [K in keyof Params]?: string } = {}, C extends StaticContext = StaticContext> {
-  freeEntries: (list: Array<H.Location | H.LocationKey>) => void;
-  action: H.Action;
+  /**
+   * 释放位置列表
+   */
+  freeLocations: (list: Array<H.LocationKey>) => void;
+  /**
+   * 当前路由跳转方向
+   */
+  direction: RouterDirection;
+  /**
+   * 历史记录对象
+   */
   history: H.History;
-  globalEntries: H.Location[];
-  globalLast?: H.Location;
+  /**
+   * 全局位置列表
+   */
+  globalLocationStack: H.Location[];
+  /**
+   * 全局上个位置
+   */
+  globalLastLocation?: H.Location;
+  /**
+   * 全局当前位置
+   */
   globalLocation: H.Location;
-  entries: H.Location[];
-  last?: H.Location;
+  /**
+   * 位置列表，当有多级Switch情况下，locationStack中只保留当前Switch所管理的位置列表
+   */
+  locationStack: H.Location[];
+  /**
+   * 上个位置
+   */
+  lastLocation?: H.Location | null;
+  /**
+   * 当前位置，当有多级Switch情况下，location是当前Switch中所管理的位置，如果当前Switch是激活状态，则与globalLocation相同
+   */
   location: H.Location;
+  /**
+   * 当前路由匹配参数
+   */
   match: Match<Params>;
   staticContext?: C;
 }
@@ -38,7 +70,6 @@ export interface RouteComponentProps<Params extends { [K in keyof Params]?: stri
    * 路由信息
    */
   router: RouterChildContext<Params, S>;
-  previous?: boolean;
   last?: boolean;
   active?: boolean;
 }
@@ -55,6 +86,10 @@ export interface StaticRouterContext extends StaticContext {
 
 export interface RouterProps {
   history: H.History;
+  // /**
+  //  * 浏览器无前进按钮，微信浏览器或手机App中，此项目
+  //  */
+  // noForwardButton?: boolean;
   staticContext?: StaticContext;
 }
 
@@ -71,7 +106,6 @@ export class StaticRouter extends React.Component<StaticRouterProps> {
 }
 
 export interface RouteProps {
-  location?: H.Location;
   component?: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
   render?: ((props: RouteComponentProps<any>) => React.ReactNode);
   children?: ((props: RouteComponentProps<any>) => React.ReactNode) | React.ReactNode;
@@ -88,11 +122,18 @@ export interface RouteProps {
    * A2 -> C1 -> A3
    */
   historyLimit?: number;
-  entries?: H.Location[];
   /**
    * @private
    */
-  previous?: boolean;
+  locationStack?: H.Location[];
+  /**
+   * @private
+   */
+  lastLocation?: H.Location | null;
+  /**
+   * @private
+   */
+  location?: H.Location;
   /**
    * @private
    */
@@ -140,7 +181,6 @@ export class Prompt extends React.Component<PromptProps> {
 export interface RedirectProps {
   to: H.LocationDescriptor;
   push?: boolean;
-  from?: string;
   path?: string;
   exact?: boolean;
   strict?: boolean;

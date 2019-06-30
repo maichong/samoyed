@@ -33,7 +33,6 @@ export default class PanelPage extends React.Component<RouteComponentProps, Stat
       <Page
         className="panel-page"
         scrollable="vertical"
-        previous={this.props.previous}
         last={this.props.last}
         active={this.props.active}
       >

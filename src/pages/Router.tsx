@@ -9,7 +9,6 @@ import { docco } from 'react-syntax-highlighter/dist/styles/hljs';
 function Page1(props: any) {
   return (
     <Box
-      previous={props.previous}
       last={props.last}
       active={props.active}
       className="bg-info"
@@ -20,7 +19,6 @@ function Page1(props: any) {
 function Page2(props: any) {
   return (
     <Box
-      previous={props.previous}
       last={props.last}
       active={props.active}
       className="bg-warning"
@@ -31,7 +29,6 @@ function Page2(props: any) {
 function Page3(props: any) {
   return (
     <Box
-      previous={props.previous}
       last={props.last}
       active={props.active}
       className="bg-success"
@@ -45,7 +42,6 @@ export default class RouterPage extends React.Component<RouteComponentProps> {
     return (
       <Page
         className="router-page"
-        previous={this.props.previous}
         last={this.props.last}
         active={this.props.active}
       >

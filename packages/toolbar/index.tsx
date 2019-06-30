@@ -41,7 +41,7 @@ export default function Toolbar(props: ToolbarProps) {
 
     let colorCls = tool.color ? `text-${tool.color}` : '';
     let el = <div
-      key={list.length}
+      key={index}
       onClick={tool.disabled ? null : tool.onClick}
       className={classnames('s-tool', colorCls, {
         's-has-icon': tool.icon,
@@ -54,7 +54,7 @@ export default function Toolbar(props: ToolbarProps) {
       {tool.text && (React.isValidElement(tool.text) ? tool.text : <span className="s-text">{tool.text}</span>)}
     </div>;
     if (tool.tooltip) {
-      el = <TooltipWrapper placement="bottom" tooltip={tool.tooltip}>{el}</TooltipWrapper>;
+      el = <TooltipWrapper key={index} placement="bottom" tooltip={tool.tooltip}>{el}</TooltipWrapper>;
     }
     list.push(el);
   });

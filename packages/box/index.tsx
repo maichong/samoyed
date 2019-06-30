@@ -558,7 +558,7 @@ export default class Box extends React.Component<BoxProps, State> {
     let {
       id, children, className, bodyClassName, style, bodyStyle, elRef, bodyRef, width, height, bg,
       flex, scrollable, layout, activeItem, animation, addonAfter, addonBefore,
-      previous, last, active, wrapper, wrapperProps, onResize, dock, dockPlacement,
+      last, active, wrapper, wrapperProps, onResize, dock, dockPlacement,
       nativeScroll, onPullRefresh, pullRefreshTexts,
       onBodyScroll, reachBottomBorder, onReachBottom, ...others
     } = this.props;
@@ -682,7 +682,6 @@ export default class Box extends React.Component<BoxProps, State> {
           dockClassName,
           {
             's-flex': !!flex,
-            's-previous': previous,
             's-last': last,
             's-active': active,
           }

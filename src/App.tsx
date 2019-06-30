@@ -40,7 +40,7 @@ export default function App() {
             >Router</NavLink>
           </Box>}
         >
-          <Switch animation={{ type: 'slide' }}>
+          <Switch animation={{ type: 'slide', duration: 1000 }}>
             {
               _.map(pages, (C, key) => (<Route
                 key={key}

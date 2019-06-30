@@ -8,7 +8,7 @@ function isEmptyChildren(children: any) {
 }
 
 export default function Route(props: RouteProps) {
-  let { children, component, render, entries, last, previous, active } = props;
+  let { children, component, render, locationStack, lastLocation, last, active } = props;
   let context = React.useContext(RouterContext);
   const location = props.location || context.location;
 
@@ -24,7 +24,8 @@ export default function Route(props: RouteProps) {
     ...context,
     location,
     match,
-    entries: entries || context.entries
+    locationStack: locationStack || context.locationStack,
+    lastLocation: lastLocation || context.lastLocation,
   };
   const childProps: RouteComponentProps = {
     history: context.history,
@@ -32,7 +33,6 @@ export default function Route(props: RouteProps) {
     match,
     active,
     last,
-    previous,
     router: childContext
   };
 

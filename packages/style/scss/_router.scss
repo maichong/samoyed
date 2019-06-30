@@ -4,9 +4,4 @@
   >div {
     @extend .s-full;
   }
-
-  >.s-previous,
-  >.s-last {
-    display: flex;
-  }
 }

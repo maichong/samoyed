@@ -40,7 +40,7 @@ function Toolbar(props) {
         }
         let list = tool.placement === 'left' ? leftTools : rightTools;
         let colorCls = tool.color ? `text-${tool.color}` : '';
-        let el = React.createElement("div", { key: list.length, onClick: tool.disabled ? null : tool.onClick, className: classnames('s-tool', colorCls, {
+        let el = React.createElement("div", { key: index, onClick: tool.disabled ? null : tool.onClick, className: classnames('s-tool', colorCls, {
                 's-has-icon': tool.icon,
                 's-has-text': tool.text,
                 's-disabled': tool.disabled,
@@ -49,7 +49,7 @@ function Toolbar(props) {
             tool.icon && React.createElement(icon_1.default, { name: tool.icon }),
             tool.text && (React.isValidElement(tool.text) ? tool.text : React.createElement("span", { className: "s-text" }, tool.text)));
         if (tool.tooltip) {
-            el = React.createElement(tooltip_wrapper_1.default, { placement: "bottom", tooltip: tool.tooltip }, el);
+            el = React.createElement(tooltip_wrapper_1.default, { key: index, placement: "bottom", tooltip: tool.tooltip }, el);
         }
         list.push(el);
     });

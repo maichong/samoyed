@@ -8,6 +8,9 @@ import '../scss/index.scss';
 
 const history = H.createHashHistory();
 
+// @ts-ignore
+window.h = history;
+
 app.init();
 app.history = history;
 

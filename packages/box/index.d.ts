@@ -117,10 +117,6 @@ export interface BoxProps extends React.HTMLAttributes<Element> {
    */
   active?: boolean;
   /**
-   * 是否为前一个激活Box，如果为true，则自动添加 s-previous 样式类，用于过度动画
-   */
-  previous?: boolean;
-  /**
    * 是否为上一个激活Box，如果为true，则自动添加 s-last 样式类，用于过度动画
    */
   last?: boolean;

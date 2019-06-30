@@ -24,7 +24,6 @@ export default class SelectPage extends React.Component<RouteComponentProps, Sta
       <Page
         className="model-page"
         scrollable="vertical"
-        previous={this.props.previous}
         last={this.props.last}
         active={this.props.active}
       >

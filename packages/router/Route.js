@@ -7,7 +7,7 @@ function isEmptyChildren(children) {
     return React.Children.count(children) === 0;
 }
 function Route(props) {
-    let { children, component, render, entries, last, previous, active } = props;
+    let { children, component, render, locationStack, lastLocation, last, active } = props;
     let context = React.useContext(RouterContext_1.default);
     const location = props.location || context.location;
     if (Array.isArray(children) && children.length === 0) {
@@ -15,14 +15,13 @@ function Route(props) {
     }
     const match = props.computedMatch || (props.path ? matchPath_1.default(location.pathname, props) : context.match);
     const childContext = Object.assign({}, context, { location,
-        match, entries: entries || context.entries });
+        match, locationStack: locationStack || context.locationStack, lastLocation: lastLocation || context.lastLocation });
     const childProps = {
         history: context.history,
         location,
         match,
         active,
         last,
-        previous,
         router: childContext
     };
     if (typeof children === 'function') {

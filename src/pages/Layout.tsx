@@ -40,7 +40,6 @@ export default class CheckboxPage extends React.Component<RouteComponentProps, S
       <Page
         className="layout-page"
         scrollable="vertical"
-        previous={this.props.previous}
         last={this.props.last}
         active={this.props.active}
       >

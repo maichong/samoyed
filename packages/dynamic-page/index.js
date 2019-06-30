@@ -58,7 +58,9 @@ class OriginalDynamicPage extends React.Component {
     static getDerivedStateFromProps(nextProps, preState) {
         const { pageRecord, details, lists, layouts, match } = nextProps;
         let nextState = {
-            id: match.params.id
+            id: match.params.id,
+            active: nextProps.active,
+            last: nextProps.last,
         };
         let query = qs.parse(location.search.substr(1));
         if (!_.isEqual(query, preState.query)) {

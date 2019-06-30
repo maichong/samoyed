@@ -12,7 +12,6 @@ export default class CheckboxPage extends React.Component<RouteComponentProps> {
       <Page
         className="checkbox-page"
         scrollable="vertical"
-        previous={this.props.previous}
         last={this.props.last}
         active={this.props.active}
         onPullRefresh={(cb: Function) => {

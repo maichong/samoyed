@@ -38,7 +38,6 @@ export default class BoxPage extends React.Component<RouteComponentProps, State>
       <Page
         className="box-page"
         scrollable="vertical"
-        previous={this.props.previous}
         last={this.props.last}
         active={this.props.active}
         onPullRefresh={(cb: Function) => {

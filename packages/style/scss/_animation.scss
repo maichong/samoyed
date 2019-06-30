@@ -1,5 +1,5 @@
 @mixin animation-duration($time) {
-  &.s-active.s-duration-#{$time} {
+  &.s-running.s-duration-#{$time} {
 
     >.s-active,
     >.s-last {
@@ -12,13 +12,13 @@
 
   /* 正在进行动画时，上个页面可见 */
   &.s-start,
-  &.s-active {
+  &.s-running {
     >.s-last {
       display: flex;
     }
   }
 
-  &.s-active {
+  &.s-running {
 
     >.s-active,
     >.s-last {
@@ -71,7 +71,7 @@
 /* Cover效果 */
 
 .s-animation.s-cover.s-horizontal {
-  &.s-active {
+  &.s-running {
 
     >.s-active,
     >.s-last {
@@ -89,7 +89,7 @@
   }
 
   /* 新页面开始滑入 */
-  &.s-forward.s-active {
+  &.s-forward.s-running {
     >.s-active {
       transform: translate(0, 0);
     }
@@ -103,7 +103,7 @@
 
   /* 返回上一页，滑动效果 */
   /* 老页面开始滑出 */
-  &.s-backward.s-active {
+  &.s-backward.s-running {
     >.s-last {
       transform: translate(100%, 0);
     }
@@ -111,7 +111,7 @@
 }
 
 .s-animation.s-cover.s-vertical {
-  &.s-active {
+  &.s-running {
 
     >.s-active,
     >.s-last {
@@ -129,7 +129,7 @@
   }
 
   /* 新页面开始滑入 */
-  &.s-forward.s-active {
+  &.s-forward.s-running {
     >.s-active {
       transform: translate(0, 0);
     }
@@ -143,7 +143,7 @@
 
   /* 返回上一页，滑动效果 */
   /* 老页面开始滑出 */
-  &.s-backward.s-active {
+  &.s-backward.s-running {
     >.s-last {
       transform: translate(0, 100%);
     }
@@ -153,7 +153,7 @@
 /* Cover Fade效果 */
 
 .s-animation.s-cover-fade.s-horizontal {
-  &.s-active {
+  &.s-running {
 
     >.s-active,
     >.s-last {
@@ -172,7 +172,7 @@
   }
 
   /* 新页面开始滑入 */
-  &.s-forward.s-active {
+  &.s-forward.s-running {
     >.s-active {
       transform: translate(0, 0);
       opacity: 1;
@@ -188,7 +188,7 @@
 
   /* 返回上一页，滑动效果 */
   /* 老页面开始滑出 */
-  &.s-backward.s-active {
+  &.s-backward.s-running {
     >.s-last {
       transform: translate(40%, 0);
       opacity: 0;
@@ -197,7 +197,7 @@
 }
 
 .s-animation.s-cover-fade.s-vertical {
-  &.s-active {
+  &.s-running {
 
     >.s-active,
     >.s-last {
@@ -216,7 +216,7 @@
   }
 
   /* 新页面开始滑入 */
-  &.s-forward.s-active {
+  &.s-forward.s-running {
     >.s-active {
       transform: translate(0, 0);
       opacity: 1;
@@ -232,7 +232,7 @@
 
   /* 返回上一页，滑动效果 */
   /* 老页面开始滑出 */
-  &.s-backward.s-active {
+  &.s-backward.s-running {
     >.s-last {
       transform: translate(0, 40%);
       opacity: 0;
@@ -243,7 +243,7 @@
 /* Fade效果 */
 
 .s-animation.s-fade {
-  &.s-active {
+  &.s-running {
 
     >.s-active,
     >.s-last {
@@ -261,7 +261,7 @@
   }
 
   /* 新页面开始载入 */
-  &.s-forward.s-active {
+  &.s-forward.s-running {
     >.s-active {
       opacity: 1;
     }
@@ -275,7 +275,7 @@
 
   /* 返回上一页，滑动效果 */
   /* 老页面开始滑出 */
-  &.s-backward.s-active {
+  &.s-backward.s-running {
     >.s-last {
       opacity: 0;
     }
@@ -285,7 +285,7 @@
 /* Slide 效果 */
 
 .s-animation.s-slide.s-horizontal {
-  &.s-active {
+  &.s-running {
 
     >.s-active,
     >.s-last {
@@ -307,7 +307,7 @@
   }
 
   /* 新页面开始滑入 */
-  &.s-forward.s-active {
+  &.s-forward.s-running {
     >.s-active {
       transform: translate(0, 0);
     }
@@ -335,7 +335,7 @@
   }
 
   /* 老页面开始滑出 */
-  &.s-backward.s-active {
+  &.s-backward.s-running {
     >.s-active {
       transform: translate(0, 0);
     }
@@ -347,7 +347,7 @@
 }
 
 .s-animation.s-slide.s-vertical {
-  &.s-active {
+  &.s-running {
 
     >.s-active,
     >.s-last {
@@ -369,7 +369,7 @@
   }
 
   /* 新页面开始滑入 */
-  &.s-forward.s-active {
+  &.s-forward.s-running {
     >.s-active {
       transform: translate(0, 0);
     }
@@ -397,7 +397,7 @@
   }
 
   /* 老页面开始滑出 */
-  &.s-backward.s-active {
+  &.s-backward.s-running {
     >.s-active {
       transform: translate(0, 0);
     }

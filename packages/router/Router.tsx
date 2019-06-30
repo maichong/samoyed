@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as H from 'history';
 import RouterContext from './RouterContext';
-import { RouterProps } from '.';
+import { RouterProps, RouterDirection } from '.';
 
 function random() {
   return Math.random().toString().substr(2);
@@ -11,12 +11,17 @@ function computeRootMatch(pathname: string) {
   return { path: '/', url: '/', params: {}, isExact: pathname === '/' };
 }
 
+function isLocationEq(a: H.Location, b: H.Location) {
+  return a.pathname === b.pathname && a.search === b.search && a.hash === b.hash;
+}
+
 interface State {
-  action: H.Action;
-  entries: H.Location[];
+  direction: 'replace' | 'backward' | 'forward';
+  index: number;
+  allLocationList: H.Location[];
+  locationStack: H.Location[];
   location: H.Location;
-  last?: H.Location;
-  length: number;
+  lastLocation?: H.Location;
 }
 
 export default class Router extends React.Component<RouterProps, State> {
@@ -34,11 +39,12 @@ export default class Router extends React.Component<RouterProps, State> {
     }
 
     this.state = {
-      action: 'PUSH',
-      length: history.length,
+      direction: 'replace',
+      index: 0,
+      allLocationList: [location],
       location,
-      entries: [location],
-      last: null
+      locationStack: [location],
+      lastLocation: null
     };
 
     // This is a bit of a hack. We have to start listening for location
@@ -58,7 +64,11 @@ export default class Router extends React.Component<RouterProps, State> {
     this._isMounted = true;
 
     if (this._pendingLocation) {
-      this.setState({ location: this._pendingLocation, entries: [this._pendingLocation] });
+      this.setState({
+        location: this._pendingLocation,
+        locationStack: [this._pendingLocation],
+        allLocationList: [this._pendingLocation],
+      });
     }
   }
 
@@ -67,67 +77,120 @@ export default class Router extends React.Component<RouterProps, State> {
   }
 
   handleChange = (location: H.Location, action: H.Action) => {
-    const { history } = this.props;
     if (!location.key) {
       location.key = random();
     }
-    // console.log(action, history.length, location, this._isMounted);
-    if (this._isMounted) {
-      let entries = this.state.entries;
-      let type: H.Action = 'PUSH';
-      if (action === 'REPLACE') {
-        type = 'REPLACE';
-      } else if (entries.length > 1 && action === 'POP') {
-        if (history.length < 50) {
-          if (history.length === this.state.length) {
-            type = 'POP';
+
+    if (!this._isMounted) {
+      this._pendingLocation = location;
+      return;
+    }
+
+    const { history } = this.props;
+    // console.log(action, location.key, location, history.length);
+
+    let locationStack = this.state.locationStack;
+    let { allLocationList, index, location: lastLocation } = this.state;
+    let direction: RouterDirection;
+
+    if (action === 'REPLACE') {
+      direction = 'replace';
+      allLocationList[index] = location;
+      allLocationList.splice(index, 1000, location);
+    } else if (action === 'PUSH') {
+      direction = 'forward';
+      allLocationList.push(location);
+      index = allLocationList.length - 1;
+      locationStack = locationStack.concat(location);
+    } else {
+      // POP
+      // 检查是不是 返回事件
+      let previous = locationStack[locationStack.length - 2];
+      if (previous && isLocationEq(previous, location)) {
+        direction = 'backward';
+        index -= 1;
+        locationStack.pop();
+        location = locationStack[locationStack.length - 1];
+        history.location = location;
+      }
+
+      // 检查是不是 前进事件
+      let next = allLocationList[index + 1];
+      if (!direction && next && isLocationEq(next, location)) {
+        direction = 'forward';
+        index += 1;
+        locationStack.push(next);
+        location = next;
+        history.location = location;
+      }
+
+      // 检查是不是 go(-n)
+      if (!direction && index >= 1) {
+        for (let i = index - 1; i >= 0; i -= 1) {
+          let loc = allLocationList[i];
+          if (isLocationEq(loc, location)) {
+            direction = 'backward';
+            index = i;
+            let stackIndex = locationStack.indexOf(loc);
+            if (stackIndex > -1) {
+              // 在stack中
+              locationStack.splice(stackIndex + 1);
+            } else {
+              // 不在stack中，说明已经被回收
+              if (locationStack.length > 1) {
+                // TODO: 计算真正需要退回的数量
+                locationStack.pop();
+                location = locationStack[locationStack.length - 1];
+                history.location = location;
+              } else {
+                // 已是初始页
+                return;
+              }
+            }
+            break;
           }
-        } else if (entries[entries.length - 2].pathname === location.pathname) {
-          type = 'POP';
         }
       }
-      if (type === 'POP') {
-        entries.pop();
-      } else if (type === 'PUSH') {
-        entries = entries.concat(location);
-      } else {
-        // replace
-        entries[entries.length - 1] = location;
+
+      if (!direction) {
+        // 默认为 跳转新地址
+        direction = 'forward';
+        locationStack.splice(index + 1, 1000, location);
+        locationStack = locationStack.concat(location);
       }
-      // console.log(...entries);
-      this.setState({
-        action: type,
-        length: history.length,
-        entries,
-        location,
-        last: this.state.location
-      });
-    } else {
-      this._pendingLocation = location;
     }
+
+    // console.log('after', direction, ...locationStack);
+    // console.log('location', location);
+    this.setState({
+      direction,
+      index,
+      locationStack,
+      location,
+      lastLocation
+    });
   };
 
-  freeEntries = (list: Array<H.Location | H.LocationKey>) => {
-    let { entries } = this.state;
-    let keys: H.LocationKey[] = list.map((entry: H.Location | H.LocationKey) => (typeof entry === 'string' ? entry : entry.key));
-    entries = entries.filter((entry) => keys.indexOf(entry.key) === -1);
-    // console.log('after free', ...entries);
-    this.setState({ entries });
+  freeLocations = (keys: Array<H.LocationKey>) => {
+    let { locationStack } = this.state;
+    locationStack = locationStack.filter((loc) => keys.indexOf(loc.key) === -1);
+    this.setState({ locationStack });
+    // console.log('after free locations', locationStack);
   };
 
   render() {
     return (
       <RouterContext.Provider
         value={{
-          action: this.state.action,
-          freeEntries: this.freeEntries,
+          direction: this.state.direction,
+          freeLocations: this.freeLocations,
           history: this.props.history,
-          globalEntries: this.state.entries,
-          globalLast: this.state.last,
+          globalLocationStack: this.state.locationStack,
+          globalLastLocation: this.state.lastLocation,
           globalLocation: this.state.location,
-          entries: this.state.entries,
-          last: this.state.last,
+          locationStack: this.state.locationStack,
           location: this.state.location,
+          lastLocation: this.state.lastLocation,
           match: computeRootMatch(this.state.location.pathname)
         }}
       >{this.props.children || null}</RouterContext.Provider>

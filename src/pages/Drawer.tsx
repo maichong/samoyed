@@ -29,7 +29,6 @@ export default class DrawerPage extends React.Component<RouteComponentProps, Sta
       <Page
         className="drawer-page"
         layout="fit"
-        previous={this.props.previous}
         last={this.props.last}
         active={this.props.active}
       >
