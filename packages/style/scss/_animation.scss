@@ -11,18 +11,13 @@
 .s-animation {
 
   /* 正在进行动画时，上个页面可见 */
-  &.s-start,
-  &.s-running {
-    >.s-last {
-      display: flex;
-    }
-  }
-
   &.s-running {
 
     >.s-active,
     >.s-last {
       transition-duration: .3s;
+      transition-property: transform, opacity;
+      transition-timing-function: linear;
     }
   }
 
@@ -71,13 +66,6 @@
 /* Cover效果 */
 
 .s-animation.s-cover.s-horizontal {
-  &.s-running {
-
-    >.s-active,
-    >.s-last {
-      transition-property: transform;
-    }
-  }
 
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
@@ -111,13 +99,6 @@
 }
 
 .s-animation.s-cover.s-vertical {
-  &.s-running {
-
-    >.s-active,
-    >.s-last {
-      transition-property: transform;
-    }
-  }
 
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
@@ -153,13 +134,6 @@
 /* Cover Fade效果 */
 
 .s-animation.s-cover-fade.s-horizontal {
-  &.s-running {
-
-    >.s-active,
-    >.s-last {
-      transition-property: transform, opacity;
-    }
-  }
 
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
@@ -197,13 +171,6 @@
 }
 
 .s-animation.s-cover-fade.s-vertical {
-  &.s-running {
-
-    >.s-active,
-    >.s-last {
-      transition-property: transform, opacity;
-    }
-  }
 
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
@@ -243,13 +210,6 @@
 /* Fade效果 */
 
 .s-animation.s-fade {
-  &.s-running {
-
-    >.s-active,
-    >.s-last {
-      transition-property: opacity;
-    }
-  }
 
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
@@ -285,13 +245,6 @@
 /* Slide 效果 */
 
 .s-animation.s-slide.s-horizontal {
-  &.s-running {
-
-    >.s-active,
-    >.s-last {
-      transition-property: transform;
-    }
-  }
 
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {
@@ -347,13 +300,6 @@
 }
 
 .s-animation.s-slide.s-vertical {
-  &.s-running {
-
-    >.s-active,
-    >.s-last {
-      transition-property: transform;
-    }
-  }
 
   /* 推入新页面，滑动效果 */
   &.s-forward.s-start {

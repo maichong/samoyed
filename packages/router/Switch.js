@@ -17,30 +17,29 @@ function getLocationRoute(location, routes) {
     }
     return {};
 }
-function Runner(obj, duration) {
-    let stage = 'start';
-    function updateStage() {
-        ['start', 'running', 'done'].forEach((s) => {
-            if (s !== stage && obj.elRef.classList.contains(`s-${s}`)) {
-                obj.elRef.classList.remove(`s-${s}`);
-            }
+function Runner(obj, duration, animationActive, classes) {
+    function updateStage(stage) {
+        obj.elRef.className = classnames('s-component s-router-switch', classes, {
+            [`s-${stage}`]: animationActive
         });
-        if (!obj.elRef.classList.contains(`s-${stage}`)) {
-            obj.elRef.classList.add(`s-${stage}`);
-        }
     }
     if (obj.elRef) {
-        updateStage();
+        updateStage('start');
+        if (!animationActive)
+            return;
     }
     let timer = setTimeout(() => {
-        stage = 'running';
-        updateStage();
-        updateStage();
+        updateStage('start');
+        if (!animationActive) {
+            return;
+        }
         timer = setTimeout(() => {
-            stage = 'done';
-            updateStage();
-            timer = 0;
-        }, duration || app_1.default.defaults.animationDuration);
+            updateStage('running');
+            timer = setTimeout(() => {
+                updateStage('done');
+                timer = 0;
+            }, duration || app_1.default.defaults.animationDuration);
+        }, 5);
     });
     return function clearup() {
         if (timer) {
@@ -68,16 +67,10 @@ class Switch extends React.Component {
         }
         const duration = animation.duration || app_1.default.defaults.switchAnimationDuration;
         return (React.createElement(RouterContext_1.default.Consumer, null, (context) => {
+            let animationActive = false;
             if (!context || !context.history)
                 throw new Error('You should not use <Switch> outside a <Router>');
             const { locationStack, location, direction } = context;
-            let lastLocation = this.lastLocation;
-            if (lastLocation && lastLocation.key === location.key) {
-                lastLocation = null;
-            }
-            if (!this.lastLocation || this.lastLocation.key !== location.key) {
-                this.lastLocation = location;
-            }
             const routes = [];
             React.Children.forEach(this.props.children, (child) => {
                 if (React.isValidElement(child)) {
@@ -90,24 +83,43 @@ class Switch extends React.Component {
                 console.error('No route found for location', location);
                 return null;
             }
+            let lastLocation = this.lastLocation;
             if (activeRoute.type === Redirect_1.default && location.key !== context.globalLocation.key) {
                 activeRoute = null;
             }
             if (activeRoute) {
                 let matcher = Object.assign({}, activeRoute.props, { path: activeRoute.props.path || '/' });
                 let childLoactionList = locationStack.filter((loc) => matchPath_1.default(loc.pathname, matcher));
+                if (matcher.exact) {
+                    if (lastLocation && lastLocation.key === location.key) {
+                        lastLocation = null;
+                    }
+                    if (!this.lastLocation || this.lastLocation.key !== location.key) {
+                        this.lastLocation = location;
+                        this.lastRoutePath = match.path;
+                    }
+                }
+                else {
+                    if (lastLocation && this.lastRoutePath === match.path) {
+                        lastLocation = null;
+                    }
+                    if (!this.lastLocation || this.lastRoutePath !== match.path) {
+                        this.lastLocation = location;
+                        this.lastRoutePath = match.path;
+                    }
+                }
                 children.push(React.cloneElement(activeRoute, {
-                    key: location.key,
+                    key: matcher.exact ? location.key : matcher.path,
                     active: true,
                     lastLocation,
                     location,
                     locationStack: childLoactionList,
                     computedMatch: match
                 }));
-                if (activeRoute.props.historyLimit && childLoactionList.length > activeRoute.props.historyLimit) {
+                if (matcher.historyLimit && childLoactionList.length > matcher.historyLimit) {
                     let needFree = [];
                     let startIndex = locationStack.indexOf(childLoactionList[0]);
-                    let endIndex = locationStack.indexOf(childLoactionList[childLoactionList.length - activeRoute.props.historyLimit]);
+                    let endIndex = locationStack.indexOf(childLoactionList[childLoactionList.length - matcher.historyLimit]);
                     for (let i = startIndex; i < endIndex; i += 1) {
                         needFree.push(locationStack[i].key);
                     }
@@ -122,7 +134,7 @@ class Switch extends React.Component {
                     let matcher = Object.assign({}, lastRoute.props, { path: lastRoute.props.path || '/' });
                     let childLoactionList = locationStack.filter((loc) => matchPath_1.default(loc.pathname, matcher));
                     children.push(React.cloneElement(lastRoute, {
-                        key: lastLocation.key,
+                        key: matcher.exact ? lastLocation.key : matcher.path,
                         last: true,
                         lastLocation: null,
                         location: lastLocation,
@@ -130,22 +142,25 @@ class Switch extends React.Component {
                         computedMatch: match
                     }));
                     this.animationLock = location.key;
-                    if (this.clear) {
-                        this.clear();
-                    }
-                    this.clear = Runner(this, duration);
+                    animationActive = true;
                 }
             }
-            return (React.createElement("div", { ref: this.handleRef, className: classnames('s-component s-router-switch', {
-                    's-animation': animation.type,
-                    's-vertical': animation.type && animation.direction === 'vertical',
-                    's-horizontal': animation.type && animation.direction !== 'vertical',
-                    's-forward': animation.type && direction === 'forward',
-                    's-backward': animation.type && direction === 'backward',
-                    's-start': animation.type,
-                    [`s-duration-${duration}`]: animation.type,
-                    [`s-${animation.type}`]: animation.type,
-                }) }, children));
+            if (this.clear) {
+                this.clear();
+            }
+            this.clear = Runner(this, duration, animationActive, {
+                's-animation': animation.type,
+                's-vertical': animation.type && animation.direction === 'vertical',
+                's-horizontal': animation.type && animation.direction !== 'vertical',
+                's-forward': animation.type && direction === 'forward',
+                's-backward': animation.type && direction === 'backward',
+                [`s-duration-${duration}`]: animation.type,
+                [`s-${animation.type}`]: animation.type,
+            });
+            if (this.elRef && !animationActive) {
+                this.elRef.classList.remove('s-animation');
+            }
+            return (React.createElement("div", { ref: this.handleRef }, children));
         }));
     }
 }
