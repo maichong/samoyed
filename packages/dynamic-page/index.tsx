@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as qs from 'qs';
 import * as EventEmitter from 'events';
+import * as H from 'history';
 import * as shallowEqualWithout from 'shallow-equal-without';
 import { connect } from 'react-redux';
 import app from '@samoyed/app';
@@ -22,6 +23,7 @@ interface State {
   sort?: string;
   query?: any;
   contextValue?: PageContextValue;
+  location?: H.Location;
   active?: boolean;
   last?: boolean;
 }
@@ -43,6 +45,7 @@ export class OriginalDynamicPage extends React.Component<OriginalDynamicPageProp
       limit: 0,
       sort: '',
       query: null,
+      location: null,
       contextValue: {
         scrollEvents: this.scrollEvents,
         pageTitle: '',
@@ -59,44 +62,49 @@ export class OriginalDynamicPage extends React.Component<OriginalDynamicPageProp
   }
 
   static getDerivedStateFromProps(nextProps: OriginalDynamicPageProps, preState: State): State {
-    const { pageRecord, details, lists, layouts, match } = nextProps;
+    const { pageRecord, details, lists, layouts, match, location } = nextProps;
     let nextState: State = {
       id: match.params.id,
       active: nextProps.active,
       last: nextProps.last,
     };
 
-    let query = qs.parse(location.search.substr(1));
-    if (!_.isEqual(query, preState.query)) {
-      nextState.query = query;
+    let query = preState.query;
+    let locationChanged = preState.location !== location;
+
+    if (locationChanged) {
+      nextState.location = location;
+      query = qs.parse(location.search.substr(1));
+      if (!preState.query || !_.isEqual(query, preState.query)) {
+        nextState.query = query;
+      }
     }
 
     if (pageRecord.type === 'detail') {
-      nextState.detail = _.get(details[pageRecord.source], match.params.id, null);
+      let records = details[pageRecord.source];
+      nextState = records ? (records[match.params.id] || null) : null;
     }
 
     if (pageRecord.type === 'list') {
-      nextState.sort = query._sort || '';
-      nextState.search = query._search || '';
-      nextState.limit = parseInt(query._limit) || app.defaults.listLimit;
-      let filters: any = {};
-      _.forEach(query, (v, k) => {
-        if (k[0] === '_') return;
-        filters[k] = v;
-      });
-      if (_.isEmpty(filters)) {
-        filters = null;
+      if (nextState.query) {
+        nextState.sort = query._sort || '';
+        nextState.search = query._search || '';
+        nextState.limit = parseInt(query._limit) || app.defaults.listLimit;
+        let filters: any = {};
+        for (let k in query) {
+          if (k[0] === '_') continue;
+          filters[k] = query[k];
+        }
+        if (!Object.keys(filters).length) {
+          filters = null;
+        }
+        if (_.isEqual(filters, preState.filters)) {
+          nextState.filters = preState.filters;
+        } else {
+          nextState.filters = filters;
+        }
       }
-      nextState.list = selectList(lists[pageRecord.source], {
-        search: nextState.search,
-        filters,
-        limit: nextState.limit,
-        sort: nextState.sort
-      });
-
-      if (!_.isEqual(filters, preState.filters)) {
-        nextState.filters = filters;
-      }
+      nextState.list = selectList(lists[pageRecord.source], nextState.query ? nextState : preState);
     }
 
     let detail = nextState.detail;

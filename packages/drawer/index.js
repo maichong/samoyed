@@ -210,8 +210,8 @@ class Drawer extends React.Component {
                 this.draggingDirection = draggingDirection;
             }
             this.lastPos = pos;
-            this.styles.contianer.transform = `translate(${containerPos.x}px, ${containerPos.y}px)`;
-            this.styles.drawer.transform = `translate(${drawerPos.x}px, ${drawerPos.y}px)`;
+            this.styles.contianer.transform = `translate3d(${containerPos.x}px, ${containerPos.y}px,0)`;
+            this.styles.drawer.transform = `translate3d(${drawerPos.x}px, ${drawerPos.y}px,0)`;
             this.styles.mask.display = 'block';
             this.styles.mask.opacity = maskOpacity;
             this.updateStyles();
@@ -279,8 +279,8 @@ class Drawer extends React.Component {
                         break;
                 }
             }
-            contianer.transform = `translate(${containerPos.x}, ${containerPos.y})`;
-            drawer.transform = `translate(${drawerPos.x}, ${drawerPos.y})`;
+            contianer.transform = `translate3d(${containerPos.x}, ${containerPos.y},0)`;
+            drawer.transform = `translate3d(${drawerPos.x}, ${drawerPos.y},0)`;
         }
         return { contianer, mask, drawer };
     }

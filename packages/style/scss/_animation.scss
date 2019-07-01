@@ -9,6 +9,14 @@
 }
 
 .s-animation {
+  backface-visibility: hidden;
+  perspective: none;
+
+  >.s-active,
+  >.s-last {
+    backface-visibility: hidden;
+    perspective: none;
+  }
 
   /* 正在进行动画时，上个页面可见 */
   &.s-running {
@@ -72,20 +80,20 @@
 
     /* 新页面初始情况下在外部 */
     >.s-active {
-      transform: translate(100%, 0);
+      transform: translate3d(100%, 0, 0);
     }
   }
 
   /* 新页面开始滑入 */
   &.s-forward.s-running {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
   }
 
   &.s-forward.s-done {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
   }
 
@@ -93,7 +101,7 @@
   /* 老页面开始滑出 */
   &.s-backward.s-running {
     >.s-last {
-      transform: translate(100%, 0);
+      transform: translate3d(100%, 0, 0);
     }
   }
 }
@@ -105,20 +113,20 @@
 
     /* 新页面初始情况下在外部 */
     >.s-active {
-      transform: translate(0, 100%);
+      transform: translate3d(0, 100%, 0);
     }
   }
 
   /* 新页面开始滑入 */
   &.s-forward.s-running {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
   }
 
   &.s-forward.s-done {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
   }
 
@@ -126,7 +134,7 @@
   /* 老页面开始滑出 */
   &.s-backward.s-running {
     >.s-last {
-      transform: translate(0, 100%);
+      transform: translate3d(0, 100%, 0);
     }
   }
 }
@@ -140,7 +148,7 @@
 
     /* 新页面初始情况下在外部 */
     >.s-active {
-      transform: translate(40%, 0);
+      transform: translate3d(40%, 0, 0);
       opacity: 0;
     }
   }
@@ -148,14 +156,14 @@
   /* 新页面开始滑入 */
   &.s-forward.s-running {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
       opacity: 1;
     }
   }
 
   &.s-forward.s-done {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
       opacity: 1;
     }
   }
@@ -164,7 +172,7 @@
   /* 老页面开始滑出 */
   &.s-backward.s-running {
     >.s-last {
-      transform: translate(40%, 0);
+      transform: translate3d(40%, 0, 0);
       opacity: 0;
     }
   }
@@ -177,7 +185,7 @@
 
     /* 新页面初始情况下在外部 */
     >.s-active {
-      transform: translate(0, 40%);
+      transform: translate3d(0, 40%, 0);
       opacity: 0;
     }
   }
@@ -185,14 +193,14 @@
   /* 新页面开始滑入 */
   &.s-forward.s-running {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
       opacity: 1;
     }
   }
 
   &.s-forward.s-done {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
       opacity: 1;
     }
   }
@@ -201,7 +209,7 @@
   /* 老页面开始滑出 */
   &.s-backward.s-running {
     >.s-last {
-      transform: translate(0, 40%);
+      transform: translate3d(0, 40%, 0);
       opacity: 0;
     }
   }
@@ -251,50 +259,50 @@
 
     /* 新页面初始情况下在外部 */
     >.s-active {
-      transform: translate(100%, 0);
+      transform: translate3d(100%, 0, 0);
     }
 
     >.s-last {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
   }
 
   /* 新页面开始滑入 */
   &.s-forward.s-running {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
 
     >.s-last {
-      transform: translate(-100%, 0);
+      transform: translate3d(-100%, 0, 0);
     }
   }
 
   &.s-forward.s-done {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
   }
 
   /* 返回上一页，滑动效果 */
   &.s-backward.s-start {
     >.s-active {
-      transform: translate(-100%, 0);
+      transform: translate3d(-100%, 0, 0);
     }
 
     >.s-last {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
   }
 
   /* 老页面开始滑出 */
   &.s-backward.s-running {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
 
     >.s-last {
-      transform: translate(100%, 0);
+      transform: translate3d(100%, 0, 0);
     }
   }
 }
@@ -306,50 +314,50 @@
 
     /* 新页面初始情况下在外部 */
     >.s-active {
-      transform: translate(0, 100%);
+      transform: translate3d(0, 100%, 0);
     }
 
     >.s-last {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
   }
 
   /* 新页面开始滑入 */
   &.s-forward.s-running {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
 
     >.s-last {
-      transform: translate(0, -100%);
+      transform: translate3d(0, -100%, 0);
     }
   }
 
   &.s-forward.s-done {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
   }
 
   /* 返回上一页，滑动效果 */
   &.s-backward.s-start {
     >.s-active {
-      transform: translate(0, -100%);
+      transform: translate3d(0, -100%, 0);
     }
 
     >.s-last {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
   }
 
   /* 老页面开始滑出 */
   &.s-backward.s-running {
     >.s-active {
-      transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
     }
 
     >.s-last {
-      transform: translate(0, 100%);
+      transform: translate3d(0, 100%, 0);
     }
   }
 }

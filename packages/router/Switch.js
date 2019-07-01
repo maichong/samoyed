@@ -39,7 +39,7 @@ function Runner(obj, duration, animationActive, classes) {
                 updateStage('done');
                 timer = 0;
             }, duration || app_1.default.defaults.animationDuration);
-        }, 5);
+        }, 50);
     });
     return function clearup() {
         if (timer) {
@@ -134,14 +134,20 @@ class Switch extends React.Component {
                 if (lastRoute) {
                     let matcher = Object.assign({}, lastRoute.props, { path: lastRoute.props.path || '/' });
                     let childLoactionList = locationStack.filter((loc) => matchPath_1.default(loc.pathname, matcher));
-                    children.push(React.cloneElement(lastRoute, {
+                    let el = React.cloneElement(lastRoute, {
                         key: matcher.exact ? lastLocation.key : matcher.path,
                         last: true,
                         lastLocation: null,
                         location: lastLocation,
                         locationStack: childLoactionList,
                         computedMatch: lastMatch
-                    }));
+                    });
+                    if (direction === 'forward') {
+                        children.unshift(el);
+                    }
+                    else {
+                        children.push(el);
+                    }
                     this.animationLock = location.key;
                     animationActive = true;
                     if (tabMode && activeRouteIndex !== lastRouteIndex) {

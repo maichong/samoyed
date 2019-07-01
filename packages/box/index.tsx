@@ -110,14 +110,14 @@ export default class Box extends React.Component<BoxProps, State> {
     if (yOffset > 0) {
       yOffset /= 2;
     }
-    bodyRef.style.transform = `translate(${offset.x}px, ${yOffset}px)`;
+    bodyRef.style.transform = `translate3d(${offset.x}px, ${yOffset}px,0)`;
     if (yOffset > 0 && pullRef) {
       let y = yOffset - pullRef.clientHeight;
       if (y > 0) {
         y = y / 2;
       }
       let opacity = Math.abs(-pullRef.clientHeight - y) / pullRef.clientHeight;
-      pullRef.style.transform = `translate(0px, ${y}px)`;
+      pullRef.style.transform = `translate3d(0px, ${y}px,0)`;
       pullRef.style.opacity = Math.min(1, opacity).toFixed(2);
     }
     if (this.yIndicator && this.axisEnabled.y && this.yIndicatorStyle) {
@@ -127,7 +127,7 @@ export default class Box extends React.Component<BoxProps, State> {
         this.yIndicator.style.height = size;
       }
       let y = this.yIndicatorStyle.offset;
-      this.yIndicator.style.transform = `translate(0px, ${y}px)`;
+      this.yIndicator.style.transform = `translate3d(0px, ${y}px,0)`;
     }
   }
 
@@ -412,7 +412,7 @@ export default class Box extends React.Component<BoxProps, State> {
       let xDistance = lastPos.x - this.flickStartPos.x;
       let xVelocity = xDistance / time;
       if (Math.abs(xDistance) > 5 && Math.abs(xVelocity) > 0.01) {
-        final.x += xVelocity * 800;
+        final.x += xVelocity * 500;
       }
       if (final.x > 0) {
         final.x = 0;
@@ -428,7 +428,7 @@ export default class Box extends React.Component<BoxProps, State> {
       let yDistance = lastPos.y - this.flickStartPos.y;
       let yVelocity = yDistance / time;
       if (Math.abs(yDistance) > 5 && Math.abs(yVelocity) > 0.01) {
-        final.y += yVelocity * 800;
+        final.y += yVelocity * 500;
       }
 
       if (onPullRefresh && this.pullRef && this.state.pullStatus === 'loading' && final.y > this.pullRef.clientHeight) {
@@ -488,7 +488,7 @@ export default class Box extends React.Component<BoxProps, State> {
     if (final.x !== offset.x || final.y !== offset.y) {
       let start = { x: offset.x, y: offset.y };
       let diff = { x: final.x - start.x, y: final.y - start.y };
-      let duration = 1500;
+      let duration = 1000;
       if (final.y === 0 && start.y > 0) {
         // 下拉刷新取消
         duration = 500;

@@ -29,7 +29,7 @@ function Toolbar(props) {
                 's-has-text': title,
             }) },
             icon && React.createElement(icon_1.default, { name: icon }),
-            title && React.isValidElement(title) ? title : React.createElement("span", { className: "s-text" }, title));
+            typeof title === 'string' ? React.createElement("span", { className: "s-text" }, title) : title);
     }
     let leftTools = [];
     let rightTools = [];
@@ -47,7 +47,7 @@ function Toolbar(props) {
                 's-hover': !tool.disabled,
             }) },
             tool.icon && React.createElement(icon_1.default, { name: tool.icon }),
-            tool.text && (React.isValidElement(tool.text) ? tool.text : React.createElement("span", { className: "s-text" }, tool.text)));
+            (typeof tool.text === 'string' ? React.createElement("span", { className: "s-text" }, tool.text) : tool.text));
         if (tool.tooltip) {
             el = React.createElement(tooltip_wrapper_1.default, { key: index, placement: "bottom", tooltip: tool.tooltip }, el);
         }

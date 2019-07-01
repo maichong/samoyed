@@ -48,7 +48,7 @@ function Runner(obj: Switch, duration: number, animationActive: boolean, classes
         updateStage('done');
         timer = 0;
       }, duration || app.defaults.animationDuration);
-    }, 5);
+    }, 50);
   });
   return function clearup() {
     if (timer) {
@@ -173,14 +173,19 @@ export default class Switch extends React.Component<SwitchProps> {
             if (lastRoute) {
               let matcher = { ...lastRoute.props, path: lastRoute.props.path || '/' };
               let childLoactionList = locationStack.filter((loc) => matchPath(loc.pathname, matcher));
-              children.push(React.cloneElement(lastRoute, {
+              let el = React.cloneElement(lastRoute, {
                 key: matcher.exact ? lastLocation.key : matcher.path,
                 last: true,
                 lastLocation: null,
                 location: lastLocation,
                 locationStack: childLoactionList,
                 computedMatch: lastMatch
-              }));
+              });
+              if (direction === 'forward') {
+                children.unshift(el);
+              } else {
+                children.push(el);
+              }
 
               this.animationLock = location.key;
               animationActive = true;

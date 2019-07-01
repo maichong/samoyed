@@ -26,7 +26,7 @@ export default function Toolbar(props: ToolbarProps) {
       's-has-text': title,
     })}>
       {icon && <Icon name={icon} />}
-      {title && React.isValidElement(title) ? title : <span className="s-text">{title}</span>}
+      {typeof title === 'string' ? <span className="s-text">{title}</span> : title}
     </div>;
   }
 
@@ -51,7 +51,7 @@ export default function Toolbar(props: ToolbarProps) {
       })}
     >
       {tool.icon && <Icon name={tool.icon} />}
-      {tool.text && (React.isValidElement(tool.text) ? tool.text : <span className="s-text">{tool.text}</span>)}
+      {(typeof tool.text === 'string' ? <span className="s-text">{tool.text}</span> : tool.text)}
     </div>;
     if (tool.tooltip) {
       el = <TooltipWrapper key={index} placement="bottom" tooltip={tool.tooltip}>{el}</TooltipWrapper>;
