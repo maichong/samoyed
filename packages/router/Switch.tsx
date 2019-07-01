@@ -10,17 +10,18 @@ import { SwitchProps, RouteProps, RouterChildContext, Match } from '.';
 
 interface LocationRoute {
   route?: React.ReactElement<RouteProps>;
+  routeIndex?: number;
   match?: Match<any>;
 }
 function getLocationRoute(location: H.Location, routes: React.ReactElement<RouteProps>[]): LocationRoute {
   // eslint-disable-next-line guard-for-in
   for (let i in routes) {
     let route = routes[i];
-    // @ts-ignore
-    const path = route.props.path || route.props.from || '/';
+    const path = route.props.path || '/';
     let match = matchPath(location.pathname, { ...route.props, path });
     if (match) {
-      return { route, match };
+      // @ts-ignore i 是number
+      return { route, routeIndex: i, match };
     }
   }
   return {};
@@ -53,7 +54,7 @@ function Runner(obj: Switch, duration: number, animationActive: boolean, classes
     if (timer) {
       clearTimeout(timer);
     }
-  }
+  };
 }
 
 export default class Switch extends React.Component<SwitchProps> {
@@ -75,6 +76,7 @@ export default class Switch extends React.Component<SwitchProps> {
   };
 
   render() {
+    const tabMode = this.props.tabMode;
     // @ts-ignore
     let animation: Animation = this.props.animation || {};
     if (typeof animation === 'string') {
@@ -84,10 +86,10 @@ export default class Switch extends React.Component<SwitchProps> {
     return (
       <RouterContext.Consumer>
         {(context: RouterChildContext) => {
-          // console.log('context update', context.match);
+          // console.log('context update', tabMode, context);
           let animationActive = false;
           if (!context || !context.history) throw new Error('You should not use <Switch> outside a <Router>');
-          const { locationStack, location, direction } = context;
+          let { locationStack, location, direction } = context;
 
           const routes: React.ReactElement<RouteProps>[] = [];
 
@@ -100,38 +102,44 @@ export default class Switch extends React.Component<SwitchProps> {
           let children: React.ReactElement[] = [];
 
           // 根据location，匹配Route
-          let { route: activeRoute, match } = getLocationRoute(location, routes);
+          let { route: activeRoute, routeIndex: activeRouteIndex, match: activeMatch } = getLocationRoute(location, routes);
           if (!activeRoute) {
             // 当前路由表中，匹配location失败
             console.error('No route found for location', location);
             return null;
           }
 
+          // 上个位置
           let lastLocation = this.lastLocation;
 
           if (activeRoute.type === Redirect && location.key !== context.globalLocation.key) {
             // 如果当前的位置不是全局位置，则匹配的 Redirect 无效，不能跳转，否则会有bug
             activeRoute = null;
           }
+          // 当前页面Route
           if (activeRoute) {
             let matcher = { ...activeRoute.props, path: activeRoute.props.path || '/' };
             let childLoactionList = locationStack.filter((loc) => matchPath(loc.pathname, matcher));
 
+            // 如果当前页面Route是精确匹配，说明是指定页面
+            // 精确匹配按location.key判断当前位置和上个位置是否一致
             if (matcher.exact) {
               if (lastLocation && lastLocation.key === location.key) {
                 lastLocation = null;
               }
               if (!this.lastLocation || this.lastLocation.key !== location.key) {
                 this.lastLocation = location;
-                this.lastRoutePath = match.path;
+                this.lastRoutePath = activeMatch.path;
               }
             } else {
-              if (lastLocation && this.lastRoutePath === match.path) {
+              // 如果不是精确匹配，说明当前Route中包含子Switch
+              // 模糊匹配按路由path设置判断当前位置和上个位置是否一致
+              if (lastLocation && this.lastRoutePath === activeMatch.path) {
                 lastLocation = null;
               }
-              if (!this.lastLocation || this.lastRoutePath !== match.path) {
+              if (!this.lastLocation || this.lastRoutePath !== activeMatch.path) {
                 this.lastLocation = location;
-                this.lastRoutePath = match.path;
+                this.lastRoutePath = activeMatch.path;
               }
             }
 
@@ -141,7 +149,7 @@ export default class Switch extends React.Component<SwitchProps> {
               lastLocation,
               location,
               locationStack: childLoactionList,
-              computedMatch: match
+              computedMatch: activeMatch
             }));
 
             // 如果当前Route设置了历史记录数量限制，自动区间回收不需要的历史记录
@@ -161,7 +169,7 @@ export default class Switch extends React.Component<SwitchProps> {
           }
 
           if (animation.type && lastLocation && this.animationLock !== location.key) {
-            let { route: lastRoute, match } = getLocationRoute(lastLocation, routes);
+            let { route: lastRoute, routeIndex: lastRouteIndex, match: lastMatch } = getLocationRoute(lastLocation, routes);
             if (lastRoute) {
               let matcher = { ...lastRoute.props, path: lastRoute.props.path || '/' };
               let childLoactionList = locationStack.filter((loc) => matchPath(loc.pathname, matcher));
@@ -171,11 +179,15 @@ export default class Switch extends React.Component<SwitchProps> {
                 lastLocation: null,
                 location: lastLocation,
                 locationStack: childLoactionList,
-                computedMatch: match
+                computedMatch: lastMatch
               }));
 
               this.animationLock = location.key;
               animationActive = true;
+
+              if (tabMode && activeRouteIndex !== lastRouteIndex) {
+                direction = activeRouteIndex > lastRouteIndex ? 'forward' : 'backward';
+              }
             }
           }
 

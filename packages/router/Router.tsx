@@ -89,8 +89,7 @@ export default class Router extends React.Component<RouterProps, State> {
     const { history } = this.props;
     // console.log(action, location.key, location, history.length);
 
-    let locationStack = this.state.locationStack;
-    let { allLocationList, index, location: lastLocation } = this.state;
+    let { allLocationList, index, locationStack, location: lastLocation } = this.state;
     let direction: RouterDirection;
 
     if (action === 'REPLACE') {
@@ -99,7 +98,7 @@ export default class Router extends React.Component<RouterProps, State> {
       allLocationList.splice(index, 1000, location);
     } else if (action === 'PUSH') {
       direction = 'forward';
-      allLocationList.push(location);
+      allLocationList.splice(index + 1, 1000, location);
       index = allLocationList.length - 1;
       locationStack = locationStack.concat(location);
     } else {
@@ -137,6 +136,7 @@ export default class Router extends React.Component<RouterProps, State> {
               locationStack.splice(stackIndex + 1);
             } else {
               // 不在stack中，说明已经被回收
+              // eslint-disable-next-line max-depth
               if (locationStack.length > 1) {
                 // TODO: 计算真正需要退回的数量
                 locationStack.pop();
@@ -160,7 +160,7 @@ export default class Router extends React.Component<RouterProps, State> {
       }
     }
 
-    // console.log('after', direction, ...locationStack);
+    // console.log('after', direction, index, ...locationStack);
     // console.log('location', location);
     this.setState({
       direction,
@@ -178,12 +178,34 @@ export default class Router extends React.Component<RouterProps, State> {
     // console.log('after free locations', locationStack);
   };
 
+  goBackTo = (path: string) => {
+    // console.log('path', path);
+    let { history } = this.props;
+    let { allLocationList, index } = this.state;
+    let toIndex = -1;
+    for (let i = index - 1; i >= 0; i -= 1) {
+      let loc = allLocationList[i];
+      if (loc && loc.pathname === path) {
+        toIndex = i;
+        break;
+      }
+    }
+    if (toIndex > -1) {
+      // console.log({ from: index, to: toIndex });
+      history.go(toIndex - index);
+      return true;
+    }
+
+    return false;
+  };
+
   render() {
     return (
       <RouterContext.Provider
         value={{
-          direction: this.state.direction,
           freeLocations: this.freeLocations,
+          goBackTo: this.goBackTo,
+          direction: this.state.direction,
           history: this.props.history,
           globalLocationStack: this.state.locationStack,
           globalLastLocation: this.state.lastLocation,

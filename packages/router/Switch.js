@@ -9,10 +9,10 @@ const matchPath_1 = require("./matchPath");
 function getLocationRoute(location, routes) {
     for (let i in routes) {
         let route = routes[i];
-        const path = route.props.path || route.props.from || '/';
+        const path = route.props.path || '/';
         let match = matchPath_1.default(location.pathname, Object.assign({}, route.props, { path }));
         if (match) {
-            return { route, match };
+            return { route, routeIndex: i, match };
         }
     }
     return {};
@@ -61,6 +61,7 @@ class Switch extends React.Component {
         }
     }
     render() {
+        const tabMode = this.props.tabMode;
         let animation = this.props.animation || {};
         if (typeof animation === 'string') {
             animation = { type: animation };
@@ -70,7 +71,7 @@ class Switch extends React.Component {
             let animationActive = false;
             if (!context || !context.history)
                 throw new Error('You should not use <Switch> outside a <Router>');
-            const { locationStack, location, direction } = context;
+            let { locationStack, location, direction } = context;
             const routes = [];
             React.Children.forEach(this.props.children, (child) => {
                 if (React.isValidElement(child)) {
@@ -78,7 +79,7 @@ class Switch extends React.Component {
                 }
             });
             let children = [];
-            let { route: activeRoute, match } = getLocationRoute(location, routes);
+            let { route: activeRoute, routeIndex: activeRouteIndex, match: activeMatch } = getLocationRoute(location, routes);
             if (!activeRoute) {
                 console.error('No route found for location', location);
                 return null;
@@ -96,16 +97,16 @@ class Switch extends React.Component {
                     }
                     if (!this.lastLocation || this.lastLocation.key !== location.key) {
                         this.lastLocation = location;
-                        this.lastRoutePath = match.path;
+                        this.lastRoutePath = activeMatch.path;
                     }
                 }
                 else {
-                    if (lastLocation && this.lastRoutePath === match.path) {
+                    if (lastLocation && this.lastRoutePath === activeMatch.path) {
                         lastLocation = null;
                     }
-                    if (!this.lastLocation || this.lastRoutePath !== match.path) {
+                    if (!this.lastLocation || this.lastRoutePath !== activeMatch.path) {
                         this.lastLocation = location;
-                        this.lastRoutePath = match.path;
+                        this.lastRoutePath = activeMatch.path;
                     }
                 }
                 children.push(React.cloneElement(activeRoute, {
@@ -114,7 +115,7 @@ class Switch extends React.Component {
                     lastLocation,
                     location,
                     locationStack: childLoactionList,
-                    computedMatch: match
+                    computedMatch: activeMatch
                 }));
                 if (matcher.historyLimit && childLoactionList.length > matcher.historyLimit) {
                     let needFree = [];
@@ -129,7 +130,7 @@ class Switch extends React.Component {
                 }
             }
             if (animation.type && lastLocation && this.animationLock !== location.key) {
-                let { route: lastRoute, match } = getLocationRoute(lastLocation, routes);
+                let { route: lastRoute, routeIndex: lastRouteIndex, match: lastMatch } = getLocationRoute(lastLocation, routes);
                 if (lastRoute) {
                     let matcher = Object.assign({}, lastRoute.props, { path: lastRoute.props.path || '/' });
                     let childLoactionList = locationStack.filter((loc) => matchPath_1.default(loc.pathname, matcher));
@@ -139,10 +140,13 @@ class Switch extends React.Component {
                         lastLocation: null,
                         location: lastLocation,
                         locationStack: childLoactionList,
-                        computedMatch: match
+                        computedMatch: lastMatch
                     }));
                     this.animationLock = location.key;
                     animationActive = true;
+                    if (tabMode && activeRouteIndex !== lastRouteIndex) {
+                        direction = activeRouteIndex > lastRouteIndex ? 'forward' : 'backward';
+                    }
                 }
             }
             if (this.clear) {

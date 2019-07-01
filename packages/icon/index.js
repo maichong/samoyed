@@ -13,4 +13,3 @@ function Icon(props) {
     return React.createElement("i", { className: cls });
 }
 exports.default = Icon;
-;

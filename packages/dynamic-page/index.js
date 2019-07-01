@@ -153,8 +153,6 @@ class OriginalDynamicPage extends React.Component {
             if (!pageTitle) {
                 pageTitle = pageRecord.title;
             }
-            console.log('active', active);
-            console.log('pageTitle', pageTitle);
             if (document.title !== pageTitle) {
                 document.title = pageTitle;
             }

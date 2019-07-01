@@ -23,8 +23,7 @@ class Router extends React.Component {
                 return;
             }
             const { history } = this.props;
-            let locationStack = this.state.locationStack;
-            let { allLocationList, index, location: lastLocation } = this.state;
+            let { allLocationList, index, locationStack, location: lastLocation } = this.state;
             let direction;
             if (action === 'REPLACE') {
                 direction = 'replace';
@@ -33,7 +32,7 @@ class Router extends React.Component {
             }
             else if (action === 'PUSH') {
                 direction = 'forward';
-                allLocationList.push(location);
+                allLocationList.splice(index + 1, 1000, location);
                 index = allLocationList.length - 1;
                 locationStack = locationStack.concat(location);
             }
@@ -97,6 +96,23 @@ class Router extends React.Component {
             locationStack = locationStack.filter((loc) => keys.indexOf(loc.key) === -1);
             this.setState({ locationStack });
         };
+        this.goBackTo = (path) => {
+            let { history } = this.props;
+            let { allLocationList, index } = this.state;
+            let toIndex = -1;
+            for (let i = index - 1; i >= 0; i -= 1) {
+                let loc = allLocationList[i];
+                if (loc && loc.pathname === path) {
+                    toIndex = i;
+                    break;
+                }
+            }
+            if (toIndex > -1) {
+                history.go(toIndex - index);
+                return true;
+            }
+            return false;
+        };
         let history = props.history;
         let location = history.location;
         if (!location.key) {
@@ -132,8 +148,9 @@ class Router extends React.Component {
     }
     render() {
         return (React.createElement(RouterContext_1.default.Provider, { value: {
-                direction: this.state.direction,
                 freeLocations: this.freeLocations,
+                goBackTo: this.goBackTo,
+                direction: this.state.direction,
                 history: this.props.history,
                 globalLocationStack: this.state.locationStack,
                 globalLastLocation: this.state.lastLocation,

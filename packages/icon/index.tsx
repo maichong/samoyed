@@ -11,4 +11,4 @@ export default function Icon(props: IconProps) {
     cls += ` ${className}`;
   }
   return <i className={cls} />;
-};
+}

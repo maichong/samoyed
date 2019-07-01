@@ -19,6 +19,10 @@ export interface RouterChildContext<Params extends { [K in keyof Params]?: strin
    */
   freeLocations: (list: Array<H.LocationKey>) => void;
   /**
+   * 返回到指定页面
+   */
+  goBackTo: (path: string) => boolean;
+  /**
    * 当前路由跳转方向
    */
   direction: RouterDirection;
@@ -191,7 +195,14 @@ export class Redirect extends React.Component<RedirectProps> {
 }
 
 export interface SwitchProps {
+  /**
+   * 路由切换动画
+   */
   animation?: AnimationType | Animation;
+  /**
+   * Tab切换模式
+   */
+  tabMode?: boolean;
 }
 
 export class Switch extends React.Component<SwitchProps> {
